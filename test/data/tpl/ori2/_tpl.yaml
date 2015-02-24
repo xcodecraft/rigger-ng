@@ -1,0 +1,12 @@
+host: !T.chose
+    prompt : "选择需要发布的主机地址"
+    options:
+        - 192.168.0.1
+        - 127.0.0.1
+
+sdk_pkg: !T.bool
+    prompt : "是否需要发布SDK"
+    default: "y"
+
+xshell : !T.bool
+    prompt : "xshell"

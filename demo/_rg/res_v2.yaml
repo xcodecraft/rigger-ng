@@ -1,0 +1,194 @@
+#!import  "./sub_svc.yaml"
+
+__prj: !R.prj
+       name: "rigger-test"
+       key:  "RG_UT"
+       res:
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+
+common:
+    !R.module  &comm1
+        res:
+            - !R.vars
+                PATH_ROOT:  "/"
+            - !R.path
+                    dst: "/tmp/test/pylon_rigger/${APP_SYS}/1"
+                    chmod: "-R a+w"
+            - !R.path
+                    dst: "/tmp/test/pylon_rigger/${APP_SYS}/2"
+                    chmod: "-R a+w"
+            - !R.path
+                    dst: "${PATH_ROOT}/test/pylon_rigger/${APP_SYS}/3"
+                    chmod: "-R a+w"
+
+__sys:
+    test:  !R.system
+            res:
+                - !R.vars
+                    defs:
+                        TEST_NAME: "${HOME}/devspace/pylon_rigger"
+                        APP_SYS:  "test"
+                - !R.path
+                        dst: "/tmp/test/pylon_rigger"
+                        chmod: "-R a+w"
+                - !R.using
+                    ref : *comm1
+                    args: !R.vars
+                        PATH_ROOT:  "/tmp"
+
+    test2:  !R.system
+            res:
+                - !R.vars
+                    defs:
+                        TEST_NAME: "${HOME}/devspace/pylon_rigger"
+                        APP_SYS:  "test2"
+                - !R.path
+                        dst: "/tmp/test/pylon_rigger"
+                        chmod: "-R a+w"
+                - !R.using
+                    ref : *comm1
+                    args: !R.vars
+                        PATH_ROOT:  "/tmp"
+
+    tpl_res:  !R.system
+            res:
+                - !R.vars
+                    defs:
+                        APP_SYS: "tpl_res"
+                        SYS_NAME:  "test"
+                - !R.tpl
+                        tpl: "${PRJ_ROOT}/test/tpl/ori"
+                        dst: "${PRJ_ROOT}/test/tmp/outres"
+    fpm_sys:  !R.system
+            res:
+                - !R.vars
+                    SYS_NAME:  "test"
+                    MODE: "dev"
+                    PHP_INI : "/usr/local/php"
+                    APP_SYS: "fpm_sys"
+                    USER: "demo"
+                - !R.fpm_svc
+                    fpm_conf: "${ENV}"
+                    fpn_cnt: "10"
+                    conf_override:
+                        - ";dev group = demo"
+
+    fpm_sys2:  !R.system
+            res:
+                - !R.vars
+                    SYS_NAME:  "test"
+                    MODE: "dev"
+                    PHP_INI : "/usr/local/php"
+                    APP_SYS: "fpm_sys2"
+                - !R.tpl
+                    tpl: "${PRJ_ROOT}/test/tpl/ori/test_fpm.conf"
+                    dst: "${PRJ_ROOT}/test/tmp/outres/fpm.conf"
+                - !R.fpm_svc
+                    fpm_conf: "${ENV}"
+                - !R.fpm_svc
+                    fpm_conf: "${PRJ_ROOT}/test/tmp/outres/fpm.conf"
+                    sock_id: "custom"
+
+    flist_sys:  !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "flist_sys"
+                - !R.file_merge
+                    src : "${PRJ_ROOT}/test/data"
+                    dst : "${PRJ_ROOT}/test/data/all.txt"
+                    tpl : "include '$_ITEM' "
+    lproxy: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "localproxy"
+                - !R.local_proxy
+                    sudo: True
+                - !R.local_proxy_conf
+                    tpl:  "${PRJ_ROOT}/test/prj/conf/test.vcl"
+                    dst:  "${PRJ_ROOT}/test/prj/conf/${USER}_${PRJ_NAME}_test.vcl"
+    daemon: !R.system
+            res:
+                - !R.vars
+                    RUN_PATH: "${PRJ_ROOT}/run/daemon"
+#                     APP_SYS: "daemon"
+                    PHP_INI: "${PRJ_ROOT}/test/prj/conf/php.ini"
+                - !R.daemon_php
+                    script:  "${PRJ_ROOT}/test/prj/test.php"
+                    worker:  2
+                - !R.daemon_php
+                    script:  "${PRJ_ROOT}/test/prj/test1.php"
+    php_cmd: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "php_cmd"
+                    PHP_INI: "${PRJ_ROOT}/test/prj/conf/cmd_php.ini"
+    php_cmd1: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "php_cmd"
+                    PHP_INI: "${PRJ_ROOT}/test/prj/conf/cmd_php1.ini"
+
+    filetest: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "filetest"
+                - !R.file_tpl
+                    tpl: "${PRJ_ROOT}/test/prj/conf/tpl_tpltest.txt"
+                    dst: "${PRJ_ROOT}/test/prj/conf/tpltest.txt"
+    gearmand: !R.system
+            res:
+                - !R.gearmand
+                    sudo: True
+
+    beanstalk: !R.system
+            res:
+                - !R.beanstalk
+                    sudo: True
+
+    phpenv: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "phpenv"
+                - !R.phpenv
+                    sudo: True
+
+    cron: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "filetest"
+                - !R.crontab
+                    cron : "${PRJ_ROOT}/test/prj/conf/test.cron"
+    ngxlua: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "ngxlua"
+                - !R.ngx_lua
+                    src: "${PRJ_ROOT}/test/"
+                    force: True
+
+    phpunit: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "phpunit"
+                    PHP_INI: "${PRJ_ROOT}/test/prj/conf/php.ini"
+                - !R.echo
+                    value : "${PHP_INI}"
+                - !R.echo
+                    value : "${PRJ_ROOT}"
+                - !R.phpunit2
+                    path : "test/prj"
+    sonar: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "sonar"
+                - !R.sonar
+                    version : "${PRJ_ROOT}/rigger/version.txt"
+
+    autoload: !R.system
+            res:
+                - !R.vars
+                    APP_SYS: "autoload"
+                - !R.autoload
+                    src :  "${PRJ_ROOT}/test/prj/src"

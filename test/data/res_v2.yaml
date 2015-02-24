@@ -1,0 +1,26 @@
+__prj: !R.project
+       name: "rigger-test"
+       key:  "RG_UT"
+       res:
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+
+
+__sys:
+    -  !R.system
+        name: "test"
+        res:
+            - !R.vars
+                defs:
+                    TEST_NAME: "${HOME}/devspace/pylon_rigger"
+                    APP_SYS:  "test"
+        #         - !R.path
+        #                 dst: "/tmp/test/pylon_rigger"
+        #                 chmod: "-R a+w"
+        #         - !R.using
+        #             ref : *comm1
+        #             args: !R.vars
+        #                 PATH_ROOT:  "/tmp"
+        #
+        #
