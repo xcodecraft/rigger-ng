@@ -9,6 +9,8 @@ from testcase.core_tc  import *
 from testcase.yaml_tc  import *
 from testcase.tpl_tc   import *
 from testcase.vars_tc  import *
+from testcase.args_tc  import *
+from testcase.cmd_tc   import *
 
 
 if __name__ == '__main__':
