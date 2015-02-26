@@ -20,9 +20,3 @@ __sys:
                     APP_SYS:  "test"
             - !R.echo
                 value : "${APP_SYS}"
-            - !R.assert_eq
-                value  : "${APP_SYS}"
-                expect : "test"
-            - !R.assert_eq
-                value  : "${PRJ_NAME}"
-                expect : "RG_UT"

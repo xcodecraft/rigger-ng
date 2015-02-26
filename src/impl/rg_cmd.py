@@ -20,7 +20,6 @@ class help_cmd(rg_cmd,cmdtag_rg):
                 if cmdlen == 3 :
                     resname = rargs.prj.cmds[2]
                     resobj = res.ins_res(resname)
-                    print(resobj.__class__)
 
                     # resobj.useage(output):
                     resobj.useage(rgio.simple_out)

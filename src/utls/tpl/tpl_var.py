@@ -13,7 +13,7 @@ class prompt_dict:
         # rgio.error("undefined value [%s]!" %name)
         if self.data is not None:
             recommend = prompt.recommend(name,self.data.keys())
-            # rgio.error("可能是%s: " %recommend)
+            # rgio.error("å¯è½æ¯%s: " %recommend)
         return "__NOFOUND_[%s]__" %name
 
 class empty_dict:
@@ -91,7 +91,8 @@ def upper_dict(ori) :
 
 class tpl_var(utls.pattern.singleton):
     def __init__(self):
-        self.impl  = prior_dict(empty_dict(),os.environ)
+        self.impl    = prior_dict(empty_dict(),os.environ)
+        self.restore = None
         # self.base = self.impl
 
     def import_dict(self,def_dict):
@@ -106,6 +107,12 @@ class tpl_var(utls.pattern.singleton):
 
     def clean(self):
         self.__init__()
+    def keep(self) :
+        import  copy
+        self.restore = copy.copy(self.impl)
+    def rollback(self) :
+        self.impl = self.restore
+
 
 var = tpl_var()
 
@@ -113,6 +120,7 @@ def undefine_value(key):
     return "__NOFOUND_[%s]__" %key
     # nofound  = prompt_dict(os.environ)
     # return getattr(nofound,key)
+
 
 # class scope_nofound:
 #     def __init__(self,new):

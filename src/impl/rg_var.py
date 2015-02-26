@@ -35,6 +35,12 @@ class assginer :
 def clean() :
     utls.tpl.var.clean()
 
+def keep():
+    utls.tpl.var.keep()
+    pass
+def rollback():
+    utls.tpl.var.rollback()
+    pass
 def import_context(context) :
     utls.tpl.var.import_dict(context.__dict__)
 

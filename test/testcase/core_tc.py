@@ -6,9 +6,21 @@ import tc_data
 from impl.rg_model import *
 from impl.rg_framework import *
 
+
 import  interface
 
 class res_tc(tc_tools.rigger_tc):
+
+    def test_context(self) :
+        print("xxxx")
+        context = interface.run_context()
+        context.x = 1
+        context.keep()
+        context.x = 2
+        self.assertEqual(context.x,2)
+        context.rollback()
+        self.assertEqual(context.x,1)
+
 
     def asst_call(self,res,context,method,inner_method):
         res.reset()

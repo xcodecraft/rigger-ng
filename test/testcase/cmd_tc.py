@@ -4,7 +4,7 @@ import  interface
 from    tc_tools   import *
 # from    impl.rg_cmd import *
 from    impl.rg_args import *
-import  impl.rg_run
+import  impl.rg_run , impl.rg_var
 
 
 
@@ -13,14 +13,16 @@ _logger = logging.getLogger()
 
 
 class cmd_tc(rigger_tc):
-    def asst_cmd(self,cmd):
-        impl.rg_run.run_cmd(cmd)
+    def asst_cmd(self,conf,cmd):
+        impl.rg_run.run_cmd(cmd,conf)
     def test_insobj(self) :
-        self.asst_cmd("help")
-        self.asst_cmd("help res")
-        self.asst_cmd("help res echo ")
+        self.asst_cmd(None,"help")
+        self.asst_cmd(None,"help res")
+        self.asst_cmd(None,"help res echo ")
 
     def test_conf(self):
-        self.asst_cmd("conf -s test -e dev ")
-        self.asst_cmd("start -s test -e dev ")
+        conf   = impl.rg_var.value_of("${HOME}/devspace/rigger-ng/test/data/res_2.yaml")
+        self.asst_cmd(conf,"conf -s test1 -e env1 ")
+        self.asst_cmd(conf,"conf -s test2 -e env1 ")
+        self.asst_cmd(conf,"conf -s test1,test2 -e env1 ")
 

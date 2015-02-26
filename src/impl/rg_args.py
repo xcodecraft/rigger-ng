@@ -26,9 +26,9 @@ class prj_args :
         self.clear()
 
     def clear(self):
-        self.env = None
-        # self.prj = None
-        self.sys = None
+        self.env  = None
+        self.conf = None
+        self.sys  = None
         self.cmds = []
     def __str__(self) :
         cmd = "," . join(self.cmds)

@@ -38,6 +38,14 @@ class res_box(interface.resource):
         self.res.insert(0,item)
 
 class system (res_box ):
+    def _before(self,context):
+        rg_var.keep()
+        context.keep()
+        pass
+    def _after(self,context):
+        context.rollback()
+        rg_var.rollback()
+        pass
     pass
 
 class project(res_box) :
@@ -56,7 +64,7 @@ class env(interface.resource):
 
 class vars(interface.resource):
     """
-    定义环境变量:
+    å®ä¹ç¯å¢åé:
     !R.vars:
         A: 1
         B: "hello"
@@ -90,3 +98,22 @@ class echo(interface.resource) :
     def _config(self,context):
         v = rg_var.value_of(self.value)
         print("echo,vlaue: %s " %(v))
+
+class assert_eq(interface.resource) :
+    """
+    !R.assert
+        value  : "${APP_SYS}"
+        expect : "test"
+    """
+    def _allow(self,context):
+        return True
+    def _config(self,context):
+        self.assert_eq(context)
+    def assert_eq(self,context):
+        value  = rg_var.value_of(self.value)
+        expect = rg_var.value_of(self.expect)
+        if value != expect :
+            raise interface.rigger_exception("value: %s , expect : %s " %(value,expect))
+    def _start(self,context) :
+        self.assert_eq(context)
+

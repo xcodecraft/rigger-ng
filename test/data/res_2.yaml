@@ -1,0 +1,52 @@
+__env:
+    - !R.vars
+        name: "env1"
+        val_1 : "A"
+
+__prj: !R.project
+       name: "rigger-test"
+       key:  "RG_UT"
+       res:
+        - !R.assert_eq
+            value  : "${VAL_1}"
+            expect : "A"
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+                val_1 : "B"
+        - !R.assert_eq
+            value  : "${VAL_1}"
+            expect : "B"
+
+
+__sys:
+    -  !R.system
+        name: "test1"
+        res:
+            - !R.assert_eq
+                value  : "${VAL_1}"
+                expect : "B"
+            - !R.vars
+                    TEST_NAME: "${HOME}/devspace/pylon_rigger"
+                    APP_SYS:  "test"
+                    val_1 : "C1"
+            - !R.echo
+                value : "${APP_SYS}"
+            - !R.assert_eq
+                value  : "${VAL_1}"
+                expect : "C1"
+    -  !R.system
+        name: "test2"
+        res:
+            - !R.assert_eq
+                value  : "${VAL_1}"
+                expect : "B"
+            - !R.vars
+                    TEST_NAME: "${HOME}/devspace/pylon_rigger"
+                    APP_SYS:  "test"
+                    val_1 : "D"
+            - !R.echo
+                value : "${APP_SYS}"
+            - !R.assert_eq
+                value  : "${VAL_1}"
+                expect : "D"

@@ -5,7 +5,23 @@ _logger = logging.getLogger()
 
 class run_context :
     def __init__(self):
+        # self.impl    = object()
+        self.restore = None
         pass
+    def keep(self) :
+        import copy
+        self.restore =  copy.copy(self.__dict__)
+        pass
+    def rollback(self):
+        import copy
+        self.__dict__=  copy.copy(self.restore)
+        self.restore = None
+        # self.impl = self.restore
+        pass
+    # def __getattr__(self,name):
+    #     return getattr(self.impl,name)
+    # def __setattr__(self,name,val):
+    #     setattr(self.impl,name,val)
 
 class resource (rg_conf.base):
     sudo        = False

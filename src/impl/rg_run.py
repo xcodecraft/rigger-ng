@@ -7,10 +7,12 @@ _logger = logging.getLogger()
 import rg_cmd,rg_args , impl.rg_cmd_prj
 
 
-def run_cmd( cmdstr) :
+def run_cmd( cmdstr,yaml_conf=None) :
     rargs  = rg_args.run_args()
     parser = rg_args.rarg_parser()
     parser.parse(rargs,cmdstr.split(' '))
+    if yaml_conf is not None:
+        rargs.prj.conf = yaml_conf
 
     #TODO: muti cmd support
     cmd    = rargs.prj.cmds[0]
