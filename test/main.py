@@ -14,4 +14,11 @@ from testcase.cmd_tc   import *
 
 
 if __name__ == '__main__':
+    _logger = logging.getLogger()
+    # file_handler = logging.FileHandler("test.log")
+    # file_handler.setFormatter(formatter)
+    # _logger.addHandler(file_handler)
+    stream_handler = logging.StreamHandler(sys.stderr)
+    _logger.addHandler(stream_handler)
+    # _logger.info("hello")
     unittest.main()

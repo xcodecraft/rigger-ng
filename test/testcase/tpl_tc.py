@@ -24,10 +24,9 @@ class exp_tc(rigger_tc):
         #测试找不到行为
         impl.rg_var.clean()
         v = impl.rg_var.value_of("${MODE}")
-        self.assertEqual(v,'__NOFOUND_[MODE]__')
+        # self.assertEqual(v,'__NOFOUND_[MODE]__')
 
 
-        pass
 class tpl_tc(rigger_tc):
 
     def test_engine_vardict(self):

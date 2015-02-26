@@ -1,7 +1,9 @@
 #coding=utf8
 # import  validate,utls , conf_base
 # from dev import *
+import logging , re, os
 import interface
+_logger = logging.getLogger()
 class conf:
     line_tag ='#%'
     var_tag  ='%'

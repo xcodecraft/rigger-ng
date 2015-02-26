@@ -1,4 +1,5 @@
-import types , re , os , string ,  getopt , pickle ,yaml , logging , new , sys
+# import types , re , os , string ,  getopt , pickle ,yaml , logging , new , sys
+import logging , re, os
 import tpl_action,tpl_var
 _logger = logging.getLogger()
 class tplstatus:
