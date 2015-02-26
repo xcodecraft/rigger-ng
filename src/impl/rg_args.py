@@ -16,6 +16,7 @@ class rg_args :
         self.data          = os.path.abspath("./.rigger-ng.dat")
         self.conf          = os.getcwd() + "/_rg/conf.yaml"
         self.log_level     = logging.ERROR
+        self.os            = None
         self.user          = None
         self.root          = (os.path.dirname(os.path.realpath(__file__)) + "/../")
 
@@ -31,7 +32,7 @@ class prj_args :
         self.cmds = []
     def __str__(self) :
         cmd = "," . join(self.cmds)
-        return "%s -o %s -s %s" %(cmd,self.env,self.sys)
+        return "%s -e %s -s %s" %(cmd,self.env,self.sys)
 
 # class pub_args :
 #     def __str__(self) :
@@ -151,7 +152,9 @@ class rarg_parser:
             rargs.rg.conf  = self.argv['-c']
         if self.argv.has_key('-z'):
             rargs.rg.user  =self.argv['-z']
+        if self.argv.has_key('-e'):
+            rargs.prj.env =self.argv['-e']
         if self.argv.has_key('-o'):
-            rargs.prj.env =self.argv['-o']
+            rargs.rg.os =self.argv['-o']
         if self.argv.has_key('-s'):
             rargs.prj.sys =self.argv['-s']
