@@ -1,3 +1,7 @@
+__env:
+    - !R.vars
+        name: "dev"
+
 __prj: !R.project
        name: "rigger-test"
        key:  "RG_UT"
@@ -12,9 +16,10 @@ __sys:
         name: "test"
         res:
             - !R.vars
-                defs:
                     TEST_NAME: "${HOME}/devspace/pylon_rigger"
                     APP_SYS:  "test"
+            - !R.echo
+                value : "${APP_SYS}"
         #         - !R.path
         #                 dst: "/tmp/test/pylon_rigger"
         #                 chmod: "-R a+w"

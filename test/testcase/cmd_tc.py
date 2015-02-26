@@ -20,3 +20,6 @@ class cmd_tc(rigger_tc):
         self.asst_cmd("help res")
         self.asst_cmd("help res echo ")
 
+    def test_conf(self):
+        self.asst_cmd("conf -s test -o dev ")
+

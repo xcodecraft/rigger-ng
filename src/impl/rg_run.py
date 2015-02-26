@@ -12,6 +12,7 @@ def run_cmd( cmdstr) :
     parser = rg_args.rarg_parser()
     parser.parse(rargs,cmdstr.split(' '))
 
+    #TODO: muti cmd support
     cmd    = rargs.prj.cmds[0]
     obj    = ins_cmd(cmd)
     obj._config(parser.argv,rargs)

@@ -35,10 +35,10 @@ class res_tc(tc_tools.rigger_tc):
         resbox.append( tc_data.simple_res("B") )
         resbox.append( tc_data.simple_res("C") )
 
-        context =  interface.run_context()
-        run = res_runner(resbox)
+        context = interface.run_context()
+        run     = res_runner(resbox)
         run.config(context)
-        #检查调用数据
+        #æ£æ¥è°ç¨æ°æ®
         for res in resbox.res :
             self.asst_res(res,"_config")
 

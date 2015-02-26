@@ -35,3 +35,9 @@ class rg_cmd:
 
 class cmdtag_rg :
     pass
+class cmdtag_prj :
+    pass
+
+class cmdtag_pub :
+    pass
+

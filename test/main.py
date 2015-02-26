@@ -14,6 +14,7 @@ from testcase.cmd_tc   import *
 
 
 if __name__ == '__main__':
+    # logging.basicConfig(level=logging.DEBUG)
     _logger = logging.getLogger()
     # file_handler = logging.FileHandler("test.log")
     # file_handler.setFormatter(formatter)

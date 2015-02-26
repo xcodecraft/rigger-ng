@@ -1,8 +1,8 @@
 #coding=utf8
 # import types , re , os , string ,  getopt , pickle , logging
 from rg_io import rgio
-from rg_cmdbase import  rg_cmd , cmdtag_rg
-import res
+from rg_cmdbase import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
+import res, rg_run ,rg_model ,rg_var ,rg_framework , interface
 
 
 
@@ -54,6 +54,64 @@ class help_cmd(rg_cmd,cmdtag_rg):
             #     subcmd = ins_cmd(subcmd)
             #     subcmd._usage()
 
+
+class prj_cmd_base :
+    def _config(self,argv,rargs):
+        self.env = argv['-o'].split()
+        self.sys = argv['-s'].split()
+        pass
+    def _execute(self,cmd,rargs):
+        pass
+class conf_cmd(prj_cmd_base,cmdtag_prj):
+    """
+    éç½®ç³»ç» rg conf -e <env> -s <sys> [-o <os>] "
+    rg conf -e debug,demo -s front,admin
+    """
+    # def _config(self,argv,rargs):
+    #     run_base._config(self,argv,rargs)
+    #     for o, a in argv.items():
+    #         if o == "-e":
+    #             rargs.env = a
+    #         if o == "-s":
+    #             rargs.sysname   = a
+    #         if o == "-o":
+    #             rargs.os_env    = a
+    #         if o == "-x":
+    #             rargs.allow_res= a
+    #             _logger.info("allow resource is %s" %rargs.allow_res)
+
+    def runcmd(self,fun) :
+        import rg_yaml,copy
+        root   = rg_var.value_of("${HOME}/devspace/rigger-ng")
+        loader = rg_yaml.conf_loader( root + "/test/data/res_v2.yaml")
+        data   = loader.load_data("!R","res")
+
+        env_data    = data['__env']
+        prj_data    = data['__prj']
+        sys_data    = data['__sys']
+
+        common_res  = rg_framework.res_box()
+        for env in self.env :
+            for env_obj  in env_data :
+                if env_obj.name == env :
+                    common_res.append(env_obj)
+        common_res.append(prj_data)
+        context = interface.run_context()
+        run     = rg_model.res_runner(common_res)
+        # run.config(context)
+        fun(run,context)
+
+        for sys in self.sys :
+            for sysobj in   sys_data :
+                if  sysobj.name ==  sys :
+                    sys_context = copy.copy(context)
+                    run         = rg_model.res_runner(sysobj)
+                    # run.config(context)
+                    fun(run,context)
+        pass
+    def _execute(self,rargs):
+        self.runcmd(lambda o,c : o.config(c) )
+        pass
 # class remote_cmd(rg_cmd, cmdtag_remote):
 #     """
 #     """
@@ -435,30 +493,6 @@ class help_cmd(rg_cmd,cmdtag_rg):
 #             if o == "-o":
 #                 rargs.os_env    = a
 #
-# class conf_cmd(run_base,cmdtag_run):
-#     """
-#     éç½®ç³»ç» rg conf -e <env> -s <sys> [-o <os>] "
-#     rg conf -e debug,demo -s front,admin
-#     """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         for o, a in argv.items():
-#             if o == "-e":
-#                 rargs.env = a
-#             if o == "-s":
-#                 rargs.sysname   = a
-#             if o == "-o":
-#                 rargs.os_env    = a
-#             if o == "-x":
-#                 rargs.allow_res= a
-#                 _logger.info("allow resource is %s" %rargs.allow_res)
-#
-#     def _execute(self,cmd,rargs):
-#         self.need_compatible = False
-#         run_base._execute(self,cmd,rargs)
-#         execmd = lambda x,c :  call__config(x,c)
-#         rargs.save()
-#         self.runner.run_cmd(rargs,execmd)
 #
 # class depend_cmd(run_base,cmdtag_run):
 #     """
