@@ -1,0 +1,21 @@
+__env:
+    - !R.vars
+        name: "dev"
+
+__prj: !R.project
+       name: "rigger-ng"
+       key:  "rg-ng"
+       res:
+        - !R.vars
+                PRJ_NAME: "rg"
+                PRJ_KEY : "RG_UT"
+
+
+__sys:
+    -  !R.system
+        name: "test"
+        res:
+            - !R.vars
+                    TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
+            - !R.echo
+                value : "${TEST_CASE}"

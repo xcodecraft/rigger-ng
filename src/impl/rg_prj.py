@@ -97,7 +97,7 @@ class echo(interface.resource) :
         pass
     def _config(self,context):
         v = rg_var.value_of(self.value)
-        print("echo,vlaue: %s " %(v))
+        print("[echo] %s :%s " %(self.value,v))
 
 class assert_eq(interface.resource) :
     """
