@@ -21,7 +21,7 @@ class resource (rg_conf.base):
     def _allow(self,context):
         allowd =  self.allow_res == "ALL"  or self.allow_res == self.clsname()
         if allowd:
-            _logger.debug( "allowd resource %s ,current resouce is %s " %(self.allow_res,self.clsname()))
+            _logger.debug( "allowd resource %s ,current resouce is %s " %(self.allow_res,self._clsname()))
         return  allowd
 
     def _before(self,context):

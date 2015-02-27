@@ -29,40 +29,6 @@ class pylontag:
 class rgtag:
     pass
 
-class mysql(resource,svctag) :
-    """ mysql support"""
-    _host    = "localhost"
-    _name    = ""
-    _user    = ""
-    _password = ""
-    _sql     = ""
-    _root    = "root"
-    _rootpwd = ""
-    _allow_addr = "%"
-
-    def locate(self):
-        self.host   = env_exp.value(self.host)
-        self.name   = env_exp.value(self.name)
-        self.name   = self.name.replace('-','_');
-        self.password = env_exp.value(self.password)
-        self.user   = env_exp.value(self.user)
-        self.sql    = env_exp.value(self.sql)
-        self.root   = env_exp.value(self.root)
-        self.rootpwd = env_exp.value(self.rootpwd)
-        self.allow_addr = env_exp.value(self.allow_addr)
-
-    def data(self):
-        sql = "DROP DATABASE IF EXISTS $DBNAME;CREATE DATABASE $DBNAME DEFAULT CHARACTER SET UTF8;"
-#        sql +="GRANT ALL PRIVILEGES ON $DBNAME.* TO '$USER'@'$ADDR' IDENTIFIED BY '$PASSWD' ;"
-        cmd = Template(sql).substitute(DBNAME=self.name,USER=self.user,PASSWD=self.password,ADDR=self.allow_addr)
-        mysql = get_env_conf().mysql
-        if len(self.rootpwd) > 0 :
-            shexec.execmd("%s -h%s -u%s -p%s -e \"%s\" " %(mysql ,self.host,self.root, self.rootpwd,cmd) )
-        else:
-            print("create database , please input mysql root password: ")
-            shexec.execmd("%s -h%s -u%s -p  -e \"%s\" " %(mysql ,self.host,self.root,cmd) )
-        cmdtpl  = '$MYSQL -h$HOST $DBNAME -u$USER -p$PASSWD < $SQL'
-        shexec.execmd(Template(cmdtpl).substitute(MYSQL=mysql,HOST=self.host ,DBNAME=self.name,USER=self.user,PASSWD=self.password,SQL=self.sql),True)
 
 
 class nginx (resource,svctag):

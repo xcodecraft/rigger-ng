@@ -52,7 +52,7 @@ class scope_iotag :
         rgio.catch_end()
         if setting.debug  or rgio.has_err :
             if out  is not None and len(out) > 0 :
-                if  setting.god.stdout :
+                if  setting.stdout :
                     print("*******************************************************************************************")
                     print("(%s)[%s]" %(self.method,self.tag))
                     print("-------------------------------------------------------------------------------------------")

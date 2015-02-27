@@ -1,11 +1,12 @@
 #coding=utf-8
 from string import Template
-import  os , string   , logging
-# import  setting , error
+import  os , string   , logging ,re
+import  setting ,interface
+from utls.pattern import end_keeper
 
-import interface
+
 # from interface import
-# from rg_io import *
+from rg_io import *
 # from error import *
 # from lang.patterns import *
 
@@ -67,9 +68,10 @@ class shexec:
 
     @staticmethod
     def execmd_impl(cmd,check=True, okcode= [0] ):
-        cmd_txt =  setting.god.tmp_file("sh")
+        # cmd_txt =  setting.tmp_file("sh")
+        cmd_txt  = "/tmp/rigger-ng.cmd"
         cmd     =  re.sub(r'/bin/php ' ,'/bin/php  -d error_reporting="E_ALL&~E_NOTICE" ',cmd)
-        if setting.god.debug :
+        if setting.debug :
             rgio.simple_out(cmd)
 
         if shexec.DO  :
@@ -79,14 +81,14 @@ class shexec:
                 if shexec.SUDO  :
                     sudo_cmd    = "sudo " + cmd_txt
                     rcode       = os.system(sudo_cmd)
-                    if setting.god.debug  :
+                    if setting.debug  :
                         rgio.simple_out("sudo system code: %s" % rcode )
                     if check and rcode not in  okcode :
                         raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s " %(rcode ,cmd))
                     return 0
                 else:
                     rcode = os.system( cmd_txt)
-                    if setting.god.debug  :
+                    if setting.debug  :
                         rgio.simple_out("system code: %s" % rcode )
                     if check and rcode not in  okcode :
                         raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s" %(rcode,cmd) )

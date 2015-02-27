@@ -12,6 +12,7 @@ from testcase.vars_tc  import *
 from testcase.args_tc  import *
 from testcase.cmd_tc   import *
 
+# from res_tc.mysql_tc import *
 
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)

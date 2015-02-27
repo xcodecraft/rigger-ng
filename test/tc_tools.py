@@ -40,6 +40,16 @@ class shexec_mock:
         shexec.clear_cond_exec()
         pass
 
+class res_mock(shexec_mock) :
+    intercept = False
+    cmds      = ""
+    def cond(self,cmd,tag):
+        self.intercept = True
+        return self.intercept
+
+    def intercept(self,cmd,check, okcode):
+        self.cmds += cmd + "\n"
+        return True
 
 class rigger_tc(unittest.TestCase):
     pass
