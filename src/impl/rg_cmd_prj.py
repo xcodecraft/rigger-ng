@@ -1,7 +1,7 @@
 #coding=utf8
 from rg_io import rgio
-from rg_cmdbase import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
-import res, rg_run ,rg_model ,rg_var ,rg_framework , interface
+from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
+import res, rg_run ,rg_model ,rg_var ,rg_prj , interface
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
@@ -18,7 +18,7 @@ class prj_cmd_base :
         prj_data    = data['__prj']
         sys_data    = data['__sys']
 
-        common_res  = rg_framework.res_box()
+        common_res  = rg_prj.res_box()
         for env in self.env :
             for env_obj  in env_data :
                 if env_obj.name == env :

@@ -1,10 +1,10 @@
-from impl.rg_framework import system , project, module , vars , echo , assert_eq
+from impl.rg_prj import system , project, module , vars , echo , assert_eq
 
 def ins_res(name) :
-    import impl.rg_framework
-    reslist = dir(impl.rg_framework)
+    import impl.rg_prj
+    reslist = dir(impl.rg_prj)
     if name in reslist :
-        exec "obj = impl.rg_framework.%s()" %name
+        exec "obj = impl.rg_prj.%s()" %name
         return obj
     return None
 
