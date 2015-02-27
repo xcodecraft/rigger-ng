@@ -1,9 +1,9 @@
 #coding=utf-8
 class rigger_exception(Exception):
     pass
-class user_break(Exception):
+class user_break(rigger_exception):
     pass
-class badargs_exception(Exception):
+class badargs_exception(rigger_exception):
     pass
 
 class depend_exception(rigger_exception) :

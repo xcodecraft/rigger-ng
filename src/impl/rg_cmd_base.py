@@ -26,13 +26,6 @@ class rg_cmd:
 
         pass
 
-# class empty_cmd(rg_cmd):
-#     def _execute(self,cmd,rargs):
-#         rgio.prompt("Error: '%s' is not a valid rigger command" % cmd)
-#     def _usage(self):
-#         rgio.prompt("Error: invalid command. type 'rg help' for more info." % self)
-
-
 class cmdtag_rg :
     pass
 class cmdtag_prj :

@@ -2,8 +2,6 @@
 import types , re , os , string ,  getopt , pickle ,yaml  , logging
 import setting
 from rg_io import rgio
-#import res,rigger,pubdef,cmds
-# from  dev import *
 
 _logger = logging.getLogger()
 
