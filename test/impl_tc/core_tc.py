@@ -1,6 +1,6 @@
 #coding=utf-8
 import interface
-import tc_tools
+import base.tc_tools
 import tc_data
 
 from impl.rg_model import *
@@ -9,7 +9,7 @@ from impl.rg_prj import *
 
 import  interface
 
-class res_tc(tc_tools.rigger_tc):
+class res_tc(base.tc_tools.rigger_tc):
 
     def test_context(self) :
         print("xxxx")
@@ -33,8 +33,8 @@ class res_tc(tc_tools.rigger_tc):
         self.assertEqual(res.call_methods,[name + '_before',name + method,name + '_after'])
 
     def test_simple_res(self):
-        res = tc_data.simple_res()
-        context =  interface.run_context()
+        res     = tc_data.simple_res()
+        context = interface.run_context()
         self.asst_call(res, context,res_runner.config,'_config' )
         self.asst_call(res, context,res_runner.start,'_start' )
         self.asst_call(res, context,res_runner.stop,'_stop' )

@@ -1,10 +1,10 @@
 #coding=utf-8
 import interface
-import tc_tools
+import base.tc_tools
 
 from impl.rg_yaml  import *
 import impl.rg_var
-class yaml_conf_tc(tc_tools.rigger_tc):
+class yaml_conf_tc(base.tc_tools.rigger_tc):
     def test_resyaml(self):
 
         root   = impl.rg_var.value_of("${HOME}/devspace/rigger-ng")

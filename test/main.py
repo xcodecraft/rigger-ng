@@ -3,14 +3,14 @@ import  re , os , string ,  getopt ,sys , unittest,logging
 root  = os.path.dirname(os.path.realpath(__file__))
 root  = os.path.dirname(root)
 sys.path.append(os.path.join(root,"src") )
-sys.path.append(os.path.join(root,"test") )
+# sys.path.append(os.path.join(root,"test") )
 
-from testcase.core_tc  import *
-from testcase.yaml_tc  import *
-from testcase.tpl_tc   import *
-from testcase.vars_tc  import *
-from testcase.args_tc  import *
-from testcase.cmd_tc   import *
+# from impl.impl  import *
+from impl_tc.yaml_tc  import *
+from impl_tc.tpl_tc   import *
+from impl_tc.vars_tc  import *
+from impl_tc.args_tc  import *
+from impl_tc.cmd_tc   import *
 
 # from res_tc.mysql_tc import *
 
