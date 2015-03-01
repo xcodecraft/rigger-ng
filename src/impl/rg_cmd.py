@@ -1,18 +1,20 @@
 #coding=utf8
+import  os
 from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
-# import utls.rg_var
 import res, rg_run ,rg_model ,rg_prj , interface
+
+import rg_dev
 
 
 
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
-        # ver  =  version(os.path.join(rargs.rg_root ,"version.txt" ))
-        # rgio.simple_out("rigger ver: " + ver.info())
+        ver  =  rg_dev.version(os.path.join(rargs.rg.root ,"version.txt" ))
+        rgio.simple_out("rigger-ng ver: " + ver.info())
         cmdlen = len(rargs.prj.cmds)
         if cmdlen == 1 :
-            # rargs.help()
+            rargs.help()
             # list_cmd()
             return
         if cmdlen >= 2 :

@@ -16,7 +16,8 @@ class rg_args :
         self.log_level     = logging.ERROR
         self.os            = None
         self.user          = None
-        self.root          = (os.path.dirname(os.path.realpath(__file__)) + "/../")
+        self.root          = os.path.dirname(os.path.realpath(__file__))
+        self.root          = os.path.dirname(self.root)
 
 
 class prj_args :
@@ -79,8 +80,8 @@ class run_args :
     def help():
         rgio.prompt("rg  <dev cmd>   [-m <message>] ")
         rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
-        rgio.prompt("rg  <pub cmd>   [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
-        rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
+        # rgio.prompt("rg  <pub cmd>   [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
+        # rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         rgio.prompt("common args : [-d <level> ]")
 
 
