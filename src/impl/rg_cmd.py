@@ -1,5 +1,5 @@
 #coding=utf8
-from rg_io import rgio
+from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import res, rg_run ,rg_model ,rg_var ,rg_prj , interface
 

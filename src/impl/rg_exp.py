@@ -1,10 +1,9 @@
 #coding=utf8
 import sys,re,os,string,logging  , setting
-import setting , rg_io ,rg_sh
+import setting , rg_sh
 # import rg_sh
 # from string  import Template
 # import inner
-from rg_io import *
 
 _logger = logging.getLogger()
 

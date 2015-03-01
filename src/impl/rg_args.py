@@ -1,7 +1,7 @@
 #coding=utf8
 import types , re , os , string ,  getopt , pickle ,yaml  , logging
 import setting
-from rg_io import rgio
+from utls.rg_io import rgio
 
 _logger = logging.getLogger()
 

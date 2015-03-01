@@ -1,6 +1,6 @@
 #coding=utf8
 import types , re , os , string ,  getopt , pickle , logging
-from rg_io import rgio
+from utls.rg_io import rgio
 
 _logger = logging.getLogger()
 class rg_cmd:

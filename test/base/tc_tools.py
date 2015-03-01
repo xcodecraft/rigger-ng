@@ -1,5 +1,8 @@
 import  re , os , string ,  getopt ,sys , unittest,logging
 
+from utls.rg_sh import  shexec
+from impl.rg_var import  value_of
+
 # import  rigger,rg_pub.pubdef,rg_run
 # from  rargs     import *
 # from  rg_sh     import *
@@ -11,10 +14,10 @@ import  re , os , string ,  getopt ,sys , unittest,logging
 # run_os = "diy"
 # prj_root = "devspace/rigger"
 #
-# def path_of_prj(path="") :
-#     if len( path ) == 0 :
-#         return "%s/devspace/rigger" %(os.environ['HOME'])
-#     return "%s/devspace/rigger/%s" %(os.environ['HOME'],path)
+def path_of_prj(path="") :
+    if len( path ) == 0 :
+        return "%s/devspace/rigger-ng" %(os.environ['HOME'])
+    return "%s/devspace/rigger-ng/%s" %(os.environ['HOME'],path)
 #
 # def run_rigger(args_str):
 #
@@ -52,7 +55,6 @@ class res_mock(shexec_mock) :
         return True
 
 class rigger_tc(unittest.TestCase):
-    pass
     # def format_data(self,arr,ignrexs):
     #     out=[];
     #     for line in arr:
@@ -68,19 +70,19 @@ class rigger_tc(unittest.TestCase):
     #     sec_arr  = self.format_data(second.split('\n'),ignrexs)
     #     self.assertItemsEqual(fst_arr,sec_arr)
     #
-    # def macro_data(self,arr):
-    #     out = []
-    #     for line in arr :
-    #         line = env_exp.value(line.strip())
-    #         if len(line)  > 0 :
-    #             out.append(line)
-    #     return out
-    #
-    # def assertMacroEqual(self,first,second):
-    #     os.environ['RIGGER_ROOT'] = path_of_prj("")
-    #     fst_arr  = self.macro_data(first.split('\n'))
-    #     sec_arr  = self.macro_data(second.split('\n'))
-    #     self.assertListEqual(fst_arr,sec_arr)
+    def macro_data(self,arr):
+        out = []
+        for line in arr :
+            line = value_of(line.strip())
+            if len(line)  > 0 :
+                out.append(line)
+        return out
+
+    def assertMacroEqual(self,first,second):
+        os.environ['PRJ_ROOT'] = path_of_prj("")
+        fst_arr  = self.macro_data(first.split('\n'))
+        sec_arr  = self.macro_data(second.split('\n'))
+        self.assertListEqual(fst_arr,sec_arr)
     #
     # def assertFileEqual(self,first,second):
     #     first_arr  = []

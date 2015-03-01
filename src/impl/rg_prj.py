@@ -2,42 +2,8 @@
 import re
 import interface , rg_var , rg_model
 
-class res_box(interface.resource):
 
-    def __init__(self):
-        self.res = []
-    # res = []
-    def items_call(self,fun,context):
-        if self._allow(context):
-            for r in self.res :
-                run = rg_model.res_runner(r)
-                fun(run,context)
-
-    def _start(self,context):
-        self.items_call(rg_model.res_runner.start,context)
-
-    def _stop(self,context):
-        self.items_call(rg_model.res_runner.stop,context)
-
-    def _config(self,context):
-        self.items_call(rg_model.res_runner.config,context)
-    def _data(self,context):
-        self.items_call(rg_model.res_runner.data,context)
-    def _check(self,context):
-        self.items_call(rg_model.res_runner.check,context)
-
-    def _reload(self,context):
-        self.items_call(rg_model.res_runner.reload,context)
-    def _clean(self,context):
-        self.items_call(rg_model.res_runner.clean,context)
-    def _allow(self,context):
-        return True
-    def append(self,item):
-        self.res.append(item)
-    def push(self,item):
-        self.res.insert(0,item)
-
-class system (res_box ):
+class system (interface.control_box,interface.base):
     def _before(self,context):
         rg_var.keep()
         context.keep()
@@ -46,13 +12,23 @@ class system (res_box ):
         context.rollback()
         rg_var.rollback()
         pass
+    def _resname(self):
+        return self.name
+    def _info(self):
+        return ""
+
+class project(interface.control_box, interface.base) :
+    def _resname(self):
+        tag = self.__class__.__name__
+        return tag
+    def _info(self):
+        return ""
     pass
 
-class project(res_box) :
-    pass
-
-class module(res_box) :
-    pass
+class module(interface.control_box,interface.base) :
+    def _resname(self):
+        tag = self.__class__.__name__
+        return tag
 
 
 class env(interface.resource):

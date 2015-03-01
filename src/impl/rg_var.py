@@ -3,7 +3,7 @@ import sys,re,os,string,logging
 import setting
 import utls.tpl
 import interface
-from rg_io import *
+from utls.rg_io import *
 
 _logger = logging.getLogger()
 

@@ -32,6 +32,7 @@ class vars_tc(rigger_tc):
         testbox.append(e1)
 
         context = interface.run_context()
-        run     = res_runner(testbox)
-        run.config(context)
+        interface.control_call( testbox,interface.controlable._config,context)
+        # run     = res_runner(testbox)
+        # run.config(context)
 

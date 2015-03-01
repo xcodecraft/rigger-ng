@@ -4,7 +4,7 @@ import interface
 _logger = logging.getLogger()
 
 from impl.rg_var import  value_of
-from impl.rg_sh  import  shexec
+from utls.rg_sh  import  shexec
 from string import *
 
 class mysql(interface.resource):

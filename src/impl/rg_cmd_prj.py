@@ -1,5 +1,5 @@
 #coding=utf8
-from rg_io import rgio
+from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import res, rg_run ,rg_model ,rg_var ,rg_prj , interface
 
@@ -18,23 +18,25 @@ class prj_cmd_base :
         prj_data    = data['__prj']
         sys_data    = data['__sys']
 
-        common_res  = rg_prj.res_box()
+        common_res  =  interface.control_box()
         for env in self.env :
             for env_obj  in env_data :
                 if env_obj.name == env :
                     common_res.append(env_obj)
         common_res.append(prj_data)
         context = interface.run_context()
-        run     = rg_model.res_runner(common_res)
-        fun(run,context)
+        # run     = rg_model.res_runner(common_res)
+        # fun(run,context)
+        interface.control_call(common_res,fun,context)
 
         for sys in self.sys :
             for sysobj in   sys_data :
                 if  sysobj.name ==  sys :
                     # sys_context = copy.copy(context)
-                    run         = rg_model.res_runner(sysobj)
+                    # run         = rg_model.res_runner(sysobj)
                     # fun(run,sys_context)
-                    fun(run,context)
+                    # fun(run,context)
+                    interface.control_call(sysobj,fun,context)
 
 class conf_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -43,7 +45,7 @@ class conf_cmd(prj_cmd_base,cmdtag_prj):
     """
 
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.config(c) )
+        self.runcmd(rargs,interface.controlable._config)
 
 class start_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -51,7 +53,7 @@ class start_cmd(prj_cmd_base,cmdtag_prj):
     rg start -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.start(c) )
+        self.runcmd(rargs,interface.controlable._start)
 
 class stop_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -59,7 +61,7 @@ class stop_cmd(prj_cmd_base,cmdtag_prj):
     rg stop -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.stop(c) )
+        self.runcmd(rargs,interface.controlable._stop)
 
 class clean_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -67,7 +69,7 @@ class clean_cmd(prj_cmd_base,cmdtag_prj):
     rg clean -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.clean(c) )
+        self.runcmd(rargs,interface.controlable._clean)
 
 class data_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -75,7 +77,8 @@ class data_cmd(prj_cmd_base,cmdtag_prj):
     rg clean -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.data(c) )
+        self.runcmd(rargs,interface.controlable._data)
+        # self.runcmd(rargs,lambda o,c : o.data(c) )
 
 class check_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -83,7 +86,7 @@ class check_cmd(prj_cmd_base,cmdtag_prj):
     rg check -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.check(c) )
+        self.runcmd(rargs,interface.controlable._check)
 
 class restart_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -91,8 +94,8 @@ class restart_cmd(prj_cmd_base,cmdtag_prj):
     rg restart -e debug,demo -s front,admin
     """
     def _execute(self,rargs):
-        self.runcmd(rargs,lambda o,c : o.stop(c) )
-        self.runcmd(rargs,lambda o,c : o.start(c) )
+        self.runcmd(rargs,interface.controlable._stop)
+        self.runcmd(rargs,interface.controlable._start)
 
 
 # class php_cmd(run_base,resconf_able,cmdtag_run):

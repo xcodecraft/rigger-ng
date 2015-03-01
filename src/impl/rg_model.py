@@ -1,7 +1,7 @@
 #coding=utf-8
 import string , logging, sys
 import interface
-import rg_io ,rg_sh
+import utls.rg_io ,utls.rg_sh
 _logger = logging.getLogger()
 
 
@@ -11,9 +11,9 @@ class res_runner:
 
     @staticmethod
     def tpl_call(name,res,fun,context) :
-        with rg_io.scope_iotag(res._resname(),name,res._info()) :
+        with utls.rg_io.scope_iotag(res._resname(),name,res._info()) :
             if res._allow(context) :
-                with rg_sh.scope_sudo(res.sudo) :
+                with utls.rg_sh.scope_sudo(res.sudo) :
                     res._before(context)
                     fun(context)
                     res._after(context)
