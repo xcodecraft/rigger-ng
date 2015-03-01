@@ -1,8 +1,9 @@
 #coding=utf-8
 import logging
 import rg_conf
-_logger = logging.getLogger()
+import  utls.rg_sh ,utls.rg_io
 
+_logger = logging.getLogger()
 class run_context :
     def __init__(self):
         self.restore = None
@@ -43,13 +44,12 @@ def load_res(code) :
     load_module_codes.append(code)
 
 def control_call(res,fun,context) :
-    import  utls.rg_sh
-    # with rg_io.scope_iotag(res._resname(),name,res._info()) :
+    with utls.rg_io.scope_iotag(res.__class__.__name__,fun.__name__) :
         # if res._allow(context) :
     # with utls.rg_sh.scope_sudo(res.sudo) :
-    res._before(context)
-    fun(res,context)
-    res._after(context)
+        res._before(context)
+        fun(res,context)
+        res._after(context)
 
 class control_box(controlable):
 
@@ -57,27 +57,38 @@ class control_box(controlable):
         self.res = []
 
     def items_call(self,fun,context):
-        if self._allow(context):
-            for r in self.res :
-                control_call(r,fun,context)
+        # if self._allow(context):
+        for r in self.res :
+            control_call(r,fun,context)
 
     def _start(self,context):
-        self.items_call(rg_model.res_runner.start,context)
+        fun = lambda x,y : x._start(y)
+        self.items_call(fun,context)
 
     def _stop(self,context):
-        self.items_call(rg_model.res_runner.stop,context)
+        fun = lambda x,y : x._stop(y)
+        self.items_call(fun,context)
 
     def _config(self,context):
-        self.items_call(controlable._config,context)
+        fun = lambda x,y : x._config(y)
+        self.items_call(fun,context)
+
     def _data(self,context):
-        self.items_call(rg_model.res_runner.data,context)
+        fun = lambda x,y : x._data(y)
+        self.items_call(fun,context)
+
     def _check(self,context):
-        self.items_call(rg_model.res_runner.check,context)
+        fun = lambda x,y : x._check(y)
+        self.items_call(fun,context)
 
     def _reload(self,context):
-        self.items_call(rg_model.res_runner.reload,context)
+        fun = lambda x,y : x._reload(y)
+        self.items_call(fun,context)
+
     def _clean(self,context):
-        self.items_call(rg_model.res_runner.clean,context)
+        fun = lambda x,y : x._clean(y)
+        self.items_call(fun,context)
+
     def _allow(self,context):
         return True
     def append(self,item):

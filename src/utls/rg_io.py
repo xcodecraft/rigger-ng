@@ -36,10 +36,9 @@ class prompt:
 
 class scope_iotag :
     tags = []
-    def __init__(self,tag,method="",settingo=""):
+    def __init__(self,tag,method=""):
         self.tag      = tag
         self.method   = method
-        self.settingo = settingo
     def __enter__(self):
         rgio.catch_start()
         rgio.has_err   = False
@@ -186,7 +185,7 @@ def get_input_line(message,default=None,quit='q',check=None):
 
 
 def get_chose_index(message,maxnum,quit='q'):
-#    message += "其它(%s)" %other
+#    message += "å¶å®(%s)" %other
     ch = get_input_line(message,None,quit)
     if ch is None:
         return None
@@ -194,7 +193,7 @@ def get_chose_index(message,maxnum,quit='q'):
         ch = int(ch)
         if ch >= 1 and ch <= maxnum :
             return ch
-    rgio.prompt("输入错误，请重新输入")
+    rgio.prompt("è¾å¥éè¯¯ï¼è¯·éæ°è¾å¥")
 
 def chose_item(items,name):
     index = 1

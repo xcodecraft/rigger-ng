@@ -23,6 +23,6 @@ class mysql_tc(base.tc_tools.rigger_tc):
         /usr/bin/mysql -hlocalhost -uroot -p  -e "DROP DATABASE IF EXISTS ;CREATE DATABASE  DEFAULT CHARACTER SET UTF8;"
         /usr/bin/mysql -hlocalhost  -u -p < ${PRJ_ROOT}/test/data/init.sql
         """
-        # self.assertMacroEqual( expect, mock.cmds)
+        self.assertMacroEqual( expect, mock.cmds)
         # print(mock.cmds)
 

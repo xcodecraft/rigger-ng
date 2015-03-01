@@ -1,37 +1,20 @@
 __env:
     - !R.vars
         name: "dev"
-        val_1 : "A"
 
 __prj: !R.project
        name: "rigger-test"
        key:  "RG_UT"
        res:
-        - !R.assert_eq
-            value  : "${VAL_1}"
-            expect : "A"
         - !R.vars
                 PRJ_NAME: "RG_UT"
                 PRJ_KEY : "RG_UT"
                 val_1 : "B"
-        - !R.assert_eq
-            value  : "${VAL_1}"
-            expect : "B"
 
 
 __sys:
     -  !R.system
         name: "mysql"
         res:
-            - !R.assert_eq
-                value  : "${VAL_1}"
-                expect : "B"
-            - !R.vars
-                TEST_NAME: "${HOME}/devspace/pylon_rigger"
-                APP_SYS:  "test"
-                val_1 : "C1"
             - !R.mysql
                 init: "${HOME}/devspace/rigger-ng/test/data/init.sql"
-            - !R.assert_eq
-                value  : "${VAL_1}"
-                expect : "C1"
