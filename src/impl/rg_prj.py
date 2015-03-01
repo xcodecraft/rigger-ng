@@ -1,16 +1,16 @@
 #coding=utf8
 import re
-import interface , rg_var , rg_model
+import interface , utls.rg_var , rg_model
 
 
 class system (interface.control_box,interface.base):
     def _before(self,context):
-        rg_var.keep()
+        utls.rg_var.keep()
         context.keep()
         pass
     def _after(self,context):
         context.rollback()
-        rg_var.rollback()
+        utls.rg_var.rollback()
         pass
     def _resname(self):
         return self.name
@@ -60,7 +60,7 @@ class vars(interface.resource):
                 continue
             name= name.upper()
             setattr(context,name,val)
-        rg_var.import_dict(items)
+        utls.rg_var.import_dict(items)
 
 class echo(interface.resource) :
     """
@@ -72,7 +72,7 @@ class echo(interface.resource) :
     def _before(self,context):
         pass
     def _config(self,context):
-        v = rg_var.value_of(self.value)
+        v = utls.rg_var.value_of(self.value)
         print("[echo] %s :%s " %(self.value,v))
 
 class assert_eq(interface.resource) :
@@ -86,8 +86,8 @@ class assert_eq(interface.resource) :
     def _config(self,context):
         self.assert_eq(context)
     def assert_eq(self,context):
-        value  = rg_var.value_of(self.value)
-        expect = rg_var.value_of(self.expect)
+        value  = utls.rg_var.value_of(self.value)
+        expect = utls.rg_var.value_of(self.expect)
         if value != expect :
             raise interface.rigger_exception("value: %s , expect : %s " %(value,expect))
     def _start(self,context) :

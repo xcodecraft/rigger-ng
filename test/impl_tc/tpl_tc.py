@@ -4,7 +4,7 @@ import  logging
 from base.tc_tools   import *
 import  utls.tpl
 import  interface
-import  impl.rg_var
+import  utls.rg_var
 
 _logger = logging.getLogger()
 
@@ -16,14 +16,14 @@ class exp_tc(rigger_tc):
         context.need_admin = "TRUE"
         context.mode       = "rest"
 
-        impl.rg_var.clean()
-        impl.rg_var.import_context(context)
-        v = impl.rg_var.value_of("${MODE}")
+        utls.rg_var.clean()
+        utls.rg_var.import_context(context)
+        v = utls.rg_var.value_of("${MODE}")
         self.assertEqual(v,'rest')
 
-        #测试找不到行为
-        impl.rg_var.clean()
-        v = impl.rg_var.value_of("${MODE}")
+        #æµè¯æ¾ä¸å°è¡ä¸º
+        utls.rg_var.clean()
+        v = utls.rg_var.value_of("${MODE}")
         # self.assertEqual(v,'__NOFOUND_[MODE]__')
 
 

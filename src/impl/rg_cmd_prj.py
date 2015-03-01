@@ -1,7 +1,7 @@
 #coding=utf8
 from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
-import res, rg_run ,rg_model ,rg_var ,rg_prj , interface
+import res, rg_run ,rg_model ,utls.rg_var ,rg_prj , interface
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
@@ -10,7 +10,7 @@ class prj_cmd_base :
         pass
     def runcmd(self,rargs,fun) :
         import rg_yaml,copy
-        # root   = rg_var.value_of("${HOME}/devspace/rigger-ng")
+        # root   = utls.rg_var.value_of("${HOME}/devspace/rigger-ng")
         loader = rg_yaml.conf_loader(rargs.prj.conf)
         data   = loader.load_data("!R","res")
 
@@ -25,18 +25,11 @@ class prj_cmd_base :
                     common_res.append(env_obj)
         common_res.append(prj_data)
         context = interface.run_context()
-        # run     = rg_model.res_runner(common_res)
-        # fun(run,context)
         interface.control_call(common_res,fun,context)
 
         for sys in self.sys :
             for sysobj in   sys_data :
                 if  sysobj.name ==  sys :
-                    # sys_context = copy.copy(context)
-                    # run         = rg_model.res_runner(sysobj)
-                    # fun(run,sys_context)
-                    # fun(run,context)
-
                     interface.control_call(sysobj,fun,context)
 
 class conf_cmd(prj_cmd_base,cmdtag_prj):

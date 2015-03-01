@@ -2,19 +2,14 @@
 import  logging
 import  utls.tpl ,interface ,base.tc_tools
 import  impl.rg_args
-# from impl.rg_args import *
-
-
 _logger = logging.getLogger()
-
-
 
 class mysql_tc(base.tc_tools.rigger_tc):
     def asst_cmd(self,conf,cmd):
         impl.rg_run.run_cmd(cmd,conf)
 
     def test_mysql(self) :
-        conf = impl.rg_var.value_of("${HOME}/devspace/rigger-ng/test/data/res_mysql.yaml")
+        conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_mysql.yaml")
         mock = base.tc_tools.res_mock()
         with   mock :
             self.asst_cmd(conf,"data -s mysql -e dev")

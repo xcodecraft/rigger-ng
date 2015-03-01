@@ -1,21 +1,20 @@
 #coding=utf-8
-import logging
+import logging,copy
 import rg_conf
-import  utls.rg_sh ,utls.rg_io
+import utls.rg_sh ,utls.rg_io
 
 _logger = logging.getLogger()
 class run_context :
     def __init__(self):
         self.restore = None
     def keep(self) :
-        import copy
         self.restore =  copy.copy(self.__dict__)
     def rollback(self):
-        import copy
         self.__dict__=  copy.copy(self.restore)
         self.restore = None
 
 class controlable :
+    sudo = False
     def _allow(self,context):
         pass
 
@@ -44,12 +43,12 @@ def load_res(code) :
     load_module_codes.append(code)
 
 def control_call(res,fun,context) :
-    with utls.rg_io.scope_iotag(res.__class__.__name__,fun.__name__) :
-        # if res._allow(context) :
-    # with utls.rg_sh.scope_sudo(res.sudo) :
-        res._before(context)
-        fun(res,context)
-        res._after(context)
+    with utls.rg_io.scope_iotag(res.__class__.__name__ ,fun.__name__) :
+        if res._allow(context) :
+            with utls.rg_sh.scope_sudo(res.sudo) :
+                    res._before(context)
+                    fun(res,context)
+                    res._after(context)
 
 class control_box(controlable):
 

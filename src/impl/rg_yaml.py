@@ -18,7 +18,7 @@ class conf_loader:
         return  doc
     def load(self):
         if not os.path.exists(self.conf) :
-            raise interface.rigger_exception("" )
+            raise interface.rigger_exception("unfound file: %s" %self.conf )
         doc = open(self.conf,"r").read()
         doc = re.sub(r"""#!import *["'](.*)["']""",self.replace,doc)
         return doc

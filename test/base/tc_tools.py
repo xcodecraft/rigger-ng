@@ -1,7 +1,7 @@
 import  re , os , string ,  getopt ,sys , unittest,logging
 
 from utls.rg_sh import  shexec
-from impl.rg_var import  value_of
+from utls.rg_var import  value_of
 
 # import  rigger,rg_pub.pubdef,rg_run
 # from  rargs     import *

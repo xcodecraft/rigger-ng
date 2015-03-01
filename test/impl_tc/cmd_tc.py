@@ -4,7 +4,7 @@ import  interface
 from    base.tc_tools   import *
 # from    impl.rg_cmd import *
 from    impl.rg_args import *
-import  impl.rg_run , impl.rg_var
+import  impl.rg_run , utls.rg_var
 
 
 
@@ -21,7 +21,7 @@ class cmd_tc(rigger_tc):
         self.asst_cmd(None,"help res echo ")
 
     def test_conf(self):
-        conf   = impl.rg_var.value_of("${HOME}/devspace/rigger-ng/test/data/res_2.yaml")
+        conf   = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/impl_tc/prj_vars.yaml")
         self.asst_cmd(conf,"conf -s test1 -e env1 ")
         self.asst_cmd(conf,"conf -s test2 -e env1 ")
         self.asst_cmd(conf,"conf -s test1,test2 -e env1 ")
