@@ -1,22 +1,9 @@
 #coding=utf8
 import re , os , sys,   logging, time
 import utls.pattern
-# import res_frame , resouce ,error,rg_sh
-# from   string  import Template
-# from   utls    import *
-# from   setting import *
-# from   rigger  import *
-# from   rg_io    import *
-# from   lang  import patterns
 
 
 _logger = logging.getLogger()
-
-# def ensure_path(path):
-#     if not os.path.exists(path) :
-#         rg_sh.shexec.execmd(" mkdir -p " + path)
-#     return path
-
 
 class work_env (utls.pattern.singleton):
     def __init__(self):
@@ -222,9 +209,9 @@ class version:
         old_ver = self.info()
         chose_update_version="plese chose  working(w), fixbug(b), add feature(f) , struct revolution(s)  ?"
         print(chose_update_version)
-        recomTag = False
+        recomTag   = False
         needCommit = False
-        chose = sys.stdin.read(1)
+        chose      = sys.stdin.read(1)
         if chose == "w":
             self.up_commit()
             pass

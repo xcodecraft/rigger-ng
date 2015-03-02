@@ -7,14 +7,14 @@ sys.path.append(os.path.join(root,"src") )
 
 if __name__ == '__main__':
     import interface,impl
-    impl.setup()
+    import impl.rg_run , impl.rg_args
     from utls.rg_io import rgio
+    impl.setup()
 
     # logging.basicConfig(level=logging.INFO,filename='run.log')
     logging.basicConfig(level=logging.DEBUG,filename='run.log')
     try :
 
-        import impl.rg_run , impl.rg_args
         rargs  = impl.rg_args.run_args()
         parser = impl.rg_args.rarg_parser()
         parser.parse(rargs,sys.argv[1:] )

@@ -33,9 +33,6 @@ class prj_args :
         cmd = "," . join(self.cmds)
         return "%s -e %s -s %s" %(cmd,self.env,self.sys)
 
-# class pub_args :
-#     def __str__(self) :
-#         return "-o %s -s %s" %(self.env,self.sys)
 
 class run_args :
     def __init__(self):

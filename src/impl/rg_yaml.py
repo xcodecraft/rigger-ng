@@ -1,9 +1,10 @@
 #coding=utf8
-import re , os , sys,  yaml, logging, time
+import re , os , yaml, logging
 import interface
-# import res.project
-import  res
+import res
+
 _logger = logging.getLogger()
+
 class conf_loader:
     def  __init__(self,conf):
         self.conf    = conf
@@ -14,7 +15,7 @@ class conf_loader:
         filepath = re.sub("^\.",self.curpath,filepath)
         filepath = env_exp.value(filepath)
         _logger.debug("import yaml:%s",filepath)
-        doc = open(filepath).read()
+        doc      = open(filepath).read()
         return  doc
     def load(self):
         if not os.path.exists(self.conf) :

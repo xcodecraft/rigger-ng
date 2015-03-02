@@ -1,17 +1,6 @@
 #coding=utf-8
 from string     import Template
 from setting    import *
-# from cgi        import *
-# from utls       import *
-# from sysconf    import *
-# from rigger     import *
-# from rgio       import *
-# from res_model  import *
-# from shell      import *
-
-
-# import types , re , os , string   ,time , logging  , tplngin , svctrl , random,copy
-# import patterns
 
 _logger = logging.getLogger()
 
@@ -56,7 +45,7 @@ class nginx (resource,svctag):
 
 class local_proxy(resource,svctag):
     """local_proxy service
-       使用同 nginx
+       ä½¿ç¨å nginx
     """
     _path = ""
     def locate(self):
@@ -141,7 +130,7 @@ class nginx_conf_tpl( file_tpl,svctag ):
 
 class local_proxy_conf( file_tpl,svctag ):
     """
-        使用同 nginx_conf_tpl
+        ä½¿ç¨å nginx_conf_tpl
     """
     _link = "/etc/local_proxy/sys"
     _mod    = "a+w"
@@ -592,7 +581,7 @@ class path(resource,filetag):
                     if self.auto_sudo :
                         self.sudo = True
                     if not self.sudo :
-                        raise rigger_exception( "%s 没有写权限,也没有sudo 权限 " %(v) )
+                        raise rigger_exception( "%s æ²¡æåæé,ä¹æ²¡æsudo æé " %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             shexec.execmd(cmd)
@@ -614,9 +603,9 @@ class path(resource,filetag):
 
 class file_merge(resource,filetag):
     """
-    生成文件列表
-    filter:  基于正则的过滤器
-    tpl:     内空模版
+    çææä»¶åè¡¨
+    filter:  åºäºæ­£åçè¿æ»¤å¨
+    tpl:     åç©ºæ¨¡ç
     """
     _dst        = None
     _src        = None
@@ -637,7 +626,7 @@ class file_merge(resource,filetag):
                     raise inf.rigger_exception("not found this path: %s" %src)
                 os.path.walk(src,self.proc_file,None)
         if os.getuid() == os.stat(self.dst).st_uid :
-            # 其它人可以进行修改；
+            # å¶å®äººå¯ä»¥è¿è¡ä¿®æ¹ï¼
             shexec.execmd("chmod %s %s " %(self.mod, self.dst))
 
 
@@ -737,7 +726,7 @@ class autoload(resource,pylontag):
 
     def config(self):
         path=os.path.dirname(os.path.realpath(__file__))
-        #兼容: self.root 将没有意义
+        #å¼å®¹: self.root å°æ²¡ææä¹
         dst_path = os.path.join(self.root , self.dst)
         cmd = Template("mkdir -p $DST").substitute( DST=dst_path)
         shexec.execmd(cmd,False)
@@ -965,13 +954,13 @@ class system( controlor,rgtag):
     def resname(self):
         return  "%s(%s)" %(self.clsname(),self.name)
     def locate(self):
-        # 注意，加入的倒序
+        # æ³¨æï¼å å¥çååº
         self.lock_file = get_env_conf().run_path +   "/rgapp-${USER}-${PRJ_NAME}.lock"
         p = path()
         p.dst     = "${RUN_PATH}"
         self.push(p)
 
-        # 先定义
+        # åå®ä¹
         v =vars()
         v.RUN_PATH = "${PRJ_ROOT}/run/" + self.name
         v.APP_NAME = self.name
@@ -1047,10 +1036,10 @@ class vars(resource,rgtag):
         if items.has_key(key):
             val = items[key]
             if val == "${%s}" %key :
-                msg =  "循环定义: %s = %s" %(key,val)
+                msg =  "å¾ªç¯å®ä¹: %s = %s" %(key,val)
                 rgio.simple_out(msg)
                 return None
-            #递归付值
+            #éå½ä»å¼
             if god.debug >= 2 :
                 rgio.simple_out( key + " = " + str(val))
             val = env_exp.value(val,self.assgin_value)
@@ -1084,14 +1073,14 @@ class php_res:
 #        os.environ['OS_ENV'] = os_env_str + "));"
 
         """
-        导出RG的环境变量到 $PRJ_ROOT/tmp下。
-        当FPM启动时会把这个文件copy到Prefix下的env.conf
-        然后fpm_conf会include这个env.conf导入环境变量。
+        å¯¼åºRGçç¯å¢åéå° $PRJ_ROOT/tmpä¸ã
+        å½FPMå¯å¨æ¶ä¼æè¿ä¸ªæä»¶copyå°Prefixä¸çenv.conf
+        ç¶åfpm_confä¼includeè¿ä¸ªenv.confå¯¼å¥ç¯å¢åéã
         """
         os.environ['OS_ENV'] = os_env_str = ''
         tmpfile = env_exp.value("${PRJ_ROOT}/run/") + self.prefix + '.env'
         for k,v in os.environ.items():
-            #预处理，清除掉Key的 " [ ] 空行和value的换行和 "
+            #é¢å¤çï¼æ¸é¤æKeyç " [ ] ç©ºè¡åvalueçæ¢è¡å "
             k = re.sub('[\'"\[\]\n]', '', k)
             v = re.sub('[\"\n]', '', v)
             if len(k) < 1 or len(v) < 1:
@@ -1102,7 +1091,7 @@ class php_res:
         if os.access(env_exp.value("${PRJ_ROOT}/run/"), os.W_OK) :
             with open(tmpfile, 'w') as f: f.write (os_env_str)
     def export_monitorconf(self, conf_path, files_to_check):
-        """ 为监控系统定义服务运行时生成的文件依赖并存入/var/run/{run_path}中 """
+        """ ä¸ºçæ§ç³»ç»å®ä¹æå¡è¿è¡æ¶çæçæä»¶ä¾èµå¹¶å­å¥/var/run/{run_path}ä¸­ """
         cmd = "cd %s;/home/q/tools/pylon_rigger/rigger restart -x %s" %( env_exp.value('${PRJ_ROOT}') , self.__class__.__name__)
         prefix = os.path.dirname(conf_path)
         if not os.path.isdir(prefix):
@@ -1110,53 +1099,53 @@ class php_res:
         conf = 'FILES=\\"%s\\";' % files_to_check.replace(',', ' ') + 'CMD=\\"%s\\"' % cmd
         shexec.execmd("sudo sh -c 'echo \"%s\" > \"%s\"'" %(conf, conf_path))
     def export_fpmconf(self):
-        #如果非自定义fpm配置，那么生成
+        #å¦æéèªå®ä¹fpméç½®ï¼é£ä¹çæ
         if not self.f_conf == self.fpm_conf:
             fpm_conf = 'online' if self.fpm_conf == 'online' else 'dev'
             cnt_min = str(int(self.fpm_cnt) - 10)
             cnt_max = str(int(self.fpm_cnt) + 10)
-            #从conf_override中拼装配置并去掉环境修饰符,如：;online
+            #ä»conf_overrideä¸­æ¼è£éç½®å¹¶å»æç¯å¢ä¿®é¥°ç¬¦,å¦ï¼;online
             conf_override = "\n".join(self.conf_override).replace(';' + fpm_conf, '')
             tplpath = os.path.abspath(os.path.dirname(__file__) + '/../res_conf/fpm_svc.conf.' + fpm_conf)
             #POOL_NAME=${prefix},FPM_CNT=${php_fpm_cnt},FPM_CNT_MIN=${php_fpm_cnt_min},FPM_CNT_MAX=${php_fpm_cnt_max}
             tpl = open(tplpath, 'r').read()
             tpl = Template(tpl).substitute(POOL_NAME=self.prefix,FPM_CNT=self.fpm_cnt,FPM_CNT_MIN=cnt_min,FPM_CNT_MAX=cnt_max,CONF_OVERRIDE=conf_override)
             tmp_path = env_exp.value("${PRJ_ROOT}/run/" + self.f_conf.replace('/', '_'))
-            #生成到项目的tmp目录，然后sudo mv到指定位置
+            #çæå°é¡¹ç®çtmpç®å½ï¼ç¶åsudo mvå°æå®ä½ç½®
             with open(tmp_path, 'w') as f: f.write (tpl)
             shexec.execmd("sudo mv '%s' '%s'" % (tmp_path, self.f_conf))
 
 class fpm_svc(resource,php_res):
     """
-    php-fpm 实现，使用unix socket作为监听地址(port)
+    php-fpm å®ç°ï¼ä½¿ç¨unix socketä½ä¸ºçå¬å°å(port)
 
-    php 5.3.10 中fpm可以使用的参数有
-    -y 指定fpm-conf的位置，这个是全局默认指定，随rigger发布，根据环境选择对应的cgi起始值的online/dev配置，可以在配置中覆盖
-    -p 此参数决定配置文件中相对路径的前置prefix，而非监听端口，简单来说 listen的sock文件地址为这个prefix加上conf中配置的值
-    -g pid文件位置，由于fpm无法用grep 特殊名称ini的方式来判断具体进程对应的项目，所以必须用pid对应项目路径来管理fpm进程
+    php 5.3.10 ä¸­fpmå¯ä»¥ä½¿ç¨çåæ°æ
+    -y æå®fpm-confçä½ç½®ï¼è¿ä¸ªæ¯å¨å±é»è®¤æå®ï¼ériggeråå¸ï¼æ ¹æ®ç¯å¢éæ©å¯¹åºçcgièµ·å§å¼çonline/devéç½®ï¼å¯ä»¥å¨éç½®ä¸­è¦ç
+    -p æ­¤åæ°å³å®éç½®æä»¶ä¸­ç¸å¯¹è·¯å¾çåç½®prefixï¼èéçå¬ç«¯å£ï¼ç®åæ¥è¯´ listençsockæä»¶å°åä¸ºè¿ä¸ªprefixå ä¸confä¸­éç½®çå¼
+    -g pidæä»¶ä½ç½®ï¼ç±äºfpmæ æ³ç¨grep ç¹æ®åç§°iniçæ¹å¼æ¥å¤æ­å·ä½è¿ç¨å¯¹åºçé¡¹ç®ï¼æä»¥å¿é¡»ç¨pidå¯¹åºé¡¹ç®è·¯å¾æ¥ç®¡çfpmè¿ç¨
 
-    FPM配置规则  /var/run/$prefix/fpm.conf
-    监听地址规则 /var/run/$prefix/fpm.sock
-    PID位置规则  /var/run/$prefix/fpm.pid
-    环境变量导出 /var/run/$prefix/env.conf
+    FPMéç½®è§å  /var/run/$prefix/fpm.conf
+    çå¬å°åè§å /var/run/$prefix/fpm.sock
+    PIDä½ç½®è§å  /var/run/$prefix/fpm.pid
+    ç¯å¢åéå¯¼åº /var/run/$prefix/env.conf
 
-    启动fpm的例子
+    å¯å¨fpmçä¾å­
     /usr/local/php-5.3/sbin/php-fpm -y path/to/php-fpm.conf  -p "/var/run/root-wan-fnt" -c /usr/local/php-5.3/lib/php.ini -g /var/run/root-wan-fnt/fpm.pid
     """
 
-    #可配置项 fpm_conf：3个选项，dev|online|自定义路径
+    #å¯éç½®é¡¹ fpm_confï¼3ä¸ªéé¡¹ï¼dev|online|èªå®ä¹è·¯å¾
     _fpm_conf   = "dev"
-    #可配置项 fpm_cnt : 10-1000 之内的整数，用来指定初始化fpm数量（dev环境时无效）
+    #å¯éç½®é¡¹ fpm_cnt : 10-1000 ä¹åçæ´æ°ï¼ç¨æ¥æå®åå§åfpmæ°éï¼devç¯å¢æ¶æ æï¼
     _fpm_cnt    = 20
 
-    #可配置项 sock_id：sock文件的id，概念很是纠结其实对应fpm参数的prefix，我们约定sock必需在 /var/run/目录下，
-    #而公共的fpm配置定死了sock的文件名为fpm.sock，所以我们最后的sock文件地址应该是 /var/run/${PREFIX}/fpm.sock
-    #但是直接抛出prefix概念，估计大家都看不懂，不如改个名叫做sock_id，当作sock在该APP_SYS的唯一id...
+    #å¯éç½®é¡¹ sock_idï¼sockæä»¶çidï¼æ¦å¿µå¾æ¯çº ç»å¶å®å¯¹åºfpmåæ°çprefixï¼æä»¬çº¦å®sockå¿éå¨ /var/run/ç®å½ä¸ï¼
+    #èå¬å±çfpméç½®å®æ­»äºsockçæä»¶åä¸ºfpm.sockï¼æä»¥æä»¬æåçsockæä»¶å°ååºè¯¥æ¯ /var/run/${PREFIX}/fpm.sock
+    #ä½æ¯ç´æ¥æåºprefixæ¦å¿µï¼ä¼°è®¡å¤§å®¶é½çä¸æï¼ä¸å¦æ¹ä¸ªåå«åsock_idï¼å½ä½sockå¨è¯¥APP_SYSçå¯ä¸id...
     _sock_id    = ""
     _php_ini    = "${PHP_INI}"
 
-    #可配置项 conf_override，可以给一个机会用来重定义fpm的某些细节配置，免去重新维护一套fpm配置的苦。
-    #注意只能重定义池实例级别的配置，global的不可以配置。例如：conf_override: - "user = ${USER}"
+    #å¯éç½®é¡¹ conf_overrideï¼å¯ä»¥ç»ä¸ä¸ªæºä¼ç¨æ¥éå®ä¹fpmçæäºç»èéç½®ï¼åå»éæ°ç»´æ¤ä¸å¥fpméç½®çè¦ã
+    #æ³¨æåªè½éå®ä¹æ± å®ä¾çº§å«çéç½®ï¼globalçä¸å¯ä»¥éç½®ãä¾å¦ï¼conf_override: - "user = ${USER}"
     _conf_override = []
 
     def locate(self):
@@ -1168,12 +1157,12 @@ class fpm_svc(resource,php_res):
         path=os.path.dirname(os.path.realpath(__file__))
         if os.path.isfile(self.fpm_conf):
             self.f_conf = self.fpm_conf
-#            self.prefix = '""' #当自定义fpm_conf时，prefix自动重置为空
-        elif self.fpm_conf == 'online' : #online环境用online conf, 使用rg tpl生成到prefix目录
+#            self.prefix = '""' #å½èªå®ä¹fpm_confæ¶ï¼prefixèªå¨éç½®ä¸ºç©º
+        elif self.fpm_conf == 'online' : #onlineç¯å¢ç¨online conf, ä½¿ç¨rg tplçæå°prefixç®å½
             self.f_conf = get_env_conf().run_path +  '/' + self.prefix + '/fpm_svc.conf.online'
             if self.fpm_cnt < 10 or self.fpm_cnt > 1000 :
                 self.fpm_cnt = 20
-        else : #其他一律使用dev的conf
+        else : #å¶ä»ä¸å¾ä½¿ç¨devçconf
             self.f_conf = get_env_conf().run_path +  '/' + self.prefix + '/fpm_svc.conf.dev'
         cmdtpl="sudo $PATH/fpm_ctrl.sh -b ${FPM_BIN} -c ${FPM_CONF} -f ${PHP_INI} -p ${PREFIX} -r ${PRJ_ROOT} -n ${FPM_CNT}"
         self.base_cmd = Template(cmdtpl).substitute(PATH=path,FPM_BIN=get_env_conf().php_fpm,FPM_CONF=self.f_conf,PHP_INI=self.php_ini,PREFIX=self.prefix,PRJ_ROOT=env_exp.value('${PRJ_ROOT}'),FPM_CNT=self.fpm_cnt)
@@ -1506,7 +1495,7 @@ class daemon_base(resource):
             conf = self.confs[i]
             cmd     = Template(cmd_tpl).substitute(CONF= os.path.basename(conf))
         check_proc("zdaemon",cmd)
-#       program 太长。。。
+#       program å¤ªé¿ããã
         print ("program:" +  self.program)
         main_cmd =  ""
         for sub in self.program.split(' '):
@@ -1567,7 +1556,7 @@ class daemon_base(resource):
             if k  == "PS1" :
                 continue
             v = v.strip()
-            #对于环境变量过滤非法字符
+            #å¯¹äºç¯å¢åéè¿æ»¤éæ³å­ç¬¦
             if not re.search(r"[\$\n<>]",v):
                 envstr = envstr + "\t%s %s \n" %(k.upper() , v)
         c = Template(content).substitute(SCRIPT=self.program, DAEMON=self.daemon,
@@ -1630,7 +1619,7 @@ class daemon_php(daemon_base):
 
 class varnishd(resource,svctag):
     """
-    多实际的情况下，需要指定 workdir
+    å¤å®éçæåµä¸ï¼éè¦æå® workdir
     """
     _port       = "80"
     _http_ip    = "0.0.0.0"

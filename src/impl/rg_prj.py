@@ -5,6 +5,16 @@ import interface , utls.rg_var , rg_model
 
 
 class system (interface.control_box,interface.base):
+    """
+__sys:
+    -  !R.system
+        name: "test"
+        res:
+            - !R.vars
+                    TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
+            - !R.echo
+                value : "${TEST_CASE}"
+    """
     def _before(self,context):
         utls.rg_var.keep()
         context.keep()
@@ -19,6 +29,9 @@ class system (interface.control_box,interface.base):
         return ""
 
 class project(interface.control_box, interface.base) :
+    """
+
+    """
     def _resname(self):
         tag = self.__class__.__name__
         return tag
@@ -27,12 +40,18 @@ class project(interface.control_box, interface.base) :
     pass
 
 class xmodule(interface.control_box,interface.base) :
+    """
+
+    """
     def _resname(self):
         tag = self.__class__.__name__
         return tag
 
 
 class env(interface.resource):
+    """
+
+    """
     def _resname(self):
         if hasattr(self,'name'):
             return  "%s(%s)" %(self._clsname(),self.name)

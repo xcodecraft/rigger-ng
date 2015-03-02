@@ -4,6 +4,7 @@ from  rg_err  import *
 
 registed_resource = {}
 registed_cmd      = {}
+
 def regist_res(name,module) :
     name = name.split(',')
     for  res in name:

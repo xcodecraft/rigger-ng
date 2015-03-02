@@ -1,10 +1,8 @@
 #coding=utf-8
 import string , logging, sys
-import interface
+import interface, rg_args, rg_ioc
+
 _logger = logging.getLogger()
-
-import rg_args, rg_cmd, rg_ioc
-
 
 def run_cmd(cmdstr,yaml_conf=None) :
     rargs  = rg_args.run_args()

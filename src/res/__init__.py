@@ -14,7 +14,6 @@ for res,module in interface.registed_resource.items() :
     _logger.debug( " load module: %s" %code  )
     try :
         exec code
-
     except  Exception as e :
         raise interface.rigger_exception("@res.__init__ code error: %s \n %s" %(code,e) )
 

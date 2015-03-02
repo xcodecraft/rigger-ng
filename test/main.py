@@ -7,7 +7,6 @@ if __name__ == '__main__':
     root  = os.path.dirname(root)
     sys.path.append(os.path.join(root,"src") )
 
-    # logging.basicConfig(level=logging.INFO,filename='test.log')
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
     import interface,impl
     impl.setup()
@@ -18,7 +17,5 @@ if __name__ == '__main__':
     from impl_tc.args_tc  import *
     from impl_tc.cmd_tc   import *
     from res_tc.mysql_tc  import *
-
-
 
     unittest.main()

@@ -3,31 +3,10 @@ import  re , os , string ,  getopt ,sys , unittest,logging
 from utls.rg_sh import  shexec
 from utls.rg_var import  value_of
 
-# import  rigger,rg_pub.pubdef,rg_run
-# from  rargs     import *
-# from  rg_sh     import *
-# from  dev       import *
-#from  pub.publish   import *
-
-#def run_rigger(rargs):
-
-# run_os = "diy"
-# prj_root = "devspace/rigger"
-#
 def path_of_prj(path="") :
     if len( path ) == 0 :
         return "%s/devspace/rigger-ng" %(os.environ['HOME'])
     return "%s/devspace/rigger-ng/%s" %(os.environ['HOME'],path)
-#
-# def run_rigger(args_str):
-#
-#     rargs = runargs()
-#     rargs.clear()
-#     rargs.conf       = os.getcwd() + "/test/prj/_rg/conf.yaml"
-#     rargs.compatible = True
-#     rargs.rg_user    = "zuowenjian"
-#     args_str = args_str +  " -o %s " % run_os
-#     rg_run.main_impl(rargs,args_str.split(' '))
 
 
 class shexec_mock:

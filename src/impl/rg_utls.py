@@ -125,19 +125,7 @@ def writeable_path(path,_delay=False) :
                 break
         return None
     if _delay :
-        _impl.err_msg = "%s 不可写入！你可修改权限( sudo mkdir -p %s ; sudo chmod a+rw   %s )，或使用sudo 执行 " %(path,path,path)
+        _impl.err_msg = "%s ä¸å¯åå¥ï¼ä½ å¯ä¿®æ¹æé( sudo mkdir -p %s ; sudo chmod a+rw   %s )ï¼æä½¿ç¨sudo æ§è¡ " %(path,path,path)
         return _impl
     return _impl()
 
-def output_confitems(name,obj,more):
-    if obj.__doc__ is not None :
-        doc = obj.__doc__.strip()
-        line = doc.split('\n')
-        if len(line) <= 1 :
-            rgio.prompt("\t\t\t%-20s   %s" %(name,doc))
-        else:
-            rgio.prompt("\t\t\t%s : " %(name))
-            for l in line :
-                rgio.prompt("\t\t\t%-20s   %s" %("",l.strip()))
-    else :
-        rgio.prompt("\t\t\t%-20s " %(name))
