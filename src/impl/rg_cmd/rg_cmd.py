@@ -1,35 +1,42 @@
 #coding=utf8
-import  os
-from utls.rg_io import rgio
-from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
-import res, rg_run ,rg_model ,rg_prj , interface
+import  os,re ,logging
 
-import rg_dev
+from utls.rg_io  import rgio,export_objdoc
+from rg_cmd_base import rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
+
+import res,  interface
+
+import impl.rg_dev , impl.rg_ioc
+
+_logger = logging.getLogger()
+
 
 
 
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
-        ver  =  rg_dev.version(os.path.join(rargs.rg.root ,"version.txt" ))
+        ver  =  impl.rg_dev.version(os.path.join(rargs.rg.root ,"version.txt" ))
         rgio.simple_out("rigger-ng ver: " + ver.info())
         cmdlen = len(rargs.prj.cmds)
         if cmdlen == 1 :
             rargs.help()
-            # list_cmd()
+            impl.rg_ioc.list_cmd()
             return
         if cmdlen >= 2 :
             subcmd = rargs.prj.cmds[1]
             if subcmd == "res":
                 if cmdlen == 3 :
                     resname = rargs.prj.cmds[2]
-                    resobj = res.ins_res(resname)
+                    resobj  = impl.rg_ioc.ins_res(resname)
+                    if resobj is None :
+                        raise  interface.rigger_exception( "instance res fail! resname: %s" %(resname) )
 
                     # resobj.useage(output):
                     resobj.useage(rgio.simple_out)
-        #TODO :
 
-                # else:
-                #     resouce.list_res()
+                else:
+                    impl.rg_ioc.list_res()
+        #TODO :
             # elif subcmd == "remote":
             #     if len(sys.argv) == 4:
             #         n   = sys.argv[3]

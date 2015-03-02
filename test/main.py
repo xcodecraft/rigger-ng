@@ -7,10 +7,10 @@ if __name__ == '__main__':
     root  = os.path.dirname(root)
     sys.path.append(os.path.join(root,"src") )
 
-    logging.basicConfig(level=logging.INFO,filename='test.log')
-    import interface
-    from   utls.rg_io import rgio
-    interface.load_res("from res.mysql import mysql")
+    # logging.basicConfig(level=logging.INFO,filename='test.log')
+    logging.basicConfig(level=logging.DEBUG,filename='test.log')
+    import interface,impl
+    impl.setup()
 
     from impl_tc.yaml_tc  import *
     from impl_tc.tpl_tc   import *

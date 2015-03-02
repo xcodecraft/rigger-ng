@@ -2,7 +2,7 @@
 import logging
 import interface,res
 
-from   impl.rg_model  import *
+# from   impl.rg_model  import *
 from   base.tc_tools   import *
 
 _logger = logging.getLogger()
@@ -20,7 +20,7 @@ class vars_tc(rigger_tc):
             value : "${X}/${Y}"
         """
 
-        testbox   = res.module()
+        testbox  = res.xmodule()
         v1       = res.vars()
         v1.X     = "a"
         v1.Y     = "b"

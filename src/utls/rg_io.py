@@ -226,3 +226,16 @@ def get_mutichose_index(message,maxnum,quit='q'):
     return index
 
 
+
+def export_objdoc(name,obj):
+    if obj.__doc__ is not None :
+        doc = obj.__doc__.strip()
+        line = doc.split('\n')
+        if len(line) <= 1 :
+            rgio.simple_out("\t\t\t%-20s   %s" %(name,doc))
+        else:
+            rgio.simple_out("\t\t\t%s : " %(name))
+            for l in line :
+                rgio.simple_out("\t\t\t%-20s   %s" %("",l.strip()))
+    else :
+        rgio.simple_out("\t\t\t%-20s " %(name))
