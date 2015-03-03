@@ -5,9 +5,16 @@ import utls.rg_var , interface
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
-        self.env = argv['-e'].split(',')
-        self.sys = argv['-s'].split(',')
-        pass
+        if argv.has_key('-e') :
+            self.env = argv['-e'].split(',')
+        else:
+            self.env = rargs.prj.env.split(',')
+
+        if argv.has_key('-s') :
+            self.sys = argv['-s'].split(',')
+        else:
+            self.sys = rargs.prj.sys.split(',')
+
     def runcmd(self,rargs,fun) :
         import impl.rg_yaml,copy
         loader = impl.rg_yaml.conf_loader(rargs.prj.conf)

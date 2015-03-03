@@ -13,14 +13,18 @@ if __name__ == '__main__':
 
     # logging.basicConfig(level=logging.INFO,filename='run.log')
     logging.basicConfig(level=logging.DEBUG,filename='run.log')
+
+    rars_file           = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     try :
 
-        rargs  = impl.rg_args.run_args()
+
+        rargs  = impl.rg_args.run_args.load(rars_file)
         parser = impl.rg_args.rarg_parser()
         parser.parse(rargs,sys.argv[1:] )
         rargs.prj.conf = "_rg/prj.yaml"
         # rargs.rg.conf  = "_rg/os.yaml"
         impl.rg_run.run_rigger(rargs,parser.argv)
+        rargs.save(rars_file)
 
     except interface.user_break as e:
         rgio.error(e)

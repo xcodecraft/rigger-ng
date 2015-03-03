@@ -8,10 +8,6 @@ _logger = logging.getLogger()
 
 class rg_args :
     def __init__(self):
-        self.clear()
-
-    def clear(self):
-        self.data          = os.path.abspath("./.rigger-ng.dat")
         self.conf          = os.getcwd() + "/_rg/conf.yaml"
         self.log_level     = logging.ERROR
         self.os            = None
@@ -19,16 +15,20 @@ class rg_args :
         self.root          = os.path.dirname(os.path.realpath(__file__))
         self.root          = os.path.dirname(self.root)
 
+    def clear(self):
+        pass
+
 
 class prj_args :
     def __init__(self):
-        self.clear()
-
-    def clear(self):
         self.env  = None
         self.conf = None
         self.sys  = None
         self.cmds = []
+
+    def clear(self):
+        self.cmds = []
+
     def __str__(self) :
         cmd = "," . join(self.cmds)
         return "%s -e %s -s %s" %(cmd,self.env,self.sys)
@@ -36,9 +36,12 @@ class prj_args :
 
 class run_args :
     def __init__(self):
-        self.rg = rg_args()
+        self.rg  = rg_args()
         self.prj = prj_args()
 
+    def clear(self):
+        self.rg.clear()
+        self.prj.clear()
 
     def parse_cmd(self):
         if len(self.cmds) == 0 :
@@ -50,23 +53,18 @@ class run_args :
         return cmdarr
 
     @staticmethod
-    def load():
+    def load(data_file):
         rargs     = run_args()
-        data_file = rargs.rg.data
         if os.path.exists(data_file):
             try:
                 with open(data_file,'r')  as f:
                     rargs = pickle.load(f)
-                    rargs.compatible = False
             except Exception as  e :
                 rgio.prompt("load rigger file fail!")
-            if hasattr(rargs,'version'):
-                rargs.compatible = rargs.version.is_compatible(version(verstr="0.8.0.0"),version(verstr="1.0.0.0"))
 
         rargs.clear()
         return rargs
-    def save(self):
-        data_file = self.rg.data
+    def save(self,data_file):
         with open(data_file,'w')  as f:
             pickle.dump(self, f)
 

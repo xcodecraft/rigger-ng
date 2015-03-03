@@ -21,3 +21,20 @@ class args_tc(base.tc_tools.rigger_tc):
         cmd    = "start -e dev -s api"
         parser.parse(rargs,cmd.split(' '))
         self.assertEqual(str(rargs),cmd )
+
+    def test_save(self):
+        from utls.rg_var import value_of
+        save_file = value_of("${HOME}/devspace/rigger-ng/test/data/rigger.data")
+
+        rargs          = run_args()
+        rargs.prj.env  = "diy"
+        rargs.prj.sys  = "api,test"
+        rargs.prj.cmds = "conf,start"
+        rargs.save(save_file)
+
+        loaded  = run_args.load(save_file)
+        self.assertEqual(loaded.prj.env  , rargs.prj.env)
+        self.assertEqual(loaded.prj.sys  , rargs.prj.sys)
+        self.assertEqual(loaded.prj.cmds , [])
+
+
