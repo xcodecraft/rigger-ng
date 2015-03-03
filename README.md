@@ -15,6 +15,7 @@
 
 示例:
 ``` shell
-./src/rgn conf -s test -e dev
+./src/rg conf -s test -e dev
+./src/rg start -s test -e dev
 ```
 
