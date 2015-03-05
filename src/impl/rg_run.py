@@ -7,7 +7,8 @@ _logger = logging.getLogger()
 def run_cmd(cmdstr,yaml_conf=None) :
     rargs  = rg_args.run_args()
     parser = rg_args.rarg_parser()
-    parser.parse(rargs,cmdstr.split(' '))
+    parser.parse(cmdstr.split(' '))
+    rargs.parse_update(parser)
     if yaml_conf is not None:
         rargs.prj.conf = yaml_conf
 
@@ -15,6 +16,8 @@ def run_cmd(cmdstr,yaml_conf=None) :
 
 def run_rigger(rargs, argv) :
     #TODO: muti cmd support
+    if len(rargs.prj.cmds) == 0 :
+        raise interface.rigger_exception("No Cmd!")
     cmd = rargs.prj.cmds[0]
     obj = rg_ioc.ins_cmd(cmd)
     if obj is None :

@@ -13,13 +13,15 @@ class args_tc(base.tc_tools.rigger_tc):
         rargs  = run_args()
         parser = rarg_parser()
         cmd    = "conf -e dev -s test"
-        parser.parse(rargs,cmd.split(' '))
+        parser.parse(cmd.split(' '))
+        rargs.parse_update(parser)
         self.assertEqual(str(rargs),cmd )
 
 
         rargs  = run_args()
         cmd    = "start -e dev -s api"
-        parser.parse(rargs,cmd.split(' '))
+        parser.parse(cmd.split(' '))
+        rargs.parse_update(parser)
         self.assertEqual(str(rargs),cmd )
 
     def test_save(self):

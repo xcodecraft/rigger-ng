@@ -68,6 +68,20 @@ class run_args :
         with open(data_file,'w')  as f:
             pickle.dump(self, f)
 
+    def parse_update(self,parser) :
+        argv          = parser.argv
+        self.prj.cmds = parser.cmds
+        if argv.has_key('-c') :
+            self.rg.conf  = argv['-c']
+        if argv.has_key('-z'):
+            self.rg.user  = argv['-z']
+        if argv.has_key('-e'):
+            self.prj.env  = argv['-e']
+        if argv.has_key('-o'):
+            self.rg.os    = argv['-o']
+        if argv.has_key('-s'):
+            self.prj.sys = argv['-s']
+
     def __str__(self):
         info = str(self.prj)
         return  info
@@ -81,12 +95,15 @@ class run_args :
 
 
 class rarg_parser:
+
     ST_NEXT     = 0
     ST_CMD      = 1
     ST_ARG_KEY  = 3
     ST_ARG_VAL  = 4
+
     def __init__(self):
         self.argv  = {}
+        self.cmds  = []
 
     def load_args(self,saved ) :
         if hasattr(saved,'vars_def') and saved.vars_def is not None:
@@ -95,16 +112,10 @@ class rarg_parser:
             else:
                 _logger.info ( "old prior vars ignore:  %s " % rargs.vars_def)
 
-    def debug_level(self):
-        debug = 0
-        if self.argv.has_key('-D')   :
-            setting.debug_level =  int(self.argv['-D'])
-        if self.argv.has_key('-d')   :
-            setting.debug_level =  int(self.argv['-d'])
-        return debug
 
-    def parse(self,rargs,argv):
+    def parse(self,argv):
 
+        self.__init__()
         status = self.ST_NEXT
         key    = ""
         val    = None
@@ -116,7 +127,6 @@ class rarg_parser:
                         status  = self.ST_NEXT
                         continue
                     val = item
-#                    print("%s:%s" %(key,val))
                     self.argv[key] = val
                     status  = self.ST_NEXT
                     break;
@@ -126,8 +136,7 @@ class rarg_parser:
                     break;
                 if status == self.ST_CMD:
                     if len(item.strip()) > 0:
-                        rargs.prj.cmds.append(item)
-                        # rargs.cmds.append(item)
+                        self.cmds.append(item)
                     status  = self.ST_NEXT
                     break;
                 if status == self.ST_NEXT :
@@ -141,14 +150,3 @@ class rarg_parser:
                         status = self.ST_ARG_KEY
                     else :
                         status = self.ST_CMD
-
-        if self.argv.has_key('-c') :
-            rargs.rg.conf  = self.argv['-c']
-        if self.argv.has_key('-z'):
-            rargs.rg.user  =self.argv['-z']
-        if self.argv.has_key('-e'):
-            rargs.prj.env =self.argv['-e']
-        if self.argv.has_key('-o'):
-            rargs.rg.os =self.argv['-o']
-        if self.argv.has_key('-s'):
-            rargs.prj.sys =self.argv['-s']
