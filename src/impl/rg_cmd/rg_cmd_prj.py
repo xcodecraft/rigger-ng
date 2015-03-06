@@ -2,14 +2,17 @@
 from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import utls.rg_var , interface
+from impl.rg_prj import *
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
+        self.env = []
         if argv.has_key('-e') :
             self.env = argv['-e'].split(',')
         else:
             self.env = rargs.prj.env.split(',')
 
+        self.sys = []
         if argv.has_key('-s') :
             self.sys = argv['-s'].split(',')
         else:
@@ -24,28 +27,29 @@ class prj_cmd_base :
         prj_data    = data['__prj']
         sys_data    = data['__sys']
 
-        common_res  =  interface.control_box()
+        main  = impl.rg_prj.prj_main()
+        if len(self.env) == 0 :
+            return
         for env in self.env :
             for env_obj  in env_data :
                 if env_obj.name == env :
-                    common_res.append(env_obj)
-        common_res.append(prj_data)
+                    main.append(env_obj)
+        main.append(prj_data)
         context = interface.run_context()
-        interface.control_call(common_res,fun,context)
+        interface.control_call(main,fun,context)
 
         for sys in self.sys :
             for sysobj in   sys_data :
                 if  sysobj.name ==  sys :
                     interface.control_call(sysobj,fun,context)
 
-# class info_cmd(prj_cmd_base,cmdtag_prj):
-#     """
-#     rg info
-#     """
-#     def _config(self,argv,rargs):
-#         pass
-#     def _execute(self,rargs):
-#         self.runcmd(rargs,lambda x , y : x._info(y))
+class info_cmd(prj_cmd_base,cmdtag_prj):
+    """
+    rg info
+    """
+    def _execute(self,rargs):
+        rgio.struct_out("rg %s" %(rargs) )
+        self.runcmd(rargs,lambda x , y : x._info(y))
 
 class conf_cmd(prj_cmd_base,cmdtag_prj):
     """

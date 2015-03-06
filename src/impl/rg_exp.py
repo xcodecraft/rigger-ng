@@ -50,7 +50,7 @@ class assginer :
         while True:
             try:
                 val  = getattr(tpl.tplvar.var(),var)
-                _logger.info( "%s ==>  %s" %(val,var))
+                _logger.info("[assgin] %s:%s" %(var,val ))
                 return val
             except tpl.tplvar.var_undefine:
                 if self.unfound_call == None or self.unfound_call(var) == None:

@@ -1,6 +1,7 @@
 #coding=utf8
 import re
 import interface,utls.rg_var
+from utls.rg_io import  rgio , run_struct
 class vars(interface.resource):
     """
     å®ä¹ç¯å¢åé:
@@ -9,7 +10,7 @@ class vars(interface.resource):
         B: "hello"
     """
 
-
+    name = "vars"
     def depend_check(self,context) :
         pass
 
@@ -17,6 +18,7 @@ class vars(interface.resource):
         return True
     def _before(self,context):
         items = self.__dict__
+        # run_struct.push("res.var")
 
         for name , val in   items.items():
             if re.match(r'__.+__',name):
@@ -24,12 +26,25 @@ class vars(interface.resource):
             name= name.upper()
             setattr(context,name,val)
         utls.rg_var.import_dict(items)
+    def _after(self,context):
+        pass
+
+
+    def _info(self,context):
+        items = self.__dict__
+        rgio.struct_out("vars:")
+        for name , val in   items.items():
+            if re.match(r'__.+__',name):
+                continue
+            name= name.upper()
+            rgio.struct_out("%s = %s" %(name,val))
 
 class echo(interface.resource) :
     """
         !R.echo :
             value : "${PRJ_ROOT}"
     """
+    name = "echo"
     def _allow(self,context):
         return True
     def _before(self,context):
@@ -44,6 +59,7 @@ class assert_eq(interface.resource) :
         value  : "${APP_SYS}"
         expect : "test"
     """
+    name = "assert_eq"
     def _allow(self,context):
         return True
     def _config(self,context):

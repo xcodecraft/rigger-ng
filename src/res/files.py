@@ -3,6 +3,9 @@
 # from base     import *
 import  os , string   , logging
 import  interface
+
+from utls.rg_var import  value_of
+
 _logger = logging.getLogger()
 
 # class links(interface.resource):
@@ -38,12 +41,12 @@ class link(interface.resource):
         dst: "/home/q/system/mysys"
         src: "$${PRJ_ROOT}/src/apps/console"
     """
-    _force   = False
-    _dst     = ""
-    _src     = ""
+    force   = False
+    dst     = ""
+    src     = ""
     def _before(self,context):
-        self.dst = env_exp.value(self.dst)
-        self.src = env_exp.value(self.src)
+        self.dst = value_of(self.dst)
+        self.src = value_of(self.src)
 
     def _config(self,context):
         cmdtpl = ""
@@ -63,8 +66,9 @@ class link(interface.resource):
     def _check(self,context):
         self._check_print(os.path.exists(self.dst),self.dst)
 
-    def _info(self):
-        return self.src
+    def _info(self,context):
+        self.struct_out("link")
+        pass
 
 # class copy(resource,restag_file):
 #     """
@@ -95,71 +99,71 @@ class link(interface.resource):
 #         cmd = Template(cmdtpl).substitute(DST=self.dst,SRC =self.src)
 #         self.execmd(cmd)
 #
-# class path(resource,restag_file):
-#     """
-#     建立path
-#     !R.path:
-#         dst: "/home/q/system/mysys/"
-#         keep: True
-#     """
-#     _arr        = []
-#     _dst        = None
-#     _keep       = False
-#     _chmod      = "a+w"
-#     _auto_sudo  = False
-#
-#     def _before(self,context):
-#         self.paths= []
-#         if not self.dst is None:
-#             self.paths.append( env_exp.value(self.dst))
-#         for v in self.arr:
-#             v=  env_exp.value(v)
-#             self.paths.append( v )
-#     def _checkWrite(self,dst) :
-#         while  True  :
-#             if os.path.exists(dst) :
-#                 return  os.access(dst, os.W_OK)
-#             else :
-#                 dst = os.path.dirname(dst)
-#             if dst == "/"  or dst == "" or dst == "."  or dst == "./"  or dst ==  None :
-#                 break
-#         return False
-#
-#
-#
-#     def _config(self,context):
-#         for v in self.paths :
-#             if os.path.exists(v)  and self._checkWrite(v) :
-#                 continue
-#             else :
-#                 if not self._checkWrite(v) :
-#                     if self.auto_sudo :
-#                         self.sudo = True
-#                     if not self.sudo :
-#                         raise error.rigger_exception( "%s 没有写权限（尝试sudo失败）" %(v) )
-#             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
-#             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
-#             self.execmd(cmd)
-#     def _check(self,context):
-#         for v in self.paths :
-#             self._check_print(os.path.exists(v),v)
-#
-#     def _clean(self,context):
-#         if self.keep :
-#             return
-#         cmdtpl ="if  test -e $DST ; then rm -rf  $DST ; fi ;  "
-#         for v in self.paths :
-#             cmd = Template(cmdtpl).substitute(DST=v)
-#             self.execmd(cmd)
-#
-#     def _info(self):
-#         if self.dst is None:
-#             return ""
-#         return self.dst
-#
-#     def _depend(self,m,context):
-#         for v in self.paths :
-#             m._check_writeable(v)
+
+class path(interface.resource):
+    """
+    建立path
+    !R.path:
+        dst: "/home/q/system/mysys/"
+        keep: True
+    """
+    dst        = None
+    keep       = False
+    chmod      = "a+w"
+    _auto_sudo  = False
+
+    def _before(self,context):
+        self.paths= []
+        if not self.dst is None:
+            self.paths.append( env_exp.value(self.dst))
+        for v in self.arr:
+            v=  env_exp.value(v)
+            self.paths.append( v )
+    def _checkWrite(self,dst) :
+        while  True  :
+            if os.path.exists(dst) :
+                return  os.access(dst, os.W_OK)
+            else :
+                dst = os.path.dirname(dst)
+            if dst == "/"  or dst == "" or dst == "."  or dst == "./"  or dst ==  None :
+                break
+        return False
+
+
+
+    def _config(self,context):
+        for v in self.paths :
+            if os.path.exists(v)  and self._checkWrite(v) :
+                continue
+            else :
+                if not self._checkWrite(v) :
+                    if self.auto_sudo :
+                        self.sudo = True
+                    if not self.sudo :
+                        raise error.rigger_exception( "%s 没有写权限（尝试sudo失败）" %(v) )
+            cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
+            cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
+            self.execmd(cmd)
+    def _check(self,context):
+        for v in self.paths :
+            self._check_print(os.path.exists(v),v)
+
+    def _clean(self,context):
+        if self.keep :
+            return
+        cmdtpl ="if  test -e $DST ; then rm -rf  $DST ; fi ;  "
+        for v in self.paths :
+            cmd = Template(cmdtpl).substitute(DST=v)
+            self.execmd(cmd)
+
+    def _info(self):
+        if self.dst is None:
+            return ""
+        return self.dst
+
+    def _depend(self,m,context):
+        for v in self.paths :
+            m._check_writeable(v)
 #
 # class file_merge(resource,restag_file):
 #     """

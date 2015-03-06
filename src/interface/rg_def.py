@@ -36,15 +36,19 @@ class controlable :
         pass
     def _clean(self,context):
         pass
+    def _info(self,context):
+        return ""
 
 
 def control_call(res,fun,context) :
     with utls.rg_io.scope_iotag(res.__class__.__name__ ,fun.__name__) :
         if res._allow(context) :
             with utls.rg_sh.scope_sudo(res.sudo) :
+                    utls.rg_io.run_struct.push( res.__class__.__name__)
                     res._before(context)
                     fun(res,context)
                     res._after(context)
+                    utls.rg_io.run_struct.pop()
 
 class control_box(controlable):
 
@@ -52,7 +56,6 @@ class control_box(controlable):
         self.res = []
 
     def items_call(self,fun,context):
-        # if self._allow(context):
         for r in self.res :
             control_call(r,fun,context)
 
@@ -84,6 +87,10 @@ class control_box(controlable):
         fun = lambda x,y : x._clean(y)
         self.items_call(fun,context)
 
+    def _info(self,context):
+        fun = lambda x,y : x._info(y)
+        self.items_call(fun,context)
+
     def _allow(self,context):
         return True
     def append(self,item):
@@ -100,8 +107,6 @@ class control_box(controlable):
     def _resname(self):
         tag = self.__class__.__name__
         return tag
-    def _info(self):
-        return ""
 
 class resource (controlable,rg_conf.base):
     allow_res   = "ALL"
@@ -119,5 +124,3 @@ class resource (controlable,rg_conf.base):
     def _resname(self):
         tag = self.__class__.__name__
         return tag
-    def _info(self):
-        return ""

@@ -2,7 +2,36 @@
 import  re , os , sys, logging ,string
 from string  import Template
 import  setting
+import  utls.pattern
 _logger = logging.getLogger()
+
+class run_struct:
+    trace   = []
+    @staticmethod
+    def push(resname):
+        run_struct.trace.append(resname)
+
+
+    @staticmethod
+    def pop():
+        run_struct.trace.pop()
+
+# class rg_logger(utls.pattern.singleton) :
+class rg_logger :
+    def __init__(self,tag) :
+        self.tag  = tag
+        self.impl = logging.getLogger()
+    def debug(self,message) :
+        self.impl.debug(message)
+
+    def info(self,message) :
+        self.impl.info(message)
+
+    def warning(self,message) :
+        self.impl.info(message)
+
+    def error(self,message) :
+        self.impl.error(message)
 
 class prompt:
     @staticmethod
@@ -77,17 +106,13 @@ class rgio:
 
 
     @staticmethod
-    def push_trace(settingo):
-        # if not rgio.trace.has_key(key):
-        #     rgio.trace[key] = []
-        rgio.trace.append(settingo)
+    def push_trace(resname):
+        rgio.trace.append(resname)
 
 
     @staticmethod
     def pop_trace():
         rgio.trace.pop()
-        # settingo =rgio.trace[key].pop()
-#        pass
     @staticmethod
     def catch_start():
         rgio.buf = ""
@@ -135,6 +160,13 @@ class rgio:
             print(msg)
             _logger.info(msg)
 
+    @staticmethod
+    def struct_out(msg):
+        tab = ""
+        for c in run_struct.trace :
+            tab = tab + "\t"
+        print(tab + msg)
+        pass
 #class uxio:
 def confirm(message):
     res = get_input_line(message + "(y/n)")

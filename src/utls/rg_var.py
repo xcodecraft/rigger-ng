@@ -25,7 +25,7 @@ class assginer :
         while True:
             try:
                 val  = getattr(utls.tpl.var.dict(),var)
-                _logger.info( "%s ==>  %s" %(val,var))
+                _logger.info("[assgin] %s:%s" %(var,val ))
                 return val
             except interface.var_undefine:
                 _logger.error( "undefine %s, in %s" %(var,self.tpl))
