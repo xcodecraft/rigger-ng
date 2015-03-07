@@ -30,6 +30,11 @@ __sys:
 
     def _resname(self):
         return self.name
+
+    def _check(self,context):
+        self._check_print(True,"system: %s" %self.name)
+        interface.control_box._check(self,context)
+
     def _info(self,context):
         rgio.struct_out("system: %s" %(self.name))
         interface.control_box._info(self,context)
@@ -45,6 +50,9 @@ class project(interface.control_box, interface.base) :
         rgio.struct_out("project: %s" %(self.name))
         interface.control_box._info(self,context)
 
+    def _check(self,context):
+        self._check_print(True,"project: %s" %self.name)
+        interface.control_box._check(self,context)
 
 class prj_main(interface.control_box, interface.base) :
     """

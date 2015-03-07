@@ -1,6 +1,7 @@
 __env:
     - !R.vars
         name: "dev"
+        prj_root : "${HOME}/devspace/rigger-ng"
 
 __prj: !R.project
        name: "rigger-ng"
@@ -9,6 +10,8 @@ __prj: !R.project
         - !R.vars
                 PRJ_NAME: "rg"
                 PRJ_KEY : "RG_UT"
+        - !R.path
+            dst: "${PRJ_ROOT}/run"
 
 
 __sys:

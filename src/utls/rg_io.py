@@ -161,9 +161,11 @@ class rgio:
             _logger.info(msg)
 
     @staticmethod
-    def struct_out(msg):
+    def struct_out(msg,level=0):
         tab = ""
         for c in run_struct.trace :
+            tab = tab + "\t"
+        for i in range(level) :
             tab = tab + "\t"
         print(tab + msg)
         pass

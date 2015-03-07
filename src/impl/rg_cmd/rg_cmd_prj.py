@@ -49,6 +49,7 @@ class info_cmd(prj_cmd_base,cmdtag_prj):
     """
     def _execute(self,rargs):
         rgio.struct_out("rg %s" %(rargs) )
+        rgio.struct_out("")
         self.runcmd(rargs,lambda x , y : x._info(y))
 
 class conf_cmd(prj_cmd_base,cmdtag_prj):

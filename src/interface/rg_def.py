@@ -100,10 +100,8 @@ class control_box(controlable):
 
 
     def _check_print(self,is_true,msg):
-        if is_true:
-            print( "%-100.100s%-20.20s-[Y]" % (msg ,self.clsname())  )
-        else:
-            print( "%-100.100s%-20.20s-[ ]" % (msg ,self.clsname())  )
+        print(msg)
+
     def _resname(self):
         tag = self.__class__.__name__
         return tag
@@ -113,14 +111,14 @@ class resource (controlable,rg_conf.base):
     def _allow(self,context):
         allowd =  self.allow_res == "ALL"  or self.allow_res == self.clsname()
         if allowd:
-            _logger.debug( "allowd resource %s ,current resouce is %s " %(self.allow_res,self._clsname()))
+            _logger.debug( "allowd resource %s ,current resouce is %s " %(self.allow_res,self._resname()))
         return  allowd
 
     def _check_print(self,is_true,msg):
         if is_true:
-            print( "%-100.100s%-20.20s-[Y]" % (msg ,self.clsname())  )
+            print( "%-100.100s%-20.20s-[Y]" % (msg ,self._resname())  )
         else:
-            print( "%-100.100s%-20.20s-[ ]" % (msg ,self.clsname())  )
+            print( "%-100.100s%-20.20s-[ ]" % (msg ,self._resname())  )
     def _resname(self):
         tag = self.__class__.__name__
         return tag

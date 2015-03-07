@@ -37,7 +37,7 @@ class vars(interface.resource):
             if re.match(r'__.+__',name):
                 continue
             name= name.upper()
-            rgio.struct_out("%s = %s" %(name,val))
+            rgio.struct_out("%s = %s" %(name,val),1)
 
 class echo(interface.resource) :
     """

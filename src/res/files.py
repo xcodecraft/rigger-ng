@@ -2,40 +2,20 @@
 # from res_base import *
 # from base     import *
 import  os , string   , logging
-import  interface
+import  interface,utls.rg_sh
 
-from utls.rg_var import  value_of
-
+from utls.rg_var import value_of
+from utls.rg_io  import rgio
+from string import Template
 _logger = logging.getLogger()
 
-# class links(interface.resource):
-#     links_map={}
-#     def __init__(self,map):
-#         self.ori_map = map
-#
-#     def _before(self,context):
-#         links_map={}
-#         for k ,v in self.ori_map.items():
-#             k=  env_exp.value(k)
-#             v=  env_exp.value(v)
-#             self.links_map[k] = v
-#     def _config(self,context):
-#         cmdtpl ="if test -L $DST ; then rm -rf  $DST ; fi ; dirname $DST | xargs mkdir -p ; ln -s  $SRC $DST"
-#         for k ,v in self.links_map.items():
-#             cmd = Template(cmdtpl).substitute(DST=k,SRC =v)
-#             self.execmd(cmd)
-#     def _check(self,context):
-#         for k ,v in self.links_map.items():
-#             self._check_print(os.path.exists(k),k);
-#
-#     def _clean(self,context):
-#         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
-#         for k ,v in self.links_map.items():
-#             cmd = Template(cmdtpl).substitute(DST=k,SRC =v)
-#             self.execmd(cmd)
+
+class shell_able:
+    def execmd(self,cmd) :
+        utls.rg_sh.shexec.execmd(cmd,tag=self.__class__.__name__)
 
 
-class link(interface.resource):
+class link(interface.resource,shell_able):
     """
     !R.link :
         dst: "/home/q/system/mysys"
@@ -100,7 +80,7 @@ class link(interface.resource):
 #         self.execmd(cmd)
 #
 
-class path(interface.resource):
+class path(interface.resource,shell_able):
     """
     建立path
     !R.path:
@@ -109,16 +89,15 @@ class path(interface.resource):
     """
     dst        = None
     keep       = False
-    chmod      = "a+w"
-    _auto_sudo  = False
+    chmod      = "o+w"
 
     def _before(self,context):
         self.paths= []
-        if not self.dst is None:
-            self.paths.append( env_exp.value(self.dst))
-        for v in self.arr:
-            v=  env_exp.value(v)
-            self.paths.append( v )
+        if self.dst is None:
+            return
+        self.dst   = value_of(self.dst)
+        self.paths = self.dst.split(',')
+
     def _checkWrite(self,dst) :
         while  True  :
             if os.path.exists(dst) :
@@ -137,13 +116,12 @@ class path(interface.resource):
                 continue
             else :
                 if not self._checkWrite(v) :
-                    if self.auto_sudo :
-                        self.sudo = True
                     if not self.sudo :
-                        raise error.rigger_exception( "%s 没有写权限（尝试sudo失败）" %(v) )
+                        raise error.rigger_exception( "%s 没有写权限" %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             self.execmd(cmd)
+
     def _check(self,context):
         for v in self.paths :
             self._check_print(os.path.exists(v),v)
@@ -156,10 +134,10 @@ class path(interface.resource):
             cmd = Template(cmdtpl).substitute(DST=v)
             self.execmd(cmd)
 
-    def _info(self):
-        if self.dst is None:
-            return ""
-        return self.dst
+    def _info(self,context):
+        rgio.struct_out("path :" )
+        for path in self.paths:
+            rgio.struct_out("%s" %path,1 )
 
     def _depend(self,m,context):
         for v in self.paths :
