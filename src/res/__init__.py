@@ -1,6 +1,3 @@
-# from impl.rg_prj import system , project, module
-# from inner import vars , echo , assert_eq
-
 import interface
 import logging
 

@@ -1,12 +1,11 @@
 #coding=utf-8
-# from res_base import *
-# from base     import *
 import  os , string   , logging
 import  interface,utls.rg_sh
 
 from utls.rg_var import value_of
 from utls.rg_io  import rgio
 from string import Template
+
 _logger = logging.getLogger()
 
 

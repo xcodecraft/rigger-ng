@@ -116,9 +116,9 @@ class resource (controlable,rg_conf.base):
 
     def _check_print(self,is_true,msg):
         if is_true:
-            print( "%-100.100s%-20.20s-[Y]" % (msg ,self._resname())  )
+            print( "\t%-100.100s%-20.20s-[Y]" % (msg ,self._resname())  )
         else:
-            print( "%-100.100s%-20.20s-[ ]" % (msg ,self._resname())  )
+            print( "\t%-100.100s%-20.20s-[ ]" % (msg ,self._resname())  )
     def _resname(self):
         tag = self.__class__.__name__
         return tag

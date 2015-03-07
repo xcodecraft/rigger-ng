@@ -11,7 +11,7 @@ __prj: !R.project
                 PRJ_NAME: "rg"
                 PRJ_KEY : "RG_UT"
         - !R.path
-            dst: "${PRJ_ROOT}/run"
+            dst: "${PRJ_ROOT}/run,${PRJ_ROOT}/run/demo"
 
 
 __sys:

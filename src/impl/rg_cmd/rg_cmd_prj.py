@@ -2,20 +2,21 @@
 from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import utls.rg_var , interface
-from impl.rg_prj import *
+import res
+# from impl.rg_prj import *
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
         self.env = []
         if argv.has_key('-e') :
             self.env = argv['-e'].split(',')
-        else:
+        if rargs.prj.env :
             self.env = rargs.prj.env.split(',')
 
         self.sys = []
         if argv.has_key('-s') :
             self.sys = argv['-s'].split(',')
-        else:
+        if rargs.prj.sys:
             self.sys = rargs.prj.sys.split(',')
 
     def runcmd(self,rargs,fun) :
@@ -27,7 +28,7 @@ class prj_cmd_base :
         prj_data    = data['__prj']
         sys_data    = data['__sys']
 
-        main  = impl.rg_prj.prj_main()
+        main  = res.prj_main()
         if len(self.env) == 0 :
             return
         for env in self.env :
@@ -59,6 +60,12 @@ class conf_cmd(prj_cmd_base,cmdtag_prj):
     """
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x , y : x._config(y))
+
+class reconf_cmd(conf_cmd):
+    """
+    rg reconf
+    """
+    pass
 
 class start_cmd(prj_cmd_base,cmdtag_prj):
     """
