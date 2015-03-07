@@ -143,13 +143,11 @@ class xmodule(interface.control_box,interface.base) :
         interface.control_box._info(self,context)
 
 
-class env(interface.resource):
+class env(vars):
     """
 
     """
     def _resname(self):
-        if hasattr(self,'name'):
-            return  "%s(%s)" %(self._clsname(),self.name)
-        return self._clsname()
+        return  "%s(%s)" %(self.__class__.__name__,self.name)
     def _info(self,context):
         rgio.struct_out("env: %s" %(self.name))

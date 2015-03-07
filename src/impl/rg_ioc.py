@@ -7,7 +7,7 @@ import utls.rg_io
 _logger = logging.getLogger()
 
 def setup() :
-    interface.regist_res("project,system,xmodule,prj_main" , "res.inner")
+    interface.regist_res("env,project,system,xmodule,prj_main" , "res.inner")
     interface.regist_res("mysql"                           , "res.mysql")
     interface.regist_res("echo,vars,assert_eq"             , "res.inner")
 

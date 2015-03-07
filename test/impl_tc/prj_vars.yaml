@@ -1,5 +1,5 @@
 __env:
-    - !R.vars
+    - !R.env
         name: "env1"
         val_1 : "A"
 
