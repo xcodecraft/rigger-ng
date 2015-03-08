@@ -320,7 +320,7 @@ class file_tpl(interface.resource,shell_able):
         return  self.dst
 
     def _check(self,context):
-        self.check_print(os.path.exists(self.dst),self.dst)
+        self._check_print(os.path.exists(self.dst),self.dst)
 
     def _clean(self,context):
         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "

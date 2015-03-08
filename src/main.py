@@ -40,8 +40,6 @@ if __name__ == '__main__':
 
         rargs  = impl.rg_args.run_args.load(rars_file)
         rargs.parse_update(parser)
-        rargs.prj.conf = "_rg/prj.yaml"
-        # rargs.rg.conf  = "_rg/os.yaml"
         impl.rg_run.run_rigger(rargs,parser.argv)
         rargs.save(rars_file)
 

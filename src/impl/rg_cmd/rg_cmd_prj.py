@@ -3,8 +3,9 @@ from utls.rg_io import rgio
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import utls.rg_var , interface
 import res
-# from impl.rg_prj import *
+import logging
 
+_logger = logging.getLogger()
 class prj_cmd_base :
     def _config(self,argv,rargs):
         self.env = []
@@ -27,9 +28,11 @@ class prj_cmd_base :
         if data.has_key('_env') and data.has_key('_prj') and data.has_key('_sys') :
             return True
         raise interface.rigger_exception('project data maybe no _env,_prj,or _sys')
+
     def runcmd(self,rargs,fun) :
         import impl.rg_yaml,copy
         loader = impl.rg_yaml.conf_loader(rargs.prj.conf)
+        _logger.info("load prj conf: %s" %(rargs.prj.conf))
         data   = loader.load_data("!R","res")
         prj_cmd_base.check_data(data)
 

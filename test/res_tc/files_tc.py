@@ -26,7 +26,7 @@ class files_tc(base.tc_tools.rigger_tc):
     def test_tpl(self) :
         mock = base.tc_tools.res_mock()
         with   mock :
-            impl.rg_run.run_cmd("conf,clean  -s tpl -e dev",self.conf)
+            impl.rg_run.run_cmd("conf,check,clean  -s tpl -e dev",self.conf)
         # print(mock.cmds)
         expect= """
         chmod o+w ${PRJ_ROOT}/test/data/files/prj_use.yaml

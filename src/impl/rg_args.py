@@ -71,8 +71,8 @@ class run_args :
     def parse_update(self,parser) :
         argv          = parser.argv
         self.prj.cmds = parser.cmds
-        if argv.has_key('-c') :
-            self.rg.conf  = argv['-c']
+        if argv.has_key('-cprj') :
+            self.prj.conf  = argv['-c']
         if argv.has_key('-z'):
             self.rg.user  = argv['-z']
         if argv.has_key('-e'):
@@ -82,13 +82,15 @@ class run_args :
         if argv.has_key('-s'):
             self.prj.sys = argv['-s']
 
+
     def __str__(self):
         info = str(self.prj)
         return  info
     @staticmethod
     def help():
         # rgio.prompt("rg  <dev cmd>   [-m <message>] ")
-        rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
+        rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>] [-cprj <prj.yaml>]")
+        # rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
         # rgio.prompt("rg  <pub cmd>   [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         # rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         rgio.prompt("\ncommon args : [-d <level> ]\n")
