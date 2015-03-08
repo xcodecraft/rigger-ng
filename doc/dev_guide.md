@@ -35,3 +35,34 @@ rg_logger.debug()
 ```
 
 ### 添加res
+
+可以实现的接口
+```python
+  class controlable :
+      def _before(self,context):
+          pass
+      def _after(self,context):
+          pass
+      def _start(self,context):
+          pass
+      def _stop(self,context):
+          pass
+      def _reload(self,context):
+          pass
+      def _config(self,context):
+          pass
+      def _data(self,context):
+          pass
+      def _check(self,context):
+          pass
+      def _clean(self,context):
+          pass
+      def _info(self,context):
+          pass
+```
+
+继承于 
+``` 
+class path(interface.resource,shell_able):
+        pass
+```
