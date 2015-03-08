@@ -35,12 +35,16 @@
 资源运行结构: 
    
   系统 X 在 A 环境运行:
+  ```
   rg start -s X -e A
   env: A  -> project  -> system: X
+  ```
    
   系统 X 在 A+debug 环境运行:
+  ```
   rg start -s X -e A,debug
   env: A  -> env:debug -> project -> system: X  
+  ```
    
 ## 约定
 _name  名称
