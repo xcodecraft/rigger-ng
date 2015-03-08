@@ -1,5 +1,5 @@
 # import types , re , os , string ,  getopt , pickle ,yaml , logging , new , sys
-import logging , re, os
+import logging , re, os,sys
 import tpl_action,tpl_var
 _logger = logging.getLogger()
 class tplstatus:
@@ -37,7 +37,7 @@ class tplworker:
         _logger.debug("src: %s dst: %s" %(src,dst))
         if not os.path.exists(src):
             raise inf.rigger_exception("tpl src not found : %s" %src)
-        self.ng = tplngin( src + "/_tpl.yaml")
+        self.ng = engine( src + "/_tpl.yaml")
         #process single file
         if os.path.isfile(src):
             self.proc_single_file(self.src, self.dst)

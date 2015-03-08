@@ -259,23 +259,74 @@ class path(interface.resource,shell_able):
 #         m._check_writeable(self.dst)
 #
 #
-# class tpl(resource,restag_file):
-#     _dst = ""
-#     _tpl = ""
-#     def _before(self,context):
-#         self.dst  = env_exp.value(self.dst)
-#         self.tpl  = env_exp.value(self.tpl)
-#
-#     def _config(self,context):
-#         import tpl.tplngin
-#         tpl.tplngin.tplworker().execute(self.tpl,self.dst)
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst)
-#         self.execmd(cmd)
-#     def _info(self):
-#         return self.dst
-#     def _depend(self,m,context):
-#         m._check_writeable(self.dst)
+class intertpl(interface.resource,shell_able):
+    """
+    !R.tpl
+       tpl = "${PRJ_ROOT}/conf/used/ngx.conf"
+       dst = "${PRJ_ROOT}/conf/tpl/ngx.conf"
+    """
+    dst = ""
+    tpl = ""
+    def _before(self,context):
+        self.dst  = value_of(self.dst)
+        self.tpl  = value_of(self.tpl)
+
+    def _config(self,context):
+        import utls.tpl
+        utls.tpl.tplworker().execute(self.tpl,self.dst)
+
+    def _check(self,context):
+        self._check_print(os.path.exists(self.dst),self.dst)
+
+    def _clean(self,context):
+        cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
+        cmd = Template(cmdtpl).substitute(DST=self.dst)
+        self.execmd(cmd)
+
+    def _info(self):
+        return self.dst
+    def _depend(self,m,context):
+        m._check_writeable(self.dst)
+
+class tpl_builder:
+    @staticmethod
+    def build(tplfile,dstfile):
+        tpl=open(tplfile, 'r')
+        dst=open(dstfile, 'w')
+        for line in tpl:
+            data= value_of(line)
+            dst.write(data)
+
+class file_tpl(interface.resource,shell_able):
+    """
+    !R.tpl
+       tpl = "${PRJ_ROOT}/conf/used/ngx.conf"
+       dst = "${PRJ_ROOT}/conf/tpl/ngx.conf"
+    """
+    dst    = ""
+    tpl    = ""
+    mod    = "o+w"
+
+    def _before(self,context):
+        self.dst        = value_of(self.dst)
+        self.tpl        = value_of(self.tpl)
+        self.mod        = value_of(self.mod)
+
+    def _config(self,context):
+        tpl_builder.build(self.tpl,self.dst)
+        self.execmd("chmod %s %s " %(self.mod, self.dst))
+
+    def _path(self,context):
+        return  self.dst
+
+    def _check(self,context):
+        self.check_print(os.path.exists(self.dst),self.dst)
+
+    def _clean(self,context):
+        cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
+        cmd = Template(cmdtpl).substitute(DST=self.dst)
+        self.execmd(cmd)
+    def _info(self,context):
+        rgio.struct_out("file_tpl")
+        rgio.struct_out("tpl: %s" %self.tpl ,1)
+        rgio.struct_out("dst: %s" %self.dst ,1)

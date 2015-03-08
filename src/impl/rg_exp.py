@@ -117,14 +117,6 @@ class remote_op:
         cmd = Template(cmd).substitute(FILE=file,SVR=self.svr,USER=self.user,DST=dist)
         rg_sh.shexec.execmd(cmd.replace("#USER","$USER"))
 
-class tpl_builder:
-    @staticmethod
-    def build(tplfile,dstfile):
-        tpl=open(tplfile, 'r')
-        dst=open(dstfile, 'w')
-        for line in tpl:
-            data= env_exp.value(line)
-            dst.write(data)
 
 
 

@@ -17,9 +17,5 @@ _sys:
         _res:
             - !R.path
                 dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"
-    -  !R.system
-        _name: "tpl"
-        _res:
-            - !R.file_tpl
-                tpl: "${PRJ_ROOT}/test/data/files/prj_tpl.yaml"
-                dst: "${PRJ_ROOT}/test/data/files/prj_use.yaml"
+            - !R.tpl
+                dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"

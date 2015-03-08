@@ -11,7 +11,7 @@ def setup() :
     interface.regist_res("mysql"                               , "res.mysql")
     interface.regist_res("echo,vars,assert_eq"                 , "res.inner")
 
-    interface.regist_res("link,path"                           , "res.files")
+    interface.regist_res("link,path,intertpl,file_tpl"                       , "res.files")
 
     interface.regist_cmd("check,clean,info"                    , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,data" , "impl.rg_cmd.rg_cmd_prj")
