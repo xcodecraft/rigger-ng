@@ -2,7 +2,6 @@
 import types , re , os , string ,  getopt , pickle , logging
 from utls.rg_io import rgio
 
-_logger = logging.getLogger()
 class rg_cmd:
     def _config(self,argv,rargs):
         pass

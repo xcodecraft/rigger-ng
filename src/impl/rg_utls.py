@@ -5,7 +5,6 @@ from string  import Template
 import inner
 from utls.rg_io import *
 
-_logger = logging.getLogger()
 
 def get_key(prompt,context = None):
     if  context is not None and hasattr(context,'answer') and len(context.answer) >=1 :

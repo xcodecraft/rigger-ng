@@ -1,11 +1,11 @@
 #coding=utf8
 import sys,re,os,string,logging  , setting
 import setting , rg_sh
+from utls.rg_io import  rg_logger
 # import rg_sh
 # from string  import Template
 # import inner
 
-_logger = logging.getLogger()
 
 # def get_key(prompt,context = None):
 #     if  context is not None and hasattr(context,'answer') and len(context.answer) >=1 :
@@ -50,49 +50,14 @@ class assginer :
         while True:
             try:
                 val  = getattr(tpl.tplvar.var(),var)
-                _logger.info("[assgin] %s:%s" %(var,val ))
+                rg_logger.info("[assgin] %s:%s" %(var,val ))
                 return val
             except tpl.tplvar.var_undefine:
                 if self.unfound_call == None or self.unfound_call(var) == None:
                     val = tpl.tplvar.undefine_value(var)
                     print( "undefine %s, in %s" %(var,self.host_str))
-                    _logger.error( "undefine %s, in %s" %(var,self.host_str))
+                    rg_logger.error( "undefine %s, in %s" %(var,self.host_str))
                     return val
-
-class env_exp:
-
-    @staticmethod
-    def funval_of_match (match):
-        fun= "inner." + str(match.group(0))
-        res= eval(fun)
-        return str(res)
-
-    @staticmethod
-    def var_proc(string,unfound_call=None):
-        tpl     = string
-        var_exp = re.compile(r'\$\{(\w+)\}')
-        ass     = assginer(tpl,unfound_call)
-        _logger.info("env_exp.var_proc : %s" %tpl  )
-        while var_exp.search(tpl):
-            if setting.debug >=  2 :
-                rgio.simple_out("env.var(%s)" %tpl)
-            tpl = var_exp.sub(ass.assgin_value,tpl)
-        return tpl
-
-    @staticmethod
-    def fun_proc(string):
-        exp=re.compile(r'(_\w+_\(.*\))')
-        try:
-            new = exp.sub(env_exp.funval_of_match,str(string))
-            return new
-        except:
-            print("fun:" + string) ;
-            raise
-
-    @staticmethod
-    def value(exp,unfound_call = None):
-        tmp_exp = env_exp.var_proc(str(exp),unfound_call)
-        return env_exp.fun_proc(tmp_exp)
 
 
 

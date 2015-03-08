@@ -1,8 +1,7 @@
 #coding=utf-8
 import string , logging, sys
 import interface, rg_args, rg_ioc
-
-_logger = logging.getLogger()
+from utls.rg_io import rg_logger
 
 def run_cmd(cmdstr,yaml_conf=None) :
     rargs  = rg_args.run_args()
@@ -23,7 +22,7 @@ def run_rigger(rargs, argv) :
         obj = rg_ioc.ins_cmd(cmd)
         if obj is None :
             raise  interface.rigger_exception( "unfound '%s' cmd instance" %cmd)
-        _logger.info("cmd: %s , cmd_ins : %s" %(cmd,obj.__class__.__name__))
+        rg_logger.info("cmd: %s , cmd_ins : %s" %(cmd,obj.__class__.__name__))
         obj._config(argv,rargs)
         obj._execute(rargs)
 

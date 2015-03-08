@@ -1,11 +1,9 @@
 #coding=utf8
-from utls.rg_io import rgio
+from utls.rg_io import rgio , rg_logger
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import utls.rg_var , interface
 import res
-import logging
 
-_logger = logging.getLogger()
 class prj_cmd_base :
     def _config(self,argv,rargs):
         self.env = []
@@ -32,7 +30,7 @@ class prj_cmd_base :
     def runcmd(self,rargs,fun) :
         import impl.rg_yaml,copy
         loader = impl.rg_yaml.conf_loader(rargs.prj.conf)
-        _logger.info("load prj conf: %s" %(rargs.prj.conf))
+        rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
         data   = loader.load_data("!R","res")
         prj_cmd_base.check_data(data)
 
@@ -49,14 +47,16 @@ class prj_cmd_base :
                     main.append(env_obj)
         main.append(prj_data)
         context = interface.run_context()
-        interface.control_call(main,fun,context)
+        # interface.control_call(main,fun,context)
 
-        if len(self.sys) == 0 :
-            return
-        for sys in self.sys :
-            for sysobj in   sys_data :
-                if  sysobj._name ==  sys :
-                    interface.control_call(sysobj,fun,context)
+        if len(self.sys) > 0 :
+            for sys in self.sys :
+                for sysobj in   sys_data :
+                    if  sysobj._name ==  sys :
+                        main.append(sysobj)
+                    # interface.control_call(sysobj,fun,context)
+
+        interface.control_call(main,fun,context,"unknow")
 
 class info_cmd(prj_cmd_base,cmdtag_prj):
     """

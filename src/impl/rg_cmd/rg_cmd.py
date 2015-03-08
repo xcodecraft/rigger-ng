@@ -1,14 +1,13 @@
 #coding=utf8
 import  os,re ,logging
 
-from utls.rg_io  import rgio,export_objdoc
+from utls.rg_io  import rgio,export_objdoc ,rg_logger
 from rg_cmd_base import rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 
 import res,  interface
 
 import impl.rg_dev , impl.rg_ioc
 
-_logger = logging.getLogger()
 
 
 
@@ -18,6 +17,7 @@ class help_cmd(rg_cmd,cmdtag_rg):
         ver  =  impl.rg_dev.version(os.path.join(rargs.rg.root ,"version.txt" ))
         rgio.simple_out("rigger-ng ver: " + ver.info())
         cmdlen = len(rargs.prj.cmds)
+        print(rargs.prj.cmds)
         if cmdlen == 1 :
             rargs.help()
             impl.rg_ioc.list_cmd()
@@ -60,7 +60,7 @@ class help_cmd(rg_cmd,cmdtag_rg):
             #     else:
             #         list_tpl()
             # else:
-            #     _logger.debug("subcmd:%s" %subcmd)
+            #     rg_logger.debug("subcmd:%s" %subcmd)
             #     subcmd = ins_cmd(subcmd)
             #     subcmd._usage()
 
@@ -390,7 +390,7 @@ class help_cmd(rg_cmd,cmdtag_rg):
 # def ins_cmd(cmdkey):
 #     rg_cmds = dir(cmds)
 #     find_tag = cmdkey + "_cmd"
-#     _logger.debug("input cmd: %s", find_tag)
+#     rg_logger.debug("input cmd: %s", find_tag)
 #     if find_tag in rg_cmds:
 #         exec "cmdobj = %s() " % find_tag
 #         return cmdobj
@@ -399,7 +399,7 @@ class help_cmd(rg_cmd,cmdtag_rg):
 # def ins_remote_cmd(cmd):
 #     rg_cmds = dir(cmds)
 #     find_tag = cmd + "_bcmd"
-#     _logger.debug("input cmd: %s", find_tag)
+#     rg_logger.debug("input cmd: %s", find_tag)
 #     if find_tag in rg_cmds:
 #         exec "cmdobj = %s() " % find_tag
 #         return cmdobj

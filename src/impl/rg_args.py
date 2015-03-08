@@ -1,9 +1,9 @@
 #coding=utf8
-import types , re , os , string ,  getopt , pickle ,yaml  , logging
+import types , re , os , string ,  getopt , pickle ,yaml
 import setting
-from utls.rg_io import rgio
+from utls.rg_io import rgio ,rg_logger
+import logging
 
-_logger = logging.getLogger()
 
 
 class rg_args :
@@ -48,7 +48,7 @@ class run_args :
             raise badargs_exception("æ²¡æå½ä»¤")
         if len(self.cmds) > 1:
             self.subcmd = self.cmds[1:]
-            _logger.info("subcmd: %s" %self.subcmd)
+            rg_logger.info("subcmd: %s" %self.subcmd)
         cmdarr = self.cmds[0].split(',')
         return cmdarr
 
@@ -71,7 +71,7 @@ class run_args :
     def parse_update(self,parser) :
         argv          = parser.argv
         self.prj.cmds = parser.cmds
-        if argv.has_key('-cprj') :
+        if argv.has_key('-c') :
             self.prj.conf  = argv['-c']
         if argv.has_key('-z'):
             self.rg.user  = argv['-z']
@@ -89,7 +89,7 @@ class run_args :
     @staticmethod
     def help():
         # rgio.prompt("rg  <dev cmd>   [-m <message>] ")
-        rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>] [-cprj <prj.yaml>]")
+        rgio.prompt("rg  <svc cmd> [-e <env>] [-s <system>] [-c <prj.yaml>]")
         # rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
         # rgio.prompt("rg  <pub cmd>   [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         # rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
@@ -112,7 +112,7 @@ class rarg_parser:
             if not self.argv.has_key('-v') :
                 self.argv['-v'] = saved.vars_def
             else:
-                _logger.info ( "old prior vars ignore:  %s " % rargs.vars_def)
+                rg_logger.info ( "old prior vars ignore:  %s " % rargs.vars_def)
 
 
     def parse(self,argv):

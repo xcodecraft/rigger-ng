@@ -96,7 +96,7 @@ class tpl_var(utls.pattern.singleton):
         # self.base = self.impl
 
     def import_dict(self,def_dict):
-        def_dict = upper_dict(def_dict)
+        def_dict  = upper_dict(def_dict)
         self.impl = prior_dict(self.impl,def_dict)
 
     def import_str(self,asstr):

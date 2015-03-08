@@ -1,10 +1,11 @@
 #coding=utf-8
 import logging
 import interface
-_logger = logging.getLogger()
 
-from utls.rg_var import  value_of
-from utls.rg_sh  import  shexec
+
+from utls.rg_io  import rg_logger
+from utls.rg_var import value_of
+from utls.rg_sh  import shexec
 from string import *
 
 class mysql(interface.resource):

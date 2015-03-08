@@ -2,7 +2,6 @@
 import string , logging , re
 import rg_err
 
-_logger = logging.getLogger()
 
 class base:
 

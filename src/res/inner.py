@@ -1,9 +1,8 @@
 #coding=utf8
 import re,logging
 import interface,utls.rg_var
-from utls.rg_io import  rgio , run_struct
+from utls.rg_io import  rgio , run_struct,rg_logger
 
-_logger = logging.getLogger()
 class vars(interface.resource):
     """
     å®ä¹ç¯å¢åé:
@@ -87,15 +86,14 @@ __sys:
                 value : "${TEST_CASE}"
     """
     def _before(self,context):
-
-        _logger.info("system:%s start" %(self._name))
+        rg_logger.info("system:%s start" %(self._name))
         utls.rg_var.keep()
         context.keep()
 
     def _after(self,context):
         context.rollback()
         utls.rg_var.rollback()
-        _logger.info("system:%s end" %(self._name))
+        rg_logger.info("system:%s end" %(self._name))
 
     def _resname(self):
         return self._name
@@ -123,6 +121,12 @@ class project(interface.control_box, interface.base) :
         self._check_print(True,"project: %s" %self._name)
         interface.control_box._check(self,context)
 
+    def _before(self,context):
+        rg_logger.info("project: start")
+
+    def _after(self,context):
+        rg_logger.info("project: end")
+
 class prj_main(interface.control_box, interface.base) :
     """
     """
@@ -130,6 +134,11 @@ class prj_main(interface.control_box, interface.base) :
     def _info(self,context):
         rgio.struct_out("rg: %s" %(self._name))
         interface.control_box._info(self,context)
+    def _before(self,context):
+        rg_logger.info("main: start")
+
+    def _after(self,context):
+        rg_logger.info("main: end")
 
 class xmodule(interface.control_box,interface.base) :
     """
@@ -151,3 +160,10 @@ class env(vars):
         return  "%s(%s)" %(self.__class__.__name__,self._name)
     def _info(self,context):
         rgio.struct_out("env: %s" %(self._name))
+
+    def _before(self,context):
+        rg_logger.info("env:%s start" %(self._name))
+        vars._before(self,context)
+
+    def _after(self,context):
+        rg_logger.info("env:%s end" %(self._name))

@@ -3,10 +3,10 @@ import  os , string   , logging
 import  interface,utls.rg_sh
 
 from utls.rg_var import value_of
-from utls.rg_io  import rgio
+from utls.rg_io  import rgio ,rg_logger
+
 from string import Template
 
-_logger = logging.getLogger()
 
 
 class shell_able:
@@ -38,8 +38,8 @@ class link(interface.resource,shell_able):
 
     def _clean(self,context):
         self._check_print(os.path.exists(self.dst),self.dst);
-        cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi ; "
-        cmd = Template(cmdtpl).substitute(DST=self.dst)
+        cmdtpl = "if test -e $DST ; then rm -rf  $DST ; fi ; "
+        cmd    = Template(cmdtpl).substitute(DST=self.dst)
         self.execmd(cmd)
 
     def _check(self,context):
@@ -116,7 +116,7 @@ class path(interface.resource,shell_able):
             else :
                 if not self._checkWrite(v) :
                     if not self.sudo :
-                        raise error.rigger_exception( "%s æ²¡æåæé" %(v) )
+                        raise interface.rigger_exception( "%s 不可访问" %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             self.execmd(cmd)
@@ -194,7 +194,7 @@ class path(interface.resource,shell_able):
 #                 if not os.path.exists(src_path) :
 #                     warn_msg = "file_merge %s not exists" %src_path
 #                     print("warning:  %s" %warn_msg)
-#                     _logger.warning(warn_msg)
+#                     rg_logger.warning(warn_msg)
 #                     continue
 #                 with open(src_path,'r') as srcfile :
 #                     for line in srcfile:

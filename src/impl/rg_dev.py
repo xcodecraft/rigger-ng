@@ -1,9 +1,9 @@
 #coding=utf8
-import re , os , sys,   logging, time
+import re , os , sys,    time
 import utls.pattern
 
+from utls.rg_io import rgio
 
-_logger = logging.getLogger()
 
 class work_env (utls.pattern.singleton):
     def __init__(self):
