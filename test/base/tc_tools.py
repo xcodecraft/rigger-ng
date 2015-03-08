@@ -58,9 +58,9 @@ class rigger_tc(unittest.TestCase):
         return out
 
     def assertMacroEqual(self,first,second):
-        # os.environ['PRJ_ROOT'] = path_of_prj("")
-        fst_arr  = self.macro_data(first.split('\n'))
-        sec_arr  = self.macro_data(second.split('\n'))
+        self.maxDiff = 4096
+        fst_arr      = self.macro_data(first.split('\n'))
+        sec_arr      = self.macro_data(second.split('\n'))
         self.assertListEqual(fst_arr,sec_arr)
     #
     # def assertFileEqual(self,first,second):

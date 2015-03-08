@@ -79,8 +79,8 @@ class system (interface.control_box,interface.base):
     """
 __sys:
     -  !R.system
-        name: "test"
-        res:
+        _name: "test"
+        _res:
             - !R.vars
                     TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
             - !R.echo
@@ -88,24 +88,24 @@ __sys:
     """
     def _before(self,context):
 
-        _logger.info("system:%s start" %(self.name))
+        _logger.info("system:%s start" %(self._name))
         utls.rg_var.keep()
         context.keep()
 
     def _after(self,context):
         context.rollback()
         utls.rg_var.rollback()
-        _logger.info("system:%s end" %(self.name))
+        _logger.info("system:%s end" %(self._name))
 
     def _resname(self):
-        return self.name
+        return self._name
 
     def _check(self,context):
-        self._check_print(True,"system: %s" %self.name)
+        self._check_print(True,"system: %s" %self._name)
         interface.control_box._check(self,context)
 
     def _info(self,context):
-        rgio.struct_out("system: %s" %(self.name))
+        rgio.struct_out("system: %s" %(self._name))
         interface.control_box._info(self,context)
 
 class project(interface.control_box, interface.base) :
@@ -116,19 +116,19 @@ class project(interface.control_box, interface.base) :
         tag = self.__class__.__name__
         return tag
     def _info(self,context):
-        rgio.struct_out("project: %s" %(self.name))
+        rgio.struct_out("project: %s" %(self._name))
         interface.control_box._info(self,context)
 
     def _check(self,context):
-        self._check_print(True,"project: %s" %self.name)
+        self._check_print(True,"project: %s" %self._name)
         interface.control_box._check(self,context)
 
 class prj_main(interface.control_box, interface.base) :
     """
     """
-    name = "main"
+    _name = "main"
     def _info(self,context):
-        rgio.struct_out("rg: %s" %(self.name))
+        rgio.struct_out("rg: %s" %(self._name))
         interface.control_box._info(self,context)
 
 class xmodule(interface.control_box,interface.base) :
@@ -139,7 +139,7 @@ class xmodule(interface.control_box,interface.base) :
         tag = self.__class__.__name__
         return tag
     def _info(self,context):
-        rgio.struct_out("xmodule: %s" %(self.name))
+        rgio.struct_out("xmodule: %s" %(self._name))
         interface.control_box._info(self,context)
 
 
@@ -148,6 +148,6 @@ class env(vars):
 
     """
     def _resname(self):
-        return  "%s(%s)" %(self.__class__.__name__,self.name)
+        return  "%s(%s)" %(self.__class__.__name__,self._name)
     def _info(self,context):
-        rgio.struct_out("env: %s" %(self.name))
+        rgio.struct_out("env: %s" %(self._name))

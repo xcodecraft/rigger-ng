@@ -1,20 +1,19 @@
-__env:
+_env:
     - !R.env
-        name: "dev"
+        _name: "dev"
 
-__prj: !R.project
-       name: "rigger-test"
-       key:  "RG_UT"
-       res:
+_prj: !R.project
+       _name: "rigger-test"
+       _res:
         - !R.vars
                 PRJ_NAME: "RG_UT"
                 PRJ_KEY : "RG_UT"
                 PRJ_ROOT: "${HOME}/devspace/rigger-ng"
 
 
-__sys:
+_sys:
     -  !R.system
-        name: "mysql"
-        res:
+        _name: "mysql"
+        _res:
             - !R.mysql
                 init: "${HOME}/devspace/rigger-ng/test/data/init.sql"

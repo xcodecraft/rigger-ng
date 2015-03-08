@@ -1,12 +1,11 @@
-__env:
+_env:
     - !R.env
-        name: "env1"
+        _name: "env1"
         val_1 : "A"
 
-__prj: !R.project
-       name: "rigger-test"
-       key:  "RG_UT"
-       res:
+_prj: !R.project
+       _name: "rigger-test"
+       _res:
         - !R.assert_eq
             value  : "${VAL_1}"
             expect : "A"
@@ -19,10 +18,10 @@ __prj: !R.project
             expect : "B"
 
 
-__sys:
+_sys:
     -  !R.system
-        name: "test1"
-        res:
+        _name: "test1"
+        _res:
             - !R.assert_eq
                 value  : "${VAL_1}"
                 expect : "B"
@@ -36,8 +35,8 @@ __sys:
                 value  : "${VAL_1}"
                 expect : "C1"
     -  !R.system
-        name: "test2"
-        res:
+        _name: "test2"
+        _res:
             - !R.assert_eq
                 value  : "${VAL_1}"
                 expect : "B"

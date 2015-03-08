@@ -1,11 +1,10 @@
 __env:
     - !R.env
-        name: "dev"
+        _name: "dev"
 
 __prj: !R.project
-       name: "rigger-test"
-       key:  "RG_UT"
-       res:
+       _name: "rigger-test"
+       _res:
         - !R.vars
                 PRJ_NAME: "RG_UT"
                 PRJ_KEY : "RG_UT"
@@ -13,8 +12,8 @@ __prj: !R.project
 
 __sys:
     -  !R.system
-        name: "test"
-        res:
+        _name: "test"
+        _res:
             - !R.vars
                     TEST_NAME: "${HOME}/devspace/pylon_rigger"
                     APP_SYS:  "test"

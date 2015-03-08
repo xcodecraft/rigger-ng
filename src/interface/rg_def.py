@@ -53,10 +53,10 @@ def control_call(res,fun,context) :
 class control_box(controlable):
 
     def __init__(self):
-        self.res = []
+        self._res = []
 
     def items_call(self,fun,context):
-        for r in self.res :
+        for r in self._res :
             control_call(r,fun,context)
 
     def _start(self,context):
@@ -94,9 +94,9 @@ class control_box(controlable):
     def _allow(self,context):
         return True
     def append(self,item):
-        self.res.append(item)
+        self._res.append(item)
     def push(self,item):
-        self.res.insert(0,item)
+        self._res.insert(0,item)
 
 
     def _check_print(self,is_true,msg):

@@ -19,29 +19,40 @@ class prj_cmd_base :
         if rargs.prj.sys:
             self.sys = rargs.prj.sys.split(',')
 
+
+    @staticmethod
+    def check_data(data):
+        if data is None :
+            raise interface.rigger_exception('no project yaml data')
+        if data.has_key('_env') and data.has_key('_prj') and data.has_key('_sys') :
+            return True
+        raise interface.rigger_exception('project data maybe no _env,_prj,or _sys')
     def runcmd(self,rargs,fun) :
         import impl.rg_yaml,copy
         loader = impl.rg_yaml.conf_loader(rargs.prj.conf)
         data   = loader.load_data("!R","res")
+        prj_cmd_base.check_data(data)
 
-        env_data    = data['__env']
-        prj_data    = data['__prj']
-        sys_data    = data['__sys']
+        env_data    = data['_env']
+        prj_data    = data['_prj']
+        sys_data    = data['_sys']
 
         main  = res.prj_main()
         if len(self.env) == 0 :
             return
         for env in self.env :
             for env_obj  in env_data :
-                if env_obj.name == env :
+                if env_obj._name == env :
                     main.append(env_obj)
         main.append(prj_data)
         context = interface.run_context()
         interface.control_call(main,fun,context)
 
+        if len(self.sys) == 0 :
+            return
         for sys in self.sys :
             for sysobj in   sys_data :
-                if  sysobj.name ==  sys :
+                if  sysobj._name ==  sys :
                     interface.control_call(sysobj,fun,context)
 
 class info_cmd(prj_cmd_base,cmdtag_prj):

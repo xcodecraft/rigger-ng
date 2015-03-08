@@ -36,4 +36,4 @@ class base:
 
     def __getattr__(self,key):
         cls_name = self.__class__.__name__
-        raise rg_err.rigger_exception("'%s' not this %s,%s attr" %(cls_name,key,key))
+        raise rg_err.rigger_exception("'%s' not this '%s' attr" %(cls_name,key))

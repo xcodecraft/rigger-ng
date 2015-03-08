@@ -1,23 +1,19 @@
-__env:
+_env:
     - !R.env
-        name: "dev"
+        _name: "dev"
         prj_root : "${HOME}/devspace/rigger-ng"
 
-__prj: !R.project
-       name: "rigger-ng"
-       key:  "rg-ng"
-       res:
-        - !R.vars
-                PRJ_NAME: "rg"
-                PRJ_KEY : "RG_UT"
+_prj: !R.project
+       _name: "rigger-ng"
+       _res:
         - !R.path
             dst: "${PRJ_ROOT}/run,${PRJ_ROOT}/run/demo"
 
 
-__sys:
+_sys:
     -  !R.system
-        name: "test"
-        res:
+        _name: "test"
+        _res:
             - !R.vars
                     TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
             - !R.echo

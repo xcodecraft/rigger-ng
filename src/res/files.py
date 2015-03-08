@@ -81,7 +81,7 @@ class link(interface.resource,shell_able):
 
 class path(interface.resource,shell_able):
     """
-    建立path
+    å»ºç«path
     !R.path:
         dst: "/home/q/system/mysys/"
         keep: True
@@ -116,7 +116,7 @@ class path(interface.resource,shell_able):
             else :
                 if not self._checkWrite(v) :
                     if not self.sudo :
-                        raise error.rigger_exception( "%s 没有写权限" %(v) )
+                        raise error.rigger_exception( "%s æ²¡æåæé" %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             self.execmd(cmd)
@@ -128,7 +128,7 @@ class path(interface.resource,shell_able):
     def _clean(self,context):
         if self.keep :
             return
-        cmdtpl ="if  test -e $DST ; then rm -rf  $DST ; fi ;  "
+        cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi ;  "
         for v in self.paths :
             cmd = Template(cmdtpl).substitute(DST=v)
             self.execmd(cmd)
@@ -144,7 +144,7 @@ class path(interface.resource,shell_able):
 #
 # class file_merge(resource,restag_file):
 #     """
-#     文件合并,把src目录下，符合filter的文件内容合并到src文件
+#     æä»¶åå¹¶,æsrcç®å½ä¸ï¼ç¬¦åfilterçæä»¶åå®¹åå¹¶å°srcæä»¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
@@ -170,7 +170,7 @@ class path(interface.resource,shell_able):
 #                     raise error.rigger_exception("path not exists: %s" %src)
 #                 os.path.walk(src,self.proc_file,None)
 #         if os.getuid() == os.stat(self.dst).st_uid :
-#             # 其它人可以进行修改；
+#             # å¶å®äººå¯ä»¥è¿è¡ä¿®æ¹ï¼
 #             self.execmd("chmod %s %s " %(self.mod, self.dst))
 #
 #
@@ -202,7 +202,7 @@ class path(interface.resource,shell_able):
 #
 # class merge(resource,restag_file):
 #     """
-#     文件合并,把src目录下，符合filter的文件内容合并到src文件
+#     æä»¶åå¹¶,æsrcç®å½ä¸ï¼ç¬¦åfilterçæä»¶åå®¹åå¹¶å°srcæä»¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         files:
@@ -232,7 +232,7 @@ class path(interface.resource,shell_able):
 #         self.execmd(cmd)
 #
 # class file_tpl(resource,restag_file):
-#     """模板文件替换"""
+#     """æ¨¡æ¿æä»¶æ¿æ¢"""
 #     _dst    = ""
 #     _tpl    = ""
 #     _mod    = "a+w"

@@ -18,13 +18,14 @@ def run_rigger(rargs, argv) :
     #TODO: muti cmd support
     if len(rargs.prj.cmds) == 0 :
         raise interface.rigger_exception("No Cmd!")
-    cmd = rargs.prj.cmds[0]
-    obj = rg_ioc.ins_cmd(cmd)
-    if obj is None :
-        raise  interface.rigger_exception( "unfound '%s' cmd instance" %cmd)
-    _logger.info("cmd: %s , cmd_ins : %s" %(cmd,obj.__class__.__name__))
-    obj._config(argv,rargs)
-    obj._execute(rargs)
+    cmds = rargs.prj.cmds[0]
+    for  cmd in cmds.split(',') :
+        obj = rg_ioc.ins_cmd(cmd)
+        if obj is None :
+            raise  interface.rigger_exception( "unfound '%s' cmd instance" %cmd)
+        _logger.info("cmd: %s , cmd_ins : %s" %(cmd,obj.__class__.__name__))
+        obj._config(argv,rargs)
+        obj._execute(rargs)
 
 
 
