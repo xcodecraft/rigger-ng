@@ -1,0 +1,19 @@
+_env:
+    - !R.env
+        _name: "dev"
+
+_prj: !R.project
+       _name: "rigger-test"
+       _res:
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+                PRJ_ROOT: "${HOME}/devspace/rigger-ng"
+
+
+_sys:
+    -  !R.system
+        _name: "path"
+        _res:
+            - !R.path
+                dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"
