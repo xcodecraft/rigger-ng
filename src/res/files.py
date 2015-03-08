@@ -6,15 +6,13 @@ from utls.rg_var import value_of
 from utls.rg_io  import rgio ,rg_logger
 
 from string import Template
+from base import *
 
 
 
-class shell_able:
-    def execmd(self,cmd) :
-        utls.rg_sh.shexec.execmd(cmd,tag=self.__class__.__name__)
 
 
-class link(interface.resource,shell_able):
+class link(interface.resource,res_utls):
     """
     !R.link :
         dst: "/home/q/system/mysys"
@@ -79,9 +77,9 @@ class link(interface.resource,shell_able):
 #         self.execmd(cmd)
 #
 
-class path(interface.resource,shell_able):
+class path(interface.resource,res_utls):
     """
-    å»ºç«path
+    Ã¥Â»ÂºÃ§Â«Âpath
     !R.path:
         dst: "/home/q/system/mysys/"
         keep: True
@@ -116,7 +114,7 @@ class path(interface.resource,shell_able):
             else :
                 if not self._checkWrite(v) :
                     if not self.sudo :
-                        raise interface.rigger_exception( "%s 不可访问" %(v) )
+                        raise interface.rigger_exception( "%s ä¸å¯è®¿é®" %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             self.execmd(cmd)
@@ -144,7 +142,7 @@ class path(interface.resource,shell_able):
 #
 # class file_merge(resource,restag_file):
 #     """
-#     æä»¶åå¹¶,æsrcç®å½ä¸ï¼ç¬¦åfilterçæä»¶åå®¹åå¹¶å°srcæä»¶
+#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
@@ -170,7 +168,7 @@ class path(interface.resource,shell_able):
 #                     raise error.rigger_exception("path not exists: %s" %src)
 #                 os.path.walk(src,self.proc_file,None)
 #         if os.getuid() == os.stat(self.dst).st_uid :
-#             # å¶å®äººå¯ä»¥è¿è¡ä¿®æ¹ï¼
+#             # Ã¥ÂÂ¶Ã¥Â®ÂÃ¤ÂºÂºÃ¥ÂÂ¯Ã¤Â»Â¥Ã¨Â¿ÂÃ¨Â¡ÂÃ¤Â¿Â®Ã¦ÂÂ¹Ã¯Â¼Â
 #             self.execmd("chmod %s %s " %(self.mod, self.dst))
 #
 #
@@ -202,7 +200,7 @@ class path(interface.resource,shell_able):
 #
 # class merge(resource,restag_file):
 #     """
-#     æä»¶åå¹¶,æsrcç®å½ä¸ï¼ç¬¦åfilterçæä»¶åå®¹åå¹¶å°srcæä»¶
+#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         files:
@@ -232,7 +230,7 @@ class path(interface.resource,shell_able):
 #         self.execmd(cmd)
 #
 # class file_tpl(resource,restag_file):
-#     """æ¨¡æ¿æä»¶æ¿æ¢"""
+#     """Ã¦Â¨Â¡Ã¦ÂÂ¿Ã¦ÂÂÃ¤Â»Â¶Ã¦ÂÂ¿Ã¦ÂÂ¢"""
 #     _dst    = ""
 #     _tpl    = ""
 #     _mod    = "a+w"
@@ -259,7 +257,7 @@ class path(interface.resource,shell_able):
 #         m._check_writeable(self.dst)
 #
 #
-class intertpl(interface.resource,shell_able):
+class intertpl(interface.resource,res_utls):
     """
     !R.tpl
        tpl = "${PRJ_ROOT}/conf/used/ngx.conf"
@@ -297,7 +295,7 @@ class tpl_builder:
             data= value_of(line)
             dst.write(data)
 
-class file_tpl(interface.resource,shell_able):
+class file_tpl(interface.resource,res_utls):
     """
     !R.tpl
        tpl = "${PRJ_ROOT}/conf/used/ngx.conf"
