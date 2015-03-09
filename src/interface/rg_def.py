@@ -6,12 +6,11 @@ from utls.rg_io import rg_logger
 
 class run_context :
     def __init__(self):
-        self.restore = None
+        self.restores = []
     def keep(self) :
-        self.restore =  copy.copy(self.__dict__)
+        self.restores.append(  copy.copy(self.__dict__))
     def rollback(self):
-        self.__dict__=  copy.copy(self.restore)
-        self.restore = None
+        self.__dict__=  copy.copy(self.restores.pop())
 
 class controlable :
     sudo = False

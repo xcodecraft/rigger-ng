@@ -1,13 +1,13 @@
 _env:
     - !R.env
-        _name: "dev"
+        _name    : "dev"
         prj_root : "${HOME}/devspace/rigger-ng/demo"
     - !R.env
-        _name: "centos"
+        _name    : "centos"
         prj_root : "${HOME}/devspace/rigger-ng/demo"
     - !R.env
-        _name: "mydev"
-        _base: "dev,centos"
+        _name    : "mydev"
+        _base    : "dev,centos"
 
 _prj: !R.project
        _name: "rigger-demo"
@@ -18,15 +18,18 @@ _prj: !R.project
 
 _sys:
     -  !R.system
-        _name: "test"
-        _res:
+        _name : "test"
+        _res  :
             - !R.vars
-                    TEST_CASE: "${PRJ_ROOT}/test/main.py"
+                    TEST_CASE : "${PRJ_ROOT}/test/main.py"
             - !R.echo
-                value : "${TEST_CASE}"
+                value         : "${TEST_CASE}"
             - !R.file_tpl
-                tpl: "${PRJ_ROOT}/files/prj_tpl.yaml"
-                dst: "${PRJ_ROOT}/files/prj_use.yaml"
+                tpl           : "${PRJ_ROOT}/files/prj_tpl.yaml"
+                dst           : "${PRJ_ROOT}/files/prj_use.yaml"
             - !R.using
-                file:   "${PRJ_ROOT}/_rg/modul.yaml"
-                module: "php1,php2"
+                path          : "${PRJ_ROOT}/_rg/modul.yaml"
+                modul         : "m1"
+            - !R.using
+                path          : "${PRJ_ROOT}/_rg/modul.yaml"
+                modul         : "m2"

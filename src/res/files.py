@@ -79,9 +79,8 @@ class link(interface.resource,res_utls):
 
 class path(interface.resource,res_utls):
     """
-    Ã¥Â»ÂºÃ§Â«Âpath
     !R.path:
-        dst: "/home/q/system/mysys/"
+        dst: "/home/q/system/mysys/,/home/q/system/mysys2"
         keep: True
     """
     dst        = None
