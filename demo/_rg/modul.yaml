@@ -1,0 +1,11 @@
+_mod:
+    - !R.modul
+        _name : "php1"
+        _res  :
+            - !R.echo
+                value : "${TEST_CASE}"
+    - !R.modul
+        _name : "php2"
+        _res  :
+            - !R.echo
+                value : "${TEST_CASE}"

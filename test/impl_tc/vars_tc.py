@@ -20,7 +20,7 @@ class vars_tc(rigger_tc):
             value : "${X}/${Y}"
         """
 
-        testbox  = res.xmodule()
+        testbox  = res.modul()
         v1       = res.vars()
         v1.X     = "a"
         v1.Y     = "b"

@@ -40,6 +40,7 @@ class controlable :
 
 
 def control_call(res,fun,context,tag) :
+
     with utls.rg_io.scope_iotag(res.__class__.__name__ ,tag) :
         if res._allow(context) :
             with utls.rg_sh.scope_sudo(res.sudo) :

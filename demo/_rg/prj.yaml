@@ -2,6 +2,12 @@ _env:
     - !R.env
         _name: "dev"
         prj_root : "${HOME}/devspace/rigger-ng/demo"
+    - !R.env
+        _name: "centos"
+        prj_root : "${HOME}/devspace/rigger-ng/demo"
+    - !R.env
+        _name: "mydev"
+        _base: "dev,centos"
 
 _prj: !R.project
        _name: "rigger-demo"
@@ -21,3 +27,6 @@ _sys:
             - !R.file_tpl
                 tpl: "${PRJ_ROOT}/files/prj_tpl.yaml"
                 dst: "${PRJ_ROOT}/files/prj_use.yaml"
+            - !R.using
+                file:   "${PRJ_ROOT}/_rg/modul.yaml"
+                module: "php1,php2"

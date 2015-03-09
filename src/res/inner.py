@@ -1,7 +1,9 @@
 #coding=utf8
 import re,logging
 import interface,utls.rg_var
+import modules
 from utls.rg_io import  rgio , run_struct,rg_logger
+from utls.rg_var import value_of
 
 class vars(interface.resource):
     """
@@ -140,17 +142,69 @@ class prj_main(interface.control_box, interface.base) :
     def _after(self,context):
         rg_logger.info("main: end")
 
-class xmodule(interface.control_box,interface.base) :
+class modul(interface.control_box,interface.base) :
     """
-
+    !R.modul
+        _name : "mymodul"
+        _res  :
+            ...
     """
+    _name = ""
     def _resname(self):
         tag = self.__class__.__name__
         return tag
     def _info(self,context):
-        rgio.struct_out("xmodule: %s" %(self._name))
+        rgio.struct_out("modul : %s" %(self._name))
         interface.control_box._info(self,context)
 
+class using(interface.resource):
+    """
+    !R.using
+      file:   ""
+      modul: "php1"
+    """
+    path  = ""
+    modul = ""
+    def _allow(self,context):
+        return True
+    def _before(self,context):
+        rg_logger.info("using: start")
+        self.path       = value_of(self.path)
+        if len(self.path) > 0 :
+            modules.load(self.path)
+        key = value_of(self.modul)
+        self.modul_obj = modules.find(key)
+        # import pdb
+        # pdb.set_trace()
+        self.modul_obj._before(context)
+
+    def _after(self,context):
+        self.modul_obj._after(context)
+        pass
+    def _start(self,context):
+        self.modul_obj._start(context)
+        pass
+    def _stop(self,context):
+        self.modul_obj._stop(context)
+        pass
+    def _reload(self,context):
+        self.modul_obj._reload(context)
+        pass
+    def _config(self,context):
+        print('_config')
+        self.modul_obj._config(context)
+        pass
+    def _data(self,context):
+        self.modul_obj._data(context)
+        pass
+    def _check(self,context):
+        self.modul_obj._check(context)
+        pass
+    def _clean(self,context):
+        self.modul_obj._clean(context)
+        pass
+    def _info(self,context):
+        self.modul_obj._info(context)
 
 class env(vars):
     """
