@@ -5,9 +5,9 @@
 
 ```
 !R.mysql :
-  bin : "${RES_BIN_BASE}/bin/mysql"
+  bin : "${RG_RES_BIN_BASE}/bin/mysql"
 
 !R.varnish
-  bin : "${RES_BIN_BASE}/sbin/varnishd"
+  bin : "${RG_RES_BIN_BASE}/sbin/varnishd"
   
 ```
