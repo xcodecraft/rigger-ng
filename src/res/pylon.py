@@ -1,6 +1,12 @@
 #coding=utf-8
-from res_base import *
-from base     import *
+import logging
+import interface
+
+from utls.rg_io  import rg_logger
+from utls.rg_var import value_of
+from utls.rg_sh  import shexec
+from string import *
+
 _logger = logging.getLogger()
 
 class rest(interface.resource):
@@ -21,7 +27,7 @@ class rest(interface.resource):
         sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
         cmd     = Template(cmdtpl).substitute(SRC =  self.src ,DST=self.out_idx)
-        rg_sh.shexec.execmd(cmd,False)
+        shexec.execmd(cmd,False)
 
     def check(self,context):
         self.check_print(os.path.exists(self.out_idx),self.out_idx)
@@ -29,7 +35,7 @@ class rest(interface.resource):
     def clean_file(self,filename):
         cmdtpl = "if test -e $DST ; then rm -f  $DST ; fi ; "
         cmd    = Template(cmdtpl).substitute(DST=filename)
-        rg_sh.shexec.execmd(cmd)
+        shexec.execmd(cmd)
 
     def clean(self,context):
         self.clean_file(self.out_idx)
