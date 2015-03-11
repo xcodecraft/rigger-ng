@@ -55,5 +55,5 @@ if __name__ == '__main__':
         runargs.help()
     except interface.depend_exception as e :
         e.monitor.out()
-    # except interface.rigger_exception as e:
-    #      rgio.error(e)
+    except interface.rigger_exception as e:
+         rgio.error(e)

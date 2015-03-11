@@ -12,6 +12,10 @@ _logger = logging.getLogger()
 
 
 
+class init_cmd(rg_cmd) :
+    def _execute(self,rargs):
+        if os.path.exists(os.getcwd() + "/_rg") :
+            raise interface.rigger_exception("have _rg dir. maybe inited!")
 
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
