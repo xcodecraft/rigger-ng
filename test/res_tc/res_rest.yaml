@@ -16,4 +16,4 @@ _sys:
         _name: "rest"
         _res:
             - !R.rest
-                dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"
+                init: "${HOME}/devspace/rigger-ng/test/data/rest.php"

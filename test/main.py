@@ -19,5 +19,6 @@ if __name__ == '__main__':
     from res_tc.mysql_tc  import *
     from res_tc.files_tc  import *
     from res_tc.inner_tc  import *
+    from res_tc.rest_tc   import *
 
     unittest.main()
