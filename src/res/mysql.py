@@ -1,10 +1,11 @@
 #coding=utf-8
 import logging
 import interface
-_logger = logging.getLogger()
 
-from utls.rg_var import  value_of
-from utls.rg_sh  import  shexec
+
+from utls.rg_io  import rg_logger
+from utls.rg_var import value_of
+from utls.rg_sh  import shexec
 from string import *
 
 class mysql(interface.resource):
@@ -13,6 +14,7 @@ class mysql(interface.resource):
         host: "127.0.0.1"
         init: "init.sql"
     """
+    bin        = "${RG_RES_BIN_BASE}/bin/mysql"
     host       = "localhost"
     name       = ""
     user       = ""
@@ -25,6 +27,7 @@ class mysql(interface.resource):
     def _allow(self,context) :
         return True
     def _before(self,context):
+        self.bin       = value_of(self.bin)
         self.host       = value_of(self.host)
         self.name       = value_of(self.name)
         self.password   = value_of(self.password)
@@ -39,7 +42,7 @@ class mysql(interface.resource):
 #        sql +="GRANT ALL PRIVILEGES ON $DBNAME.* TO '$USER'@'$ADDR' IDENTIFIED BY '$PASSWD' ;"
         cmd   = Template(sql).substitute(DBNAME=self.name,USER=self.user,PASSWD=self.password,ADDR=self.allow_addr)
         # mysql = get_env_conf().mysql
-        mysql = "/usr/bin/mysql"
+        mysql =  self.bin
         if len(self.rootpwd) > 0 :
             shexec.execmd("%s -h%s -u%s -p%s -e \"%s\" " %(mysql ,self.host,self.root, self.rootpwd,cmd) )
         else:

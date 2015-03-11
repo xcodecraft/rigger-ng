@@ -1,0 +1,23 @@
+_mod:
+    - !R.modul
+        _name : "m1"
+        _res  :
+            - !R.vars
+                test_case : "A"
+            - !R.echo
+                value : "${TEST_CASE}"
+            - !R.assert_eq
+                value : "${TEST_CASE}"
+                expect : "A"
+    - !R.modul
+        _name : "m2"
+        _res  :
+            - !R.vars
+                test_case : "B"
+            - !R.echo
+                value : "${TEST_CASE}"
+            - !R.using
+                modul : "m1"
+            - !R.assert_eq
+                value : "${TEST_CASE}"
+                expect : "B"

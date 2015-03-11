@@ -91,12 +91,11 @@ def upper_dict(ori) :
 
 class tpl_var(utls.pattern.singleton):
     def __init__(self):
-        self.impl    = prior_dict(empty_dict(),os.environ)
-        self.restore = None
-        # self.base = self.impl
+        self.impl     = prior_dict(empty_dict(),os.environ)
+        self.restores = []
 
     def import_dict(self,def_dict):
-        def_dict = upper_dict(def_dict)
+        def_dict  = upper_dict(def_dict)
         self.impl = prior_dict(self.impl,def_dict)
 
     def import_str(self,asstr):
@@ -109,9 +108,9 @@ class tpl_var(utls.pattern.singleton):
         self.__init__()
     def keep(self) :
         import  copy
-        self.restore = copy.copy(self.impl)
+        self.restores.append( copy.copy(self.impl))
     def rollback(self) :
-        self.impl = self.restore
+        self.impl = self.restores.pop()
 
 
 var = tpl_var()

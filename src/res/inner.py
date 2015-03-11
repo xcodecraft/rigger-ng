@@ -1,12 +1,14 @@
 #coding=utf8
 import re,logging
 import interface,utls.rg_var
-from utls.rg_io import  rgio , run_struct
+import modules
+from utls.rg_io import  rgio , run_struct,rg_logger
+from utls.rg_var import value_of
+import utls.dbc
+# from utls.dbc import *
 
-_logger = logging.getLogger()
 class vars(interface.resource):
     """
-    å®ä¹ç¯å¢åé:
     !R.vars:
         A: 1
         B: "hello"
@@ -87,15 +89,14 @@ __sys:
                 value : "${TEST_CASE}"
     """
     def _before(self,context):
-
-        _logger.info("system:%s start" %(self._name))
+        rg_logger.info("system:%s start" %(self._name))
         utls.rg_var.keep()
         context.keep()
 
     def _after(self,context):
         context.rollback()
         utls.rg_var.rollback()
-        _logger.info("system:%s end" %(self._name))
+        rg_logger.info("system:%s end" %(self._name))
 
     def _resname(self):
         return self._name
@@ -123,6 +124,12 @@ class project(interface.control_box, interface.base) :
         self._check_print(True,"project: %s" %self._name)
         interface.control_box._check(self,context)
 
+    def _before(self,context):
+        rg_logger.info("project: start")
+
+    def _after(self,context):
+        rg_logger.info("project: end")
+
 class prj_main(interface.control_box, interface.base) :
     """
     """
@@ -130,18 +137,86 @@ class prj_main(interface.control_box, interface.base) :
     def _info(self,context):
         rgio.struct_out("rg: %s" %(self._name))
         interface.control_box._info(self,context)
+    def _before(self,context):
+        rg_logger.info("main: start")
 
-class xmodule(interface.control_box,interface.base) :
-    """
+    def _after(self,context):
+        rg_logger.info("main: end")
 
+class modul(interface.control_box,interface.base) :
     """
+    !R.modul
+        _name : "php-web"
+        _res  :
+            ...
+    """
+    _name = ""
     def _resname(self):
         tag = self.__class__.__name__
         return tag
     def _info(self,context):
-        rgio.struct_out("xmodule: %s" %(self._name))
+        rgio.struct_out("modul : %s" %(self._name))
         interface.control_box._info(self,context)
 
+    def _before(self,context):
+        # run_struct.push("modul %s" %(self._name))
+        rg_logger.info("modul:%s start" %(self._name))
+        utls.rg_var.keep()
+        context.keep()
+
+    def _after(self,context):
+        context.rollback()
+        utls.rg_var.rollback()
+        rg_logger.info("modul:%s end" %(self._name))
+        # run_struct.pop()
+
+class using(interface.resource):
+    """
+    !R.using
+      path  : "/usr/local/lib/rigger-ng/php.yaml"
+      modul : "php-web"
+    """
+    path  = ""
+    modul = ""
+    def _allow(self,context):
+        return True
+    def _before(self,context):
+        # run_struct.push("using.module.%s" %self.modul)
+        self.path       = value_of(self.path)
+        if len(self.path) > 0 :
+            modules.load(self.path)
+        key            = value_of(self.modul)
+        msg = "load modul %s from '%s' failed! " %(key,self.path)
+        self.modul_obj = utls.dbc.not_none(modules.find(key), msg)
+        self.modul_obj._before(context)
+
+    def _after(self,context):
+        self.modul_obj._after(context)
+        # run_struct.pop()
+
+    def _start(self,context):
+        self.modul_obj._start(context)
+
+    def _stop(self,context):
+        self.modul_obj._stop(context)
+
+    def _reload(self,context):
+        self.modul_obj._reload(context)
+
+    def _config(self,context):
+        self.modul_obj._config(context)
+
+    def _data(self,context):
+        self.modul_obj._data(context)
+
+    def _check(self,context):
+        self.modul_obj._check(context)
+
+    def _clean(self,context):
+        self.modul_obj._clean(context)
+
+    def _info(self,context):
+        self.modul_obj._info(context)
 
 class env(vars):
     """
@@ -151,3 +226,10 @@ class env(vars):
         return  "%s(%s)" %(self.__class__.__name__,self._name)
     def _info(self,context):
         rgio.struct_out("env: %s" %(self._name))
+
+    def _before(self,context):
+        rg_logger.info("env:%s start" %(self._name))
+        vars._before(self,context)
+
+    def _after(self,context):
+        rg_logger.info("env:%s end" %(self._name))

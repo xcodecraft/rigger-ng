@@ -2,7 +2,7 @@
 from string     import Template
 from setting    import *
 
-_logger = logging.getLogger()
+from utls.rg_io import  rg_logger
 
 
 class svctag:
@@ -301,8 +301,8 @@ class phpunit(resource,patterns.singleton):
             path = self.run_path + "/" + self.path
 
         c = Template(content).substitute(SUFFIX=self.suffix,PATH=path )
-        _logger.info("test conf:")
-        _logger.info(c)
+        rg_logger.info("test conf:")
+        rg_logger.info(c)
         with  open(self.xml_conf ,'w') as f :
             f.write(c)
 
@@ -346,7 +346,7 @@ class dx_php(resource):
 
     def shell(self):
         if not os.path.exists(self.ini) :
-            _logger.info( "dx_php first need php.ini not found %s" %self.ini)
+            rg_logger.info( "dx_php first need php.ini not found %s" %self.ini)
             self.ori_ini = self.ini
             self.ini    =   env_exp.value("${PRJ_ROOT}/conf/used/console_php.ini")
             if not os.path.exists(self.ini) :
@@ -626,7 +626,7 @@ class file_merge(resource,filetag):
                 if not os.path.exists(src_path) :
                     warn_msg = "file_merge %s not exists" %src_path
                     print("warning:  %s" %warn_msg)
-                    _logger.warning(warn_msg)
+                    rg_logger.warning(warn_msg)
                     continue
                 with open(src_path,'r') as srcfile :
                     for line in srcfile:
@@ -1020,7 +1020,7 @@ class vars(resource,rgtag):
                 rgio.simple_out( key + " = " + str(val))
             val = env_exp.value(val,self.assgin_value)
             os.environ[key] = val
-            _logger.info("set %s = %s " %(key,val))
+            rg_logger.info("set %s = %s " %(key,val))
             return  val
         return None
 
@@ -1285,7 +1285,7 @@ class runner:
         resource.allow_res  =  allow_res
         self.set_rg_vars()
 
-        _logger.debug("allow_res is %s" %allow_res)
+        rg_logger.debug("allow_res is %s" %allow_res)
         if envname is not None:
             envs = envname.split(',')
             for e in envs :
@@ -1311,7 +1311,7 @@ class runner:
                 if sort == first_end :
                     namelist.reverse()
                 for name in namelist :
-                    _logger.info("sys: %s" %name)
+                    rg_logger.info("sys: %s" %name)
                     if self.sys.has_key(name):
                         s = self.sys[name]
                         if not extra_res_append  and extra_res is not None:
@@ -1537,8 +1537,8 @@ class daemon_base(resource):
                 envstr = envstr + "\t%s %s \n" %(k.upper() , v)
         c = Template(content).substitute(SCRIPT=self.program, DAEMON=self.daemon,
                 FOREVER=self.forever,LOG=self.logpath,UK=ukey,RUN_PATH=self.runpath,ENVS=envstr)
-        _logger.info("zdemon conf:")
-        _logger.info(c)
+        rg_logger.info("zdemon conf:")
+        rg_logger.info(c)
         with  open(conf ,'w') as f :
             f.write(c)
 

@@ -2,19 +2,19 @@
 import re , os , yaml, logging
 import interface
 import res
+from utls.rg_io import rg_logger
 
-_logger = logging.getLogger()
 
 class conf_loader:
     def  __init__(self,conf):
         self.conf    = conf
         self.curpath = os.path.dirname(self.conf)
-        _logger.debug("yaml current path:%s",self.curpath)
+        rg_logger.debug("yaml current path:%s" %self.curpath)
     def  replace(self,matchobj):
         filepath = matchobj.groups()[0]
         filepath = re.sub("^\.",self.curpath,filepath)
         filepath = env_exp.value(filepath)
-        _logger.debug("import yaml:%s",filepath)
+        rg_logger.debug("import yaml:%s",filepath)
         doc      = open(filepath).read()
         return  doc
     def load(self):

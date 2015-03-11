@@ -3,21 +3,7 @@ from string import Template
 import  os , string   , logging ,re
 import  setting ,interface
 from utls.pattern import end_keeper
-
-
-# from interface import
 from rg_io import *
-# from error import *
-# from lang.patterns import *
-
-# class rg_shell:
-#     @staticmethod
-#     def rg(cmd):
-#         rgcmd  = "/home/q/tools/rigger/rigger %s" %cmd
-#         return rgcmd
-#     def pylon(cmd) :
-#         rgcmd  = "/home/q/tools/rigger/rigger/pylon %s" %cmd
-#         return rgcmd
 
 
 class shexec:

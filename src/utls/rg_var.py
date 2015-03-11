@@ -5,7 +5,6 @@ import utls.tpl
 import interface
 from utls.rg_io import *
 
-_logger = logging.getLogger()
 
 
 def unound_promopt(key,tplstr):
@@ -13,7 +12,7 @@ def unound_promopt(key,tplstr):
 def unound_break(key,tplstr):
     raise  interface.var_undefine("%s not define in [%s]" %(key,tplstr))
 
-unfound_call= unound_promopt
+unfound_call= unound_break
 
 class assginer :
     def __init__(self,tpl):
@@ -25,10 +24,10 @@ class assginer :
         while True:
             try:
                 val  = getattr(utls.tpl.var.dict(),var)
-                _logger.info("[assgin] %s:%s" %(var,val ))
+                rg_logger.info("[assgin] %-15s:%s" %(var,val ))
                 return val
             except interface.var_undefine:
-                _logger.error( "undefine %s, in %s" %(var,self.tpl))
+                rg_logger.error( "undefine %s, in %s" %(var,self.tpl))
                 val = unfound_call(var,self.tpl)
                 return val
 
@@ -61,13 +60,12 @@ class env_exp:
 
     @staticmethod
     def var_proc(string):
-        tpl     = string
+        tpl     = string.strip()
         var_exp = re.compile(r'\$\{(\w+)\}')
         ass     = assginer(tpl)
-        _logger.info("env_exp.var_proc : %s" %tpl  )
+        # rg_logger.debug("env_exp.var_proc : %s" %tpl  )
         while var_exp.search(tpl):
-            if setting.debug_level >=  2 :
-                rgio.simple_out("env.var(%s)" %tpl)
+            # rg_logger.debug("env.var(%s)" %tpl)
             tpl = var_exp.sub(ass.assgin_value,tpl)
         return tpl
 

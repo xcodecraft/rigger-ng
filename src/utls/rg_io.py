@@ -3,7 +3,6 @@ import  re , os , sys, logging ,string
 from string  import Template
 import  setting
 import  utls.pattern
-_logger = logging.getLogger()
 
 class run_struct:
     trace   = []
@@ -18,20 +17,37 @@ class run_struct:
 
 # class rg_logger(utls.pattern.singleton) :
 class rg_logger :
-    def __init__(self,tag) :
-        self.tag  = tag
-        self.impl = logging.getLogger()
-    def debug(self,message) :
-        self.impl.debug(message)
+    struct_out = True
 
-    def info(self,message) :
-        self.impl.info(message)
+    @staticmethod
+    def struct_tab():
+        tab = ""
+        for c in run_struct.trace :
+            tab = tab + "\t"
+        return tab
+    @staticmethod
+    def debug(message) :
+        logger = logging.getLogger()
+        tab    = rg_logger.struct_tab()
+        logger.debug(tab + message)
 
-    def warning(self,message) :
-        self.impl.info(message)
+    @staticmethod
+    def info(message) :
+        logger = logging.getLogger()
+        tab    = rg_logger.struct_tab()
+        logger.info(tab + message)
 
-    def error(self,message) :
-        self.impl.error(message)
+    @staticmethod
+    def warning(message) :
+        logger = logging.getLogger()
+        tab    = rg_logger.struct_tab()
+        logger.info(tab + message)
+
+    @staticmethod
+    def error(message) :
+        logger = logging.getLogger()
+        tab    = rg_logger.struct_tab()
+        logger.error(tab + message)
 
 class prompt:
     @staticmethod
@@ -65,34 +81,24 @@ class prompt:
 
 class scope_iotag :
     tags = []
-    def __init__(self,tag,method=""):
-        self.tag      = tag
-        self.method   = method
+    def __init__(self,res,tag):
+        self.res = res
+        self.tag = tag
     def __enter__(self):
         rgio.catch_start()
-        rgio.has_err   = False
-        trace = string.join(rgio.trace,'.')
-        _logger.debug("=====>  (%s)[%s]" %(self.method,self.tag))
-        _logger.debug("--------------------------------------")
+        rgio.has_err = False
+        trace        = string.join(rgio.trace,'.')
+        rg_logger.info("%s.%s" %(self.res,self.tag))
 
     def __exit__(self, exc_type, exc_value, traceback ):
         out = rgio.buf
         rgio.catch_end()
         if setting.debug  or rgio.has_err :
             if out  is not None and len(out) > 0 :
-                if  setting.stdout :
-                    print("*******************************************************************************************")
-                    print("(%s)[%s]" %(self.method,self.tag))
-                    print("-------------------------------------------------------------------------------------------")
-                    print(out)
-                    print("---------------------------------------------END-------------------------------------------")
-                    print("\n")
-                _logger.error(out)
+                rg_logger.error(out)
             else:
                 pass
         rgio.has_err   = False
-        _logger.debug(" <==== (%s)[%s]  " %(self.method,self.tag))
-        _logger.debug("--------------------------------------")
 
 class rgio:
     buf     = None
@@ -137,7 +143,7 @@ class rgio:
             rgio.buf  += settingo  + "\n"
         else:
             print(settingo)
-            _logger.error(settingo)
+            rg_logger.error(settingo)
 
 
     @staticmethod
@@ -150,7 +156,7 @@ class rgio:
             rgio.buf  += msg  + "\n"
         rgio.has_err   = True
         print( rgio.inred(msg))
-        _logger.error(msg)
+        rg_logger.error(msg)
 
     @staticmethod
     def simple_out(msg):
@@ -158,7 +164,7 @@ class rgio:
             rgio.buf  += msg + "\n"
         else:
             print(msg)
-            _logger.info(msg)
+            rg_logger.info(msg)
 
     @staticmethod
     def struct_out(msg,level=0):
@@ -266,10 +272,10 @@ def export_objdoc(name,obj):
         doc = obj.__doc__.strip()
         line = doc.split('\n')
         if len(line) <= 1 :
-            rgio.simple_out("\t\t\t%-20s   %s" %(name,doc))
+            rgio.simple_out("\t%-10s   %s" %(name,doc))
         else:
-            rgio.simple_out("\t\t\t%s : " %(name))
+            rgio.simple_out("\t%s : " %(name))
             for l in line :
-                rgio.simple_out("\t\t\t%-20s   %s" %("",l.strip()))
+                rgio.simple_out("\t%-10s   %s" %("",l.strip()))
     else :
-        rgio.simple_out("\t\t\t%-20s " %(name))
+        rgio.simple_out("\t%-10s " %(name))

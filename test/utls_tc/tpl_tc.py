@@ -23,7 +23,7 @@ class exp_tc(rigger_tc):
 
         #æµè¯æ¾ä¸å°è¡ä¸º
         utls.rg_var.clean()
-        v = utls.rg_var.value_of("${MODE}")
+        # v = utls.rg_var.value_of("${MODE}")
         # self.assertEqual(v,'__NOFOUND_[MODE]__')
 
 

@@ -1,8 +1,6 @@
 #coding=utf8
-import  logging
 import  utls.tpl ,interface ,base.tc_tools
 import  impl.rg_args
-_logger = logging.getLogger()
 
 class mysql_tc(base.tc_tools.rigger_tc):
     def asst_cmd(self,conf,cmd):
