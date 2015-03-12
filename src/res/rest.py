@@ -1,6 +1,7 @@
 #coding=utf-8
 import logging
 import interface
+import os
 
 from utls.rg_io  import rg_logger
 from utls.rg_var import value_of
@@ -17,15 +18,20 @@ class rest(interface.resource):
     """
     _src = None
     _dst = "${RUN_PATH}"
-    def locate(self,context):
-        self.src        = env_exp.value(self.src)
-        self.dst        = env_exp.value(self.dst)
-        self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
+    # def locate(self,context):
+    #     self.src        = env_exp.value(self.src)
+    #     self.dst        = env_exp.value(self.dst)
+    #     self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
+    #     print self.out_idx,'###############'
+  #  def _before(self,context):
+  #      self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
+    def _config(self,context):
 
-    def config(self,context):
+        self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
 
         sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
+        self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
         cmd     = Template(cmdtpl).substitute(SRC =  self.src ,DST=self.out_idx)
         shexec.execmd(cmd,False)
 
