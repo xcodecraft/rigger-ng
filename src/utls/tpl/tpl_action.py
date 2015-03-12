@@ -57,16 +57,12 @@ class input( interface.base,input_base):
     def __str__(self):
         return "%s , %s " %(self.default, self.prompt)
 
-class bool(interface.base):
+class bool(interface.base, input_base):
     default = None
     prompt  = None
     def execute(self,name):
-        prompt = name
-        if self.prompt is not None :
-            prompt = self.prompt
-        default = None
-        if  self.default is not None :
-            default = self.default
+        prompt = self.get_prompt(name)
+        default = self.get_default()
         value = get_input_line("%s [%s] ? (y/n)" %(prompt,name),default)
         if value is None :
             return value

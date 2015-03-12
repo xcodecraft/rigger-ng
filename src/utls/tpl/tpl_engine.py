@@ -75,8 +75,8 @@ class engine:
 
     def load_conf(self,tplconf):
         self.var_input_funs = {}
-        import pdb
-        pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
 
         if tplconf and os.path.exists(tplconf) :
             loader = impl.rg_yaml.conf_loader(tplconf)
@@ -149,7 +149,9 @@ class engine:
                 if self.re_block_end.match(line) :
                     st=tplstatus.NONE
                     code = "cond_val = %s"  %cond
-                    code = code.replace("T.","tpl_var.var.dict().")
+                    code = code.replace("T.","tpl_var.var_obj().")
+                    # import pdb
+                    # pdb.set_trace()
                     exec  code
                     _logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
                     if str(cond_val).upper() == expect.upper() :
@@ -174,7 +176,7 @@ class engine:
                     pass
                 elif code_match :
                     code = code_match.group(1).strip()
-                    code = code.replace("T.","tpl_var.var.dict().")
+                    code = code.replace("T.","tpl_var.var_obj()")
                     _logger.info(code)
                     exec code
                 else:
