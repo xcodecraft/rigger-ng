@@ -2,10 +2,9 @@
 import re,logging
 import interface,utls.rg_var
 import modules
-from utls.rg_io import  rgio , run_struct,rg_logger
-from utls.rg_var import value_of
 import utls.dbc
 # from utls.dbc import *
+from utls.rg_io import  rgio , run_struct,rg_logger
 
 class vars(interface.resource):
     """
@@ -182,10 +181,10 @@ class using(interface.resource):
         return True
     def _before(self,context):
         # run_struct.push("using.module.%s" %self.modul)
-        self.path       = value_of(self.path)
+        self.path       = utls.rg_var.value_of(self.path)
         if len(self.path) > 0 :
             modules.load(self.path)
-        key            = value_of(self.modul)
+        key            = utls.rg_var.value_of(self.modul)
         msg = "load modul %s from '%s' failed! " %(key,self.path)
         self.modul_obj = utls.dbc.not_none(modules.find(key), msg)
         self.modul_obj._before(context)

@@ -2,7 +2,7 @@
 import  os , string   , logging
 import  interface,utls.rg_sh
 
-from utls.rg_var import value_of
+# from utls.rg_var import value_of
 from utls.rg_io  import rgio ,rg_logger
 
 from string import Template
@@ -22,8 +22,8 @@ class link(interface.resource,res_utls):
     dst     = ""
     src     = ""
     def _before(self,context):
-        self.dst = value_of(self.dst)
-        self.src = value_of(self.src)
+        self.dst = utls.rg_var.value_of(self.dst)
+        self.src = utls.rg_var.value_of(self.src)
 
     def _config(self,context):
         cmdtpl = ""
@@ -91,7 +91,7 @@ class path(interface.resource,res_utls):
         self.paths= []
         if self.dst is None:
             return
-        self.dst   = value_of(self.dst)
+        self.dst   = utls.rg_var.value_of(self.dst)
         self.paths = self.dst.split(',')
 
     def _checkWrite(self,dst) :
@@ -265,8 +265,8 @@ class intertpl(interface.resource,res_utls):
     dst = ""
     tpl = ""
     def _before(self,context):
-        self.dst  = value_of(self.dst)
-        self.tpl  = value_of(self.tpl)
+        self.dst  = utls.rg_var.value_of(self.dst)
+        self.tpl  = utls.rg_var.value_of(self.tpl)
 
     def _config(self,context):
         import utls.tpl
@@ -291,7 +291,7 @@ class tpl_builder:
         tpl=open(tplfile, 'r')
         dst=open(dstfile, 'w')
         for line in tpl:
-            data= value_of(line)
+            data= utls.rg_var.value_of(line)
             dst.write(data)
 
 class file_tpl(interface.resource,res_utls):
@@ -305,9 +305,9 @@ class file_tpl(interface.resource,res_utls):
     mod    = "o+w"
 
     def _before(self,context):
-        self.dst        = value_of(self.dst)
-        self.tpl        = value_of(self.tpl)
-        self.mod        = value_of(self.mod)
+        self.dst        = utls.rg_var.value_of(self.dst)
+        self.tpl        = utls.rg_var.value_of(self.tpl)
+        self.mod        = utls.rg_var.value_of(self.mod)
 
     def _config(self,context):
         tpl_builder.build(self.tpl,self.dst)

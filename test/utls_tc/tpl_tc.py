@@ -35,7 +35,7 @@ class tpl_tc(rigger_tc):
         context.mode       = "rest"
 
         utls.tpl.var.clean()
-        utls.tpl.var.import_dict(context.__dict__)
+        utls.tpl.var.import_porp(context)
 
         self.engine_check()
 

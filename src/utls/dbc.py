@@ -1,10 +1,11 @@
 #coding=utf-8
+import interface
 def not_none(val,errmsg) :
     if val is   None :
-        raise rigger_exception( errmsg )
+        raise interface.rigger_exception( errmsg )
     return val
 
-def must_true(fun) :
+def must_true(val,errmsg) :
     if not val ==  True :
-        raise rigger_exception( errmsg )
+        raise interface.rigger_exception( errmsg )
     return val

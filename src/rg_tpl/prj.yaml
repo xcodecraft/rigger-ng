@@ -1,0 +1,20 @@
+_env:
+    - !R.env
+        _name: "dev"
+        prj_root : "${HOME}/devspace/rigger-ng"
+
+_prj: !R.project
+       _name: "%{PRJ_NAME}"
+       _res:
+        - !R.path
+            dst: "${PRJ_ROOT}/run,${PRJ_ROOT}/run/demo"
+
+
+_sys:
+    -  !R.system
+        _name: "test"
+        _res:
+            - !R.vars
+                    TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
+            - !R.echo
+                value : "${TEST_CASE}"

@@ -1,7 +1,7 @@
 #coding=utf8
 import  re , os , sys, logging ,string
 from string  import Template
-import  setting
+import  setting,interface
 import  utls.pattern
 
 class run_struct:
@@ -47,7 +47,7 @@ class rg_logger :
     def error(message) :
         logger = logging.getLogger()
         tab    = rg_logger.struct_tab()
-        logger.error(tab + message)
+        logger.error(tab + str(message))
 
 class prompt:
     @staticmethod
@@ -218,7 +218,7 @@ def get_input_line(message,default=None,quit='q',check=None):
                 return  default
             continue
         if line.lower() ==  quit.lower() :
-            raise error.user_break("You stop Input!")
+            raise interface.user_break("You stop Input!")
 #            return None
         return line.strip()
 

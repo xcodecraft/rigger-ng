@@ -36,24 +36,30 @@ if __name__ == '__main__':
 
     opts,args = getopt.getopt(sys.argv[1:],"d:s:e:")
     rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
-    try :
-
+    if setting.debug :
         rargs  = impl.rg_args.run_args.load(rars_file)
         rargs.parse_update(parser)
         impl.rg_run.run_rigger(rargs,parser.argv)
         rargs.save(rars_file)
+    else:
+        try :
 
-    except interface.user_break as e:
-        rgio.error(e)
-    except interface.badargs_exception  as e :
-        print("\nerror:")
-        rgio.error(e)
-        runargs.help()
-    except getopt.GetoptError as e:
-        print("\nerror:")
-        print(e)
-        runargs.help()
-    except interface.depend_exception as e :
-        e.monitor.out()
-    except interface.rigger_exception as e:
-         rgio.error(e)
+            rargs  = impl.rg_args.run_args.load(rars_file)
+            rargs.parse_update(parser)
+            impl.rg_run.run_rigger(rargs,parser.argv)
+            rargs.save(rars_file)
+
+        except interface.user_break as e:
+            rgio.error(e)
+        except interface.badargs_exception  as e :
+            print("\nerror:")
+            rgio.error(e)
+            runargs.help()
+        except getopt.GetoptError as e:
+            print("\nerror:")
+            print(e)
+            runargs.help()
+        except interface.depend_exception as e :
+            e.monitor.out()
+        except interface.rigger_exception as e:
+             rgio.error(e)

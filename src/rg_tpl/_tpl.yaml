@@ -1,0 +1,2 @@
+PRJ_NAME: !T.input
+    prompt : "please input project name"

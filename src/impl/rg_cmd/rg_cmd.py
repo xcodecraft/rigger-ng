@@ -13,8 +13,13 @@ import impl.rg_dev , impl.rg_ioc
 
 class init_cmd(rg_cmd) :
     def _execute(self,rargs):
-        if os.path.exists(os.getcwd() + "/_rg") :
+        dst = os.getcwd() + "/_rg"
+        if os.path.exists(dst) :
             raise interface.rigger_exception("have _rg dir. maybe inited!")
+
+        import utls.tpl
+        tpl = rargs.rg.root + "/rg_tpl"
+        utls.tpl.tplworker().execute(tpl,dst)
 
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
