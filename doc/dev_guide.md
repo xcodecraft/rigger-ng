@@ -2,6 +2,14 @@
 
 # 基础
 
+### 依赖安装 
+
+``` yaml
+LibYAML install: http://pyyaml.org/download/libyaml/yaml-0.1.6.zip
+./configure && make && make install
+PyYAML install: http://pyyaml.org/download/pyyaml/PyYAML-3.11.zip
+sudo python setup.py install
+```
 ### 日志
 
 ``` python
