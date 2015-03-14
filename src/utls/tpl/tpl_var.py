@@ -133,6 +133,9 @@ class tpl_var(utls.pattern.singleton):
         self.impl = combo_porp(dict_porp(dict_obj),self.impl)
 
     def import_porp(self,porpobj) :
+        self.impl = combo_porp(porpobj,self.impl)
+
+    def import_attr(self,porpobj) :
         self.impl = combo_porp(porp_proxy(porpobj),self.impl)
 
     def import_str(self,asstr):
@@ -158,6 +161,7 @@ def undefine_value(key):
 
 class scope_using:
     def __init__(self,new):
+        utls.dbc.must_obj(new,porp)
         self.using = new
     def __enter__(self):
         var.keep()

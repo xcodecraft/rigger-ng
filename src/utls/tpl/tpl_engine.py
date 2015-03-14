@@ -130,6 +130,11 @@ class engine:
             return dst
         return path
 
+    def proc_file(self,tplfile,dstfile):
+        using = tpl_var.scope_using(self.input_var)
+        with using:
+            self.file(tplfile,dstfile)
+
 
 
     def file(self,tplfile,dstfile):
@@ -146,8 +151,6 @@ class engine:
                     st=tplstatus.NONE
                     code = "cond_val = %s"  %cond
                     code = code.replace("T.","tpl_var.var_obj().")
-                    # import pdb
-                    # pdb.set_trace()
                     exec  code
                     rg_logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
                     if str(cond_val).upper() == expect.upper() :

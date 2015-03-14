@@ -24,29 +24,29 @@ class input_base:
         return default
 
 class chose(interface.base):
+    """
+DB : !T.chose
+    prompt : "chose db!"
+    options:
+        - "mysql"
+        - "orcal"
+    """
+    prompt  = ""
+    # default = ""
+    options = []
     def __call__(self,name):
         if hasattr(self,'prompt'):
-            rgio.prompt(self.prompt)
-        value = chose_item(self.options,name)
+            utls.rg_io.rgio.prompt(self.prompt)
+        value = utls.rg_io.chose_item(self.options,name)
         return value
 
-class path_chose(interface.base):
-    root   = ""
-    prompt = None
-
-    def proc_files(self,arg,dirname,names):
-        if dirname == self.root :
-            self.options = names
-    def __call__(self,name):
-        self.root = utls.env_exp.value(self.root)
-        validate.v_path(self.root)
-        os.path.walk(self.root,self.proc_files,None)
-        if  self.prompt is not None:
-            rgio.prompt(self.prompt)
-        value = chose_item(self.options,name)
-        return value
 
 class input( interface.base,input_base):
+    """
+YOUNAME: !T.input
+    prompt : "what's you name?"
+    default : "boy"
+    """
     default = None
     prompt  = None
 
@@ -59,14 +59,16 @@ class input( interface.base,input_base):
 
 class bool(interface.base, input_base):
     """
-        T.need_api:
+    LOVE : !T.bool
+        prompt : "love rg ?"
+        default: "y"
     """
     default = None
     prompt  = None
     def __call__(self,name):
-        prompt = self.get_prompt(name)
-        default = self.get_default()
-        value = get_input_line("%s [%s] ? (y/n)" %(prompt,name),default)
+        prompt  = self.get_prompt(name)
+        default = self.default_val()
+        value   = utls.rg_io.get_input_line("%s [%s] ? (y/n)" %(prompt,name),default)
         if value is None :
             return value
         if value.lower()  == 'y' :

@@ -1,0 +1,14 @@
+YOUNAME: !T.input
+    prompt : "what's you name?"
+    default : "boy"
+
+LOVE : !T.bool
+    prompt : "love rg ?"
+    default: "y"
+
+DB : !T.chose
+    prompt : "chose db!"
+    options:
+        - "mysql"
+        - "orcal"
+    default: "mysql"

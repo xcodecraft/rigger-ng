@@ -4,7 +4,6 @@ from base.tc_tools   import *
 import  utls.tpl
 import  interface
 import  utls.rg_var
-
 from utls.tpl.tpl_var import *
 _logger = logging.getLogger()
 
@@ -99,7 +98,7 @@ class tpl_tc(rigger_tc):
         context.mode       = "rest"
 
         utls.tpl.var.clean()
-        utls.tpl.var.import_porp(context)
+        utls.tpl.var.import_attr(context)
 
         self.engine_check()
 
@@ -133,36 +132,36 @@ class tpl_tc(rigger_tc):
         self.assertEqual("/home/rest/abcd",path)
 
 
-    # def test_ng4file(self):
-    #     ngx    = utls.tpl.engine()
-    #     base = '/home/zuowenjian/devspace/rigger-ng/test/utls_tc/tpl_simple'
-    #     ngx.file( base +"/example.sh", base+ "/example_1.sh")
+    def test_file(self):
+        base =      utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_simple")
+        ngx  = utls.tpl.engine(base + "/_tpl.yaml")
+        ngx.proc_file( base +"/example.sh", base+ "/example.out")
 
-    def assertDir(self,first,second):
-        root = {}
-        root['fst'] = first
-        root['sec'] = second
-        os.path.walk(first,self.proc_file,root)
-        pass
-
-    def proc_file(self,root,dirname,names):
-        src_path = dirname
-        dst_path = root['sec'] + src_path.replace(root['fst'],'')
-        for n in names:
-            src = os.path.join(src_path ,n)
-            dst = os.path.join(dst_path ,n)
-            if  os.path.isdir(src):
-                continue
-
-            if not os.path.exists(dst):
-                self.assertTrue(False,"dst_path %s not exists" %dst)
-            src_st = os.stat(src)
-            dst_st = os.stat(dst)
-            self.assertEqual(src_st.st_mode,dst_st.st_mode,"file mod is diffrent! [%s]" %dst)
-            src_lines    = open(src, 'r').readlines()
-            dst_lines    = open(dst, 'r').readlines()
-            self.maxDiff = None
-            self.assertItemsEqual(src_lines,dst_lines)
+    # def assertDir(self,first,second):
+    #     root = {}
+    #     root['fst'] = first
+    #     root['sec'] = second
+    #     os.path.walk(first,self.proc_file,root)
+    #     pass
+    #
+    # def proc_file(self,root,dirname,names):
+    #     src_path = dirname
+    #     dst_path = root['sec'] + src_path.replace(root['fst'],'')
+    #     for n in names:
+    #         src = os.path.join(src_path ,n)
+    #         dst = os.path.join(dst_path ,n)
+    #         if  os.path.isdir(src):
+    #             continue
+    #
+    #         if not os.path.exists(dst):
+    #             self.assertTrue(False,"dst_path %s not exists" %dst)
+    #         src_st = os.stat(src)
+    #         dst_st = os.stat(dst)
+    #         self.assertEqual(src_st.st_mode,dst_st.st_mode,"file mod is diffrent! [%s]" %dst)
+    #         src_lines    = open(src, 'r').readlines()
+    #         dst_lines    = open(dst, 'r').readlines()
+    #         self.maxDiff = None
+    #         self.assertItemsEqual(src_lines,dst_lines)
 
 
     # def test_cmd(self):
