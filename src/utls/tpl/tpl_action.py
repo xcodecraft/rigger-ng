@@ -7,7 +7,7 @@ _logger = logging.getLogger()
 class conf:
     line_tag ='#%'
     var_tag  ='%'
-    def execute(self,name):
+    def __call__(self,name):
         pass
 
 class input_base:
@@ -24,7 +24,7 @@ class input_base:
         return default
 
 class chose(interface.base):
-    def execute(self,name):
+    def __call__(self,name):
         if hasattr(self,'prompt'):
             rgio.prompt(self.prompt)
         value = chose_item(self.options,name)
@@ -37,7 +37,7 @@ class path_chose(interface.base):
     def proc_files(self,arg,dirname,names):
         if dirname == self.root :
             self.options = names
-    def execute(self,name):
+    def __call__(self,name):
         self.root = utls.env_exp.value(self.root)
         validate.v_path(self.root)
         os.path.walk(self.root,self.proc_files,None)
@@ -50,7 +50,7 @@ class input( interface.base,input_base):
     default = None
     prompt  = None
 
-    def execute(self,name):
+    def __call__(self,name):
         prompt = self.get_prompt(name)
         value  = utls.rg_io.get_input_line(prompt,self.default_val())
         return value
@@ -58,9 +58,12 @@ class input( interface.base,input_base):
         return "%s , %s " %(self.default, self.prompt)
 
 class bool(interface.base, input_base):
+    """
+        T.need_api:
+    """
     default = None
     prompt  = None
-    def execute(self,name):
+    def __call__(self,name):
         prompt = self.get_prompt(name)
         default = self.get_default()
         value = get_input_line("%s [%s] ? (y/n)" %(prompt,name),default)

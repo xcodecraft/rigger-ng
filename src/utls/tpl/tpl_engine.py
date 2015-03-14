@@ -4,8 +4,6 @@ import tpl_action,tpl_var
 import impl.rg_yaml
 from utls.rg_io import rgio ,rg_logger
 
-_logger = logging.getLogger()
-
 class tplstatus:
     NONE     = 0
     BLOCK_IN = 1
@@ -19,28 +17,28 @@ class tplworker:
         if dst_path is None :
             return
 
-        rg_logger.info("proc file : src[ %s ]   -> dst [%s]" %(src_path,dst_path) )
+        rgrg_logger.info("proc file : src[ %s ]  --> dst [%s]" %(src_path,dst_path) )
         if not os.path.exists(dst_path):
             os.makedirs(dst_path)
         for n in names:
             src = os.path.join(src_path ,n)
             dst = self.ng.value(os.path.join(dst_path ,n))
             if n != "_tpl.yaml"  and not os.path.isdir(src):
-                _logger.info( "proc tpl file: %s -> %s" %(src,dst) )
+                rg_logger.info( "proc tpl file: %s -> %s" %(src,dst) )
                 self.ng.file( src  , dst )
 
     def proc_single_file(self, src, dst):
-        rg_logger.info( "proc single tpl file: %s -> %s" %(src,dst) )
+        rgrg_logger.info( "proc single tpl file: %s -> %s" %(src,dst) )
         if dst and os.path.isdir(dst):
             dst = sys.stdout
         elif dst and os.path.isfile(dst):
-            _logger.info( "overwriten exsits file: %s" %(dst) )
+            rg_logger.debug( "overwriten exsits file: %s" %(dst) )
         self.ng.file( src  , dst )
 
     def execute(self,src,dst):
         self.src = src
         self.dst = dst
-        _logger.debug("src: %s dst: %s" %(src,dst))
+        rg_logger.debug("src: %s dst: %s" %(src,dst))
         if not os.path.exists(src):
             raise interface.rigger_exception("tpl src not found : %s" %src)
         self.ng = engine( src + "/_tpl.yaml")
@@ -59,7 +57,7 @@ class engine:
     def __init__(self,tplconf=None):
 
         self.load_conf(tplconf)
-        self. input_var = tpl_var.layzer_porp(self.var_input_funs,tpl_action.input())
+        self.input_var = tpl_var.layzer_porp(self.var_input_funs,tpl_action.input())
 
         tpl_conf = tpl_action.conf()
         if self.var_input_funs.has_key('_conf'):
@@ -75,9 +73,6 @@ class engine:
 
     def load_conf(self,tplconf):
         self.var_input_funs = {}
-        # import pdb
-        # pdb.set_trace()
-
         if tplconf and os.path.exists(tplconf) :
             loader = impl.rg_yaml.conf_loader(tplconf)
 
@@ -88,7 +83,7 @@ class engine:
     def envval_of_match(self,match):
         var = str(match.group(1))
         val = getattr(tpl_var.var_obj(),var)
-        _logger.debug( "key[%s] val[%s]" %(var,val))
+        rg_logger.debug( "key[%s] val[%s]" %(var,val))
         return val
 
     def value(self,exp):
@@ -117,6 +112,7 @@ class engine:
                     if  len(cond_val) == 0 :
                         cond_val = "TRUE"
                     code = cond_var.replace("T.","tpl_var.var_obj().")
+                    # print(code)
                     exec "val = " + code
                     if str(val).upper() != cond_val.upper() :
                         return None
@@ -153,11 +149,11 @@ class engine:
                     # import pdb
                     # pdb.set_trace()
                     exec  code
-                    _logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
+                    rg_logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
                     if str(cond_val).upper() == expect.upper() :
                         xblock = []
                         for line in block :
-                            _logger.debug("proc line: %s" %(line) )
+                            rg_logger.debug("proc line: %s" %(line) )
                             xblock.append(self.value(line))
                         dst.writelines(xblock)
                     block = []
@@ -177,7 +173,7 @@ class engine:
                 elif code_match :
                     code = code_match.group(1).strip()
                     code = code.replace("T.","tpl_var.var_obj()")
-                    _logger.info(code)
+                    rg_logger.info(code)
                     exec code
                 else:
                     line = self.value(line)

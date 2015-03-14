@@ -20,6 +20,8 @@ class vars(interface.resource):
     def _allow(self,context):
         return True
     def _before(self,context):
+        # import pdb
+        # pdb.set_trace()
         items = self.__dict__
         # run_struct.push("res.var")
 
@@ -29,6 +31,7 @@ class vars(interface.resource):
             name= name.upper()
             setattr(context,name,val)
         utls.rg_var.import_dict(items)
+
     def _after(self,context):
         pass
 
