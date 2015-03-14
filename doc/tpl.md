@@ -20,7 +20,7 @@ please chose DB exit( q )
 echo "this is rg tpl"
 echo "Hi,zwj"
 echo "love rg?"
-echo "you love too! "
+echo "love you too! "
 echo "mysql is free! "
 ```
 
@@ -55,7 +55,7 @@ echo "this is rg tpl"
 echo "Hi,%{YOUNAME}"
 echo "love rg?"
 #% T.LOVE : {
-echo "you love too! "
+echo "love you too! "
 #% }
 #% T.DB == "mysql" : {
 echo "mysql is free! "

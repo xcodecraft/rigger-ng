@@ -2,7 +2,7 @@ echo "this is rg tpl"
 echo "Hi,%{YOUNAME}"
 echo "love rg?"
 #% T.LOVE : {
-echo "you love too! "
+echo "love you too! "
 #% }
 #% T.DB == "mysql" : {
 echo "mysql is free! "
