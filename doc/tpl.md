@@ -2,40 +2,54 @@
 
 ## 示例
 
-###交互过程
+###交互
 ```
 what's you name? default(boy) exit(q)
 zwj
 love rg ? [LOVE] ? (y/n) default(y) exit(q)
 y
+chose db!
+1: mysql
+2: orcal
+3 other DB
+please chose DB exit( q )
+1
 ```
-结果
+###结果
 ```
 echo "this is rg tpl"
 echo "Hi,zwj"
 echo "love rg?"
 echo "you love too! "
+echo "mysql is free! "
 ```
 
 
-###交互过程
+###交互
 ```
 what's you name? default(boy) exit(q)
 dog
 love rg ? [LOVE] ? (y/n) default(y) exit(q)
 n
+chose db!
+1: mysql
+2: orcal
+3 other DB
+please chose DB exit( q             )
+2
 ```
 
-结果
+###结果
 ```
 echo "this is rg tpl"
 echo "Hi,dog"
 echo "love rg?"
+echo "you are tuhao!"
 ```
 
 
 
-#### file
+### 模板
 ``` bash
 echo "this is rg tpl"
 echo "Hi,%{YOUNAME}"
@@ -50,6 +64,8 @@ echo "mysql is free! "
 echo "you are tuhao!"
 #% }
 ```
+
+### yaml conf
 
 ``` yaml
 YOUNAME: !T.input
@@ -68,3 +84,13 @@ DB : !T.chose
 ```
 
 ### 语法
+```
+%{VARNAME}
+
+#% T.VARNAME : {
+
+#% }
+#% T.VARNAME =='value' : {
+
+#% }
+```

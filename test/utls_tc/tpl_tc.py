@@ -135,7 +135,7 @@ class tpl_tc(rigger_tc):
     def test_file(self):
         base =      utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_simple")
         ngx  = utls.tpl.engine(base + "/_tpl.yaml")
-        ngx.proc_file( base +"/example.sh", base+ "/example.out")
+        # ngx.proc_file( base +"/example.sh", base+ "/example.out")
 
     # def assertDir(self,first,second):
     #     root = {}
