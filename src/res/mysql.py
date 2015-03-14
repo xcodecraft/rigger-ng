@@ -4,7 +4,8 @@ import interface
 
 
 from utls.rg_io  import rg_logger
-from utls.rg_var import value_of
+# from utls.rg_var import value_of
+import utls.rg_var
 from utls.rg_sh  import shexec
 from string import *
 
@@ -27,15 +28,15 @@ class mysql(interface.resource):
     def _allow(self,context) :
         return True
     def _before(self,context):
-        self.bin       = value_of(self.bin)
-        self.host       = value_of(self.host)
-        self.name       = value_of(self.name)
-        self.password   = value_of(self.password)
-        self.user       = value_of(self.user)
-        self.init       = value_of(self.init)
-        self.root       = value_of(self.root)
-        self.rootpwd    = value_of(self.rootpwd)
-        self.allow_addr = value_of(self.allow_addr)
+        self.bin        = utls.rg_var.value_of(self.bin)
+        self.host       = utls.rg_var.value_of(self.host)
+        self.name       = utls.rg_var.value_of(self.name)
+        self.password   = utls.rg_var.value_of(self.password)
+        self.user       = utls.rg_var.value_of(self.user)
+        self.init       = utls.rg_var.value_of(self.init)
+        self.root       = utls.rg_var.value_of(self.root)
+        self.rootpwd    = utls.rg_var.value_of(self.rootpwd)
+        self.allow_addr = utls.rg_var.value_of(self.allow_addr)
 
     def _data(self,context):
         sql = "DROP DATABASE IF EXISTS $DBNAME;CREATE DATABASE $DBNAME DEFAULT CHARACTER SET UTF8;"

@@ -23,7 +23,7 @@ class assginer :
         var=var.upper()
         while True:
             try:
-                val  = getattr(utls.tpl.var.dict(),var)
+                val  = getattr(utls.tpl.var_obj(),var)
                 rg_logger.info("[assgin] %-15s:%s" %(var,val ))
                 return val
             except interface.var_undefine:

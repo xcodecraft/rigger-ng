@@ -1,0 +1,6 @@
+PRJ_NAME: !T.input
+    prompt : "please input project name"
+
+API_SYS: !T.bool
+    prompt : "是否需要 API SYS"
+    default: "y"

@@ -1,7 +1,9 @@
-# import types , re , os , string ,  getopt , pickle ,yaml , logging , new , sys
+#coding=utf8
 import logging , re, os,sys
 import tpl_action,tpl_var
-_logger = logging.getLogger()
+import impl.rg_yaml
+from utls.rg_io import rgio ,rg_logger
+
 class tplstatus:
     NONE     = 0
     BLOCK_IN = 1
@@ -14,56 +16,53 @@ class tplworker:
         dst_path    = self.ng.proc_path(dst_path)
         if dst_path is None :
             return
-        _logger.debug("proc file : curpath[ %s ] + %s   " %(self.dst,relat_path))
-        _logger.info("proc file : src[ %s ]   -> dst [%s]" %(src_path,dst_path))
+
+        rgrg_logger.info("proc file : src[ %s ]  --> dst [%s]" %(src_path,dst_path) )
         if not os.path.exists(dst_path):
             os.makedirs(dst_path)
         for n in names:
             src = os.path.join(src_path ,n)
             dst = self.ng.value(os.path.join(dst_path ,n))
             if n != "_tpl.yaml"  and not os.path.isdir(src):
-                _logger.info( "proc tpl file: %s -> %s" %(src,dst) )
+                rg_logger.info( "proc tpl file: %s -> %s" %(src,dst) )
                 self.ng.file( src  , dst )
+
     def proc_single_file(self, src, dst):
-        _logger.info( "proc single tpl file: %s -> %s" %(src,dst) )
+        rgrg_logger.info( "proc single tpl file: %s -> %s" %(src,dst) )
         if dst and os.path.isdir(dst):
             dst = sys.stdout
         elif dst and os.path.isfile(dst):
-            _logger.info( "overwriten exsits file: %s" %(dst) )
+            rg_logger.debug( "overwriten exsits file: %s" %(dst) )
         self.ng.file( src  , dst )
+
     def execute(self,src,dst):
         self.src = src
         self.dst = dst
-        _logger.debug("src: %s dst: %s" %(src,dst))
+        rg_logger.debug("src: %s dst: %s" %(src,dst))
         if not os.path.exists(src):
-            raise inf.rigger_exception("tpl src not found : %s" %src)
+            raise interface.rigger_exception("tpl src not found : %s" %src)
         self.ng = engine( src + "/_tpl.yaml")
         #process single file
         if os.path.isfile(src):
             self.proc_single_file(self.src, self.dst)
         else:
         #process dir
-            scope= tpl_var.scope_nofound(self.ng.input_var)
-            with scope:
+            using = tpl_var.scope_using(self.ng.input_var)
+            with using:
                 os.path.walk(self.src,self.proc_files,None)
 
-def cond_bool(val):
-        if isinstance(val,str):
-            return val.upper() == 'TRUE'
-        return bool(val)
 
 
 class engine:
     def __init__(self,tplconf=None):
-        self.var_funs = {}
-        if tplconf and os.path.exists(tplconf) :
-            self.var_funs = dev.yaml_ext(tplconf).load_data('!T','tpl.tpl_action')
 
-        self. input_var = tpl_var.layzer_var(self.var_funs,tpl_action.input())
+        self.load_conf(tplconf)
+        self.input_var = tpl_var.layzer_porp(self.var_input_funs,tpl_action.input())
 
         tpl_conf = tpl_action.conf()
-        if self.var_funs.has_key('_conf'):
-            tpl_conf = self.var_funs['_conf']
+        if self.var_input_funs.has_key('_conf'):
+            tpl_conf = self.var_input_funs['_conf']
+
         self.re_block_beg       = re.compile("^%s (.+):(.*) *{ *$" % tpl_conf.line_tag)
         self.re_block_end       = re.compile("^%s *} *$" % tpl_conf.line_tag)
         self.re_code            = re.compile("^%s(.+)" %tpl_conf.line_tag )
@@ -72,10 +71,19 @@ class engine:
         self.re_path_match      = re.compile("^%s([^/]*):([^/]*)$" % tpl_conf.line_tag)
         self.re_path_val        = re.compile("^%s([^/]*)$" % tpl_conf.line_tag)
 
+    def load_conf(self,tplconf):
+        self.var_input_funs = {}
+        if tplconf and os.path.exists(tplconf) :
+            loader = impl.rg_yaml.conf_loader(tplconf)
+
+            data   = loader.load_data('!T','utls.tpl.tpl_action')
+            if data is not None :
+                self.var_input_funs = data
+
     def envval_of_match(self,match):
-        var= str(match.group(1))
-        val = getattr(tpl_var.var.dict(),var.lower())
-        _logger.debug( "key[%s] val[%s]" %(var,val))
+        var = str(match.group(1))
+        val = getattr(tpl_var.var_obj(),var)
+        rg_logger.debug( "key[%s] val[%s]" %(var,val))
         return val
 
     def value(self,exp):
@@ -103,7 +111,8 @@ class engine:
                     cond_val     = sec_match.group(2).strip()
                     if  len(cond_val) == 0 :
                         cond_val = "TRUE"
-                    code         = cond_var.replace("T.","tpl_var.var.dict().")
+                    code = cond_var.replace("T.","tpl_var.var_obj().")
+                    # print(code)
                     exec "val = " + code
                     if str(val).upper() != cond_val.upper() :
                         return None
@@ -111,7 +120,7 @@ class engine:
                 sec_match  = self.re_path_val.match(sec)
                 if sec_match :
                     cond_var    = sec_match.group(1).strip()
-                    code        = cond_var.replace("T.","tpl_var.var.dict().")
+                    code        = cond_var.replace("T.","tpl_var.var_obj().")
                     exec "val = " + code
                     dst_sections.append(val)
                     continue
@@ -120,6 +129,11 @@ class engine:
                 dst = os.path.join(dst,sec)
             return dst
         return path
+
+    def proc_file(self,tplfile,dstfile):
+        using = tpl_var.scope_using(self.input_var)
+        with using:
+            self.file(tplfile,dstfile)
 
 
 
@@ -136,13 +150,13 @@ class engine:
                 if self.re_block_end.match(line) :
                     st=tplstatus.NONE
                     code = "cond_val = %s"  %cond
-                    code = code.replace("T.","tpl_var.var.dict().")
+                    code = code.replace("T.","tpl_var.var_obj().")
                     exec  code
-                    _logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
+                    rg_logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
                     if str(cond_val).upper() == expect.upper() :
                         xblock = []
                         for line in block :
-                            _logger.debug("proc line: %s" %(line) )
+                            rg_logger.debug("proc line: %s" %(line) )
                             xblock.append(self.value(line))
                         dst.writelines(xblock)
                     block = []
@@ -161,8 +175,8 @@ class engine:
                     pass
                 elif code_match :
                     code = code_match.group(1).strip()
-                    code = code.replace("T.","tpl_var.var.dict().")
-                    _logger.info(code)
+                    code = code.replace("T.","tpl_var.var_obj()")
+                    rg_logger.info(code)
                     exec code
                 else:
                     line = self.value(line)

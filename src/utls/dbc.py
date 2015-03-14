@@ -1,10 +1,16 @@
 #coding=utf-8
+import interface
 def not_none(val,errmsg) :
     if val is   None :
-        raise rigger_exception( errmsg )
+        raise interface.rigger_exception( errmsg )
     return val
 
-def must_true(fun) :
+def must_true(val,errmsg) :
     if not val ==  True :
-        raise rigger_exception( errmsg )
+        raise interface.rigger_exception( errmsg )
+    return val
+
+def must_obj(val,cls):
+    if not isinstance(val,cls) :
+        raise interface.rigger_exception( " is not %s instance" %cls.__name__)
     return val
