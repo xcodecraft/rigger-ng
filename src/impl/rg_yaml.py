@@ -1,7 +1,7 @@
 #coding=utf8
 import re , os , yaml, logging
 import interface
-import res
+import rg_res
 from utls.rg_io import rg_logger
 
 

@@ -9,12 +9,14 @@ from utls.rg_io import rg_logger
 def setup() :
     interface.regist_res("env,project,system,xmodule,prj_main" , "res.inner")
     interface.regist_res("mysql"                               , "res.mysql")
+    interface.regist_res("varnishd"                            , "res.varnishd")
+    interface.regist_res("fpm"                                 , "res.fpm")
     interface.regist_res("echo,vars,assert_eq"                 , "res.inner")
 
     interface.regist_res("link,path,intertpl,file_tpl"         , "res.files")
 
     interface.regist_cmd("check,clean,info"                    , "impl.rg_cmd.rg_cmd_prj")
-    interface.regist_cmd("conf,reconf,start,stop,restart,data" , "impl.rg_cmd.rg_cmd_prj")
+    interface.regist_cmd("conf,reconf,start,stop,restart,data,reload" , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("help"                                , "impl.rg_cmd.rg_cmd")
 
 def list_res() :

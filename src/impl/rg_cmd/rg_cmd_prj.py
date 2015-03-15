@@ -130,6 +130,14 @@ class restart_cmd(prj_cmd_base,cmdtag_prj):
         self.runcmd(rargs,lambda x,y : x._stop(y))
         self.runcmd(rargs,lambda x,y : x._start(y))
 
+class reload_cmd(prj_cmd_base,cmdtag_prj):
+    """
+    rg reload -e <env> -s <sys> [-o <os>] "
+    rg reload -e debug,demo -s front,admin
+    """
+    def _execute(self,rargs):
+        self.runcmd(rargs,lambda x,y : x._reload(y))
+
 
 # class php_cmd(run_base,resconf_able,cmdtag_run):
 #     """execut php eg: rg php -f 'xxx.php arg1 arg2'  """
