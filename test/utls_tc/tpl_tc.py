@@ -65,103 +65,46 @@ class porp_tc(rigger_tc) :
         self.assertEqual(p1.x, 10)
         self.assertEqual(p1.y, 1)
 
-class tplvar_tc(rigger_tc) :
-    def test_tplvar(self) :
-        var = tpl_var()
-        var.import_str("a=x")
-        var.import_str("b=y,c=z")
-
-        attr_val = attr_proxy(var.impl)
-        self.assertEqual(attr_val.a, 'x')
-        self.assertEqual(attr_val.b, 'y')
-        self.assertEqual(attr_val.c, 'z')
-
-        var.keep()
-        var.import_str("a=x1,b=y1,c=z1")
-        attr_val = attr_proxy(var.impl)
-        self.assertEqual(attr_val.a, 'x1')
-        self.assertEqual(attr_val.b, 'y1')
-        self.assertEqual(attr_val.c, 'z1')
-
-        var.rollback()
-        attr_val = attr_proxy(var.impl)
-        self.assertEqual(attr_val.a, 'x')
-        self.assertEqual(attr_val.b, 'y')
-        self.assertEqual(attr_val.c, 'z')
 
 
 class tpl_tc(rigger_tc):
 
-    def test_engine_vardict(self):
-        context = interface.run_context()
-        context.need_admin = "TRUE"
-        context.mode       = "rest"
+    # def test_engine_vardict(self):
+    #     context = interface.run_context()
+    #     context.need_admin = "TRUE"
+    #     context.mode       = "rest"
+    #
+    #     utls.tpl.var.clean()
+    #     utls.tpl.var.import_attr(context)
+    #
+    #     self.engine_check()
 
-        utls.tpl.var.clean()
-        utls.tpl.var.import_attr(context)
+    # def test_engine_varstr(self) :
+    #     utls.tpl.var.clean()
+    #     utls.tpl.var.import_str("need_admin=TRUE,mode=rest")
+    #     self.engine_check()
 
-        self.engine_check()
-
-    def test_engine_varstr(self) :
-        utls.tpl.var.clean()
-        utls.tpl.var.import_str("need_admin=TRUE,mode=rest")
-        self.engine_check()
-
-    def engine_check(self):
-        expect = "/home/abc"
-
-        ngx    = utls.tpl.engine()
-        path   = ngx.proc_path("/home/#%T.need_admin:TRUE/abc")
-        self.assertEqual(expect,path)
-
-        path   = ngx.proc_path("/home/#%T.need_admin:/abc")
-        self.assertEqual(expect,path)
-
-        path   = ngx.proc_path("home/#%T.need_admin:TRUE/abc")
-        self.assertEqual("home/abc",path)
-
-        path   = ngx.proc_path("/home/#%T.need_admin:TRUE/abc/")
-        self.assertEqual("/home/abc/",path)
-
-        path   = ngx.proc_path("/home/#%T.need_admin:lala/abc/")
-        self.assertEqual(None,path)
-
-        path   = ngx.proc_path("/home/#%T.mode")
-        self.assertEqual("/home/rest",path)
-        path   = ngx.proc_path("/home/#%T.mode/abcd")
-        self.assertEqual("/home/rest/abcd",path)
 
 
     def test_file(self):
-        base =      utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_simple")
+        base = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_simple")
         ngx  = utls.tpl.engine(base + "/_tpl.yaml")
-        # ngx.proc_file( base +"/example.sh", base+ "/example.out")
+        ngx.append_vars("youname=abc,love=TRUE,db=mysql")
+        ngx.proc_file( base +"/example.sh", base+ "/example.out")
+        self.assertMacroFile(base + "/example.out" , base + "/example.expect")
 
-    # def assertDir(self,first,second):
-    #     root = {}
-    #     root['fst'] = first
-    #     root['sec'] = second
-    #     os.path.walk(first,self.proc_file,root)
-    #     pass
-    #
-    # def proc_file(self,root,dirname,names):
-    #     src_path = dirname
-    #     dst_path = root['sec'] + src_path.replace(root['fst'],'')
-    #     for n in names:
-    #         src = os.path.join(src_path ,n)
-    #         dst = os.path.join(dst_path ,n)
-    #         if  os.path.isdir(src):
-    #             continue
-    #
-    #         if not os.path.exists(dst):
-    #             self.assertTrue(False,"dst_path %s not exists" %dst)
-    #         src_st = os.stat(src)
-    #         dst_st = os.stat(dst)
-    #         self.assertEqual(src_st.st_mode,dst_st.st_mode,"file mod is diffrent! [%s]" %dst)
-    #         src_lines    = open(src, 'r').readlines()
-    #         dst_lines    = open(dst, 'r').readlines()
-    #         self.maxDiff = None
-    #         self.assertItemsEqual(src_lines,dst_lines)
+    def test_path(self):
+        base     = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_path")
+        ngx      = utls.tpl.engine(base + "/_tpl.yaml")
+        # for auto-test
+        ngx.append_vars("sys_name=abc,need_mysql=TRUE")
+        dst_path = ngx.proc_path(base + "/%{SYS_NAME}")
+        self.assertEqual(dst_path, base + "/abc")
+        dst_path = ngx.proc_path(base + "/%{NEED_MYSQL}/mysql")
+        self.assertEqual(dst_path, base + "//mysql")
+        dst_path = ngx.proc_path(base + "/%{SYS_NAME}_data")
+        self.assertEqual(dst_path, base + "/abc_data")
+
 
 
     # def test_cmd(self):

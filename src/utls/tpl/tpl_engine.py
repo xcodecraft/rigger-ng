@@ -13,11 +13,11 @@ class tplworker:
         src_path    = dirname
         relat_path  = src_path.replace(self.src,'').lstrip('/')
         dst_path    = os.path.join(self.dst   , relat_path)
-        dst_path    = self.ng.proc_path(dst_path)
+        dst_path    = self.ng.convert_path(dst_path)
         if dst_path is None :
             return
 
-        rgrg_logger.info("proc file : src[ %s ]  --> dst [%s]" %(src_path,dst_path) )
+        rg_logger.info("proc file : src[ %s ]  --> dst [%s]" %(src_path,dst_path) )
         if not os.path.exists(dst_path):
             os.makedirs(dst_path)
         for n in names:
@@ -47,17 +47,33 @@ class tplworker:
             self.proc_single_file(self.src, self.dst)
         else:
         #process dir
-            using = tpl_var.scope_using(self.ng.input_var)
-            with using:
-                os.path.walk(self.src,self.proc_files,None)
+            os.path.walk(self.src,self.proc_files,None)
 
+
+class path_matcher :
+    def __init__(self,tpl_vars) :
+        self.passed   = False
+        self.tpl_vars = tpl_vars
+
+    def is_passed(self):
+        return self.passed
+
+    def __call__(self,match):
+        var = str(match.group(1))
+        val = getattr(self.tpl_vars,var)
+        rg_logger.debug( "path is pass %s : %s" %(var,val))
+        if val == 'FALSE' or   len(val.strip()) == 0 :
+            self.passed = True
+        if val == 'TRUE' :
+            val = ""
+        return val
 
 
 class engine:
     def __init__(self,tplconf=None):
 
         self.load_conf(tplconf)
-        self.input_var = tpl_var.layzer_porp(self.var_input_funs,tpl_action.input())
+        self.tpl_vars = tpl_var.attr_proxy(tpl_var.layzer_porp(self.var_input_funs,tpl_action.input()))
 
         tpl_conf = tpl_action.conf()
         if self.var_input_funs.has_key('_conf'):
@@ -67,73 +83,42 @@ class engine:
         self.re_block_end       = re.compile("^%s *} *$" % tpl_conf.line_tag)
         self.re_code            = re.compile("^%s(.+)" %tpl_conf.line_tag )
         self.re_var             = re.compile('%s\{(\w+)\}' %tpl_conf.var_tag)
-        self.re_path            = re.compile("%s" % tpl_conf.line_tag)
-        self.re_path_match      = re.compile("^%s([^/]*):([^/]*)$" % tpl_conf.line_tag)
-        self.re_path_val        = re.compile("^%s([^/]*)$" % tpl_conf.line_tag)
+
+    def append_vars(self,asstr):
+        dict_obj      = tpl_var.parse_assgin(asstr)
+        self.tpl_vars = tpl_var.attr_proxy(tpl_var.combo_porp(tpl_var.dict_porp(dict_obj),self.tpl_vars))
 
     def load_conf(self,tplconf):
         self.var_input_funs = {}
         if tplconf and os.path.exists(tplconf) :
             loader = impl.rg_yaml.conf_loader(tplconf)
-
             data   = loader.load_data('!T','utls.tpl.tpl_action')
             if data is not None :
                 self.var_input_funs = data
 
-    def envval_of_match(self,match):
+    def var_matched(self,match):
         var = str(match.group(1))
-        val = getattr(tpl_var.var_obj(),var)
+        val = getattr(self.tpl_vars,var)
         rg_logger.debug( "key[%s] val[%s]" %(var,val))
         return val
 
+
     def value(self,exp):
-        try:
-            new = self.re_var.sub(self.envval_of_match,exp)
-            return new
-        except:
-            print("tpl:" + exp) ;
-            raise
+        new = self.re_var.sub(self.var_matched,exp)
+        return new
 
     def proc_path(self,path):
-        # %T.need_admin:
-        # %T.mvc_mode:action
-        path_match = self.re_path.search(path)
-        if path_match:
-            dst = ""
-            if path[0] == '/' :
-                dst = "/"
-            sections =  path.split("/")
-            dst_sections = []
-            for sec in sections :
-                sec_match = self.re_path_match.match(sec)
-                if sec_match :
-                    cond_var     = sec_match.group(1).strip()
-                    cond_val     = sec_match.group(2).strip()
-                    if  len(cond_val) == 0 :
-                        cond_val = "TRUE"
-                    code = cond_var.replace("T.","tpl_var.var_obj().")
-                    # print(code)
-                    exec "val = " + code
-                    if str(val).upper() != cond_val.upper() :
-                        return None
-                    continue
-                sec_match  = self.re_path_val.match(sec)
-                if sec_match :
-                    cond_var    = sec_match.group(1).strip()
-                    code        = cond_var.replace("T.","tpl_var.var_obj().")
-                    exec "val = " + code
-                    dst_sections.append(val)
-                    continue
-                dst_sections.append(sec)
-            for sec in dst_sections :
-                dst = os.path.join(dst,sec)
-            return dst
-        return path
+        return self.convert_path(path)
+
+    def convert_path(self,path):
+        matcher = path_matcher(self.tpl_vars)
+        new     = self.re_var.sub(matcher,path)
+        if matcher.is_passed() :
+            return None
+        return new
 
     def proc_file(self,tplfile,dstfile):
-        using = tpl_var.scope_using(self.input_var)
-        with using:
-            self.file(tplfile,dstfile)
+        self.file(tplfile,dstfile)
 
 
 
@@ -150,7 +135,7 @@ class engine:
                 if self.re_block_end.match(line) :
                     st=tplstatus.NONE
                     code = "cond_val = %s"  %cond
-                    code = code.replace("T.","tpl_var.var_obj().")
+                    code = code.replace("T.","self.tpl_vars.")
                     exec  code
                     rg_logger.debug(" code in block '%s'[%s]" %(cond,str(cond_val)) )
                     if str(cond_val).upper() == expect.upper() :
@@ -175,7 +160,7 @@ class engine:
                     pass
                 elif code_match :
                     code = code_match.group(1).strip()
-                    code = code.replace("T.","tpl_var.var_obj()")
+                    code = code.replace("T.","self.tpl_vars")
                     rg_logger.info(code)
                     exec code
                 else:
