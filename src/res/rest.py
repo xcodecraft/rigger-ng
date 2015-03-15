@@ -31,8 +31,8 @@ class rest(interface.resource):
 
         sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
-        self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
-        cmd     = Template(cmdtpl).substitute(SRC =  self.src ,DST=self.out_idx)
+
+        cmd     = Template(cmdtpl).substitute(SRC = self.src ,DST = self.out_idx)
         shexec.execmd(cmd,False)
 
     def check(self,context):

@@ -11,5 +11,6 @@ class rest_tc(base.tc_tools.rigger_tc):
         mock = base.tc_tools.res_mock()
         with   mock :
             self.asst_cmd(conf,"conf -s rest -e dev")
-        print 'hello rest'
-
+        sed = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
+        expect = """grep --include "*.php" -i  -E "class .+ implements XService"  -R ${PRJ_ROOT}/test/data/   |  """  +  sed + " > ${PRJ_ROOT}/test/data/_rest_conf.idx "
+        self.assertMacroEqual(expect, mock.cmds)

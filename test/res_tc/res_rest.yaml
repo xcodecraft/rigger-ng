@@ -16,6 +16,6 @@ _sys:
         _name: "rest"
         _res:
             - !R.rest
-                src: "${HOME}/devspace/rigger-ng/test/data/rest.php"
+                src: "${HOME}/devspace/rigger-ng/test/data/"
                 dst: "${HOME}/devspace/rigger-ng/test/data/"
 
