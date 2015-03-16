@@ -1,6 +1,7 @@
 #coding=utf8
 import  utls.tpl ,interface ,base.tc_tools
 import  impl.rg_args
+import  os
 
 class rest_tc(base.tc_tools.rigger_tc):
     def asst_cmd(self,conf,cmd):
@@ -14,3 +15,10 @@ class rest_tc(base.tc_tools.rigger_tc):
         sed = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         expect = """grep --include "*.php" -i  -E "class .+ implements XService"  -R ${PRJ_ROOT}/test/data/   |  """  +  sed + " > ${PRJ_ROOT}/test/data/_rest_conf.idx "
         self.assertMacroEqual(expect, mock.cmds)
+
+        data = self.macro_data(expect.split('\n'))
+        filename = 'rest_test.sh';
+        with open(filename, 'w') as f:
+               f.write(data[0])
+        os.system('sh '+filename)
+        os.system('rm '+filename)

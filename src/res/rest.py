@@ -21,13 +21,9 @@ class rest(interface.resource):
     # def locate(self,context):
     #     self.src        = env_exp.value(self.src)
     #     self.dst        = env_exp.value(self.dst)
-    #     self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
-    #     print self.out_idx,'###############'
-  #  def _before(self,context):
-  #      self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
-    def _config(self,context):
-
+    def _before(self,context):
         self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
+    def _config(self,context):
 
         sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
@@ -43,6 +39,6 @@ class rest(interface.resource):
         cmd    = Template(cmdtpl).substitute(DST=filename)
         shexec.execmd(cmd)
 
-    def clean(self,context):
+    def _clean(self,context):
         self.clean_file(self.out_idx)
 
