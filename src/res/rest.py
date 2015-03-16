@@ -16,11 +16,6 @@ class rest(interface.resource):
     !R.rest
         src: "$${PRJ_ROOT}/src/apps/api"
     """
-    _src = None
-    _dst = "${RUN_PATH}"
-    # def locate(self,context):
-    #     self.src        = env_exp.value(self.src)
-    #     self.dst        = env_exp.value(self.dst)
     def _before(self,context):
         self.out_idx    = os.path.join(self.dst , "_rest_conf.idx")
     def _config(self,context):
