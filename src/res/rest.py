@@ -31,7 +31,7 @@ class rest(interface.resource):
         cmd     = Template(cmdtpl).substitute(SRC = self.src ,DST = self.out_idx)
         shexec.execmd(cmd,False)
 
-    def check(self,context):
+    def _check(self,context):
         self.check_print(os.path.exists(self.out_idx),self.out_idx)
 
     def clean_file(self,filename):

@@ -22,3 +22,9 @@ class rest_tc(base.tc_tools.rigger_tc):
                f.write(data[0])
         os.system('sh '+filename)
         os.system('rm '+filename)
+
+        mock = base.tc_tools.res_mock()
+        with   mock :
+            self.asst_cmd(conf,"clean -s rest -e dev")
+        expect = "if test -e ${PRJ_ROOT}/test/data/_rest_conf.idx ; then rm -f  ${PRJ_ROOT}/test/data/_rest_conf.idx ; fi ; "
+        self.assertMacroEqual(expect, mock.cmds)
