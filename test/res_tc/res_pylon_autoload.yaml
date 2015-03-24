@@ -1,0 +1,20 @@
+_env:
+    - !R.env
+        _name: "dev"
+
+_prj: !R.project
+       _name: "rigger-test"
+       _res:
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+                PRJ_ROOT: "${HOME}/devspace/rigger-ng"
+
+
+_sys:
+    -  !R.system
+        _name: "pylon_autoload"
+        _res:
+            - !R.pylon_autoload
+                sys_autoload: "${HOME}/devspace/rigger-ng/test/data/"
+                MODULES: "/home/q/php/pylon_22:/home/q/php/qhydra_sdk:/home/q/php/svc_utls:/home/q/php/gsdk_base:/home/q/php/quclient"

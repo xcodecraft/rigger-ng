@@ -20,5 +20,6 @@ if __name__ == '__main__':
     from res_tc.files_tc  import *
     from res_tc.inner_tc  import *
     from res_tc.rest_tc   import *
+    from res_tc.pylon_autoload_tc   import *
 
     unittest.main()

@@ -13,6 +13,7 @@ def setup() :
 
     interface.regist_res("link,path,intertpl,file_tpl"         , "res.files")
     interface.regist_res("rest"                               , "res.rest")
+    interface.regist_res("pylon_autoload"                     , "res.pylon_autoload")
 
     interface.regist_cmd("check,clean,info"                    , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,data" , "impl.rg_cmd.rg_cmd_prj")
