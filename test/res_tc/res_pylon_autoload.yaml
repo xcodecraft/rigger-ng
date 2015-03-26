@@ -16,5 +16,6 @@ _sys:
         _name: "pylon_autoload"
         _res:
             - !R.pylon_autoload
+                root: "${HOME}/devspace/rigger-ng/test/data/"
                 sys_autoload: "${HOME}/devspace/rigger-ng/test/data/"
                 MODULES: "/home/q/php/pylon_22:/home/q/php/qhydra_sdk:/home/q/php/svc_utls:/home/q/php/gsdk_base:/home/q/php/quclient"

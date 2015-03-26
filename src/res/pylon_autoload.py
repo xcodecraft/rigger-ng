@@ -13,14 +13,21 @@ import sys
 _logger = logging.getLogger()
 
 class pylon_autoload(interface.resource):
-    """build autoload data for pylon"""
+    """build autoload data for pylon:
+       _autoload_clspath.idx
+       _autoload_clsname.idx
+       _find_cls.tmp
+       phpsdk.txt
+    """
     def _before(self,context):
         self.src_paths   = self.MODULES.split(':')
     def _config(self,context):
-       # self.sdk()
+        self.sdk()
         self.build_php_index(self.src_paths,self.sys_autoload,True,"");
-    def sdk(self,context):
-        cmd = "find %s -name '*.php' | xargs cat | grep 'require_once' | grep '/home/q/' > %s" %(self.root, self.sdk_file)
+    def sdk(self):
+        sdk_file   = utls.rg_var.value_of(os.path.join(self.sys_autoload,  "phpsdk.txt"))
+        root       = utls.rg_var.value_of(self.root)
+        cmd = "find %s -name '*.php' | xargs cat | grep 'require_once' | grep '/home/q/' > %s" %(root, sdk_file)
         shexec.execmd(cmd,False)
     def _clean(self,context):
         pass
