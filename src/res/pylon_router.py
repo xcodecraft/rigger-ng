@@ -10,7 +10,7 @@ from string import *
 
 _logger = logging.getLogger()
 
-class rest(interface.resource):
+class pylon_router(interface.resource):
     """
     生成 pylon rest 的索引
     !R.rest

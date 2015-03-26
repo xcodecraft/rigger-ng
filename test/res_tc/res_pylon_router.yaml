@@ -13,9 +13,9 @@ _prj: !R.project
 
 _sys:
     -  !R.system
-        _name: "rest"
+        _name: "pylon_router"
         _res:
-            - !R.rest
+            - !R.pylon_router
                 src: "${HOME}/devspace/rigger-ng/test/data/"
                 dst: "${HOME}/devspace/rigger-ng/test/data/"
 
