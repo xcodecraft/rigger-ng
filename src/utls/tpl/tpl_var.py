@@ -2,71 +2,110 @@
 import os,re,logging
 import interface
 import utls.pattern
+import utls.dbc
+import copy
+
+from utls.rg_io import  rg_logger
+
+def upper_dict(ori) :
+    # utls.dbc.must_true(isinstance(ori,dict)," upper_dict need porp obj, %s" %(ori.__class__.__name__) )
+    now = {}
+    for k,v in ori.items() :
+        nkey = k.upper()
+        now[nkey] = v
+    return now
 
 
-_logger = logging.getLogger()
+class porp :
+    def set(self,name,val) :
+        raise interface.rigger_exception(" %s no impl set methond " %self.__class__.__name__)
+    def get(self,name) :
+        raise interface.rigger_exception(" %s no impl get methond " %self.__class__.__name__)
 
-class prompt_dict:
-    def __init__(self,data=None):
-        self.data = data
+class attr_proxy(porp) :
+    def __init__(self,p) :
+        utls.dbc.must_obj(p,porp)
+        self.__dict__['impl'] = p
     def __getattr__(self,name):
-        # rgio.error("undefined value [%s]!" %name)
-        if self.data is not None:
-            recommend = prompt.recommend(name,self.data.keys())
-            # rgio.error("å¯è½æ¯%s: " %recommend)
-        return "__NOFOUND_[%s]__" %name
+        return self.__dict__['impl'].get(name)
+    def get(self,name):
+        return self.__dict__['impl'].get(name)
 
-class empty_dict:
-    def __getattr__(self,name):
-        raise interface.var_undefine("undefined value [%s]!" %name)
-    pass
-
-class prior_dict:
-    def __init__(self,ori,prior):
-        self.__dict__['_ori']    = ori
-        self.__dict__['_prior']  = prior
-
-    def prior_assin(self,name,val):
-        prior = self.__dict__['_prior']
-        prior[name] = val
     def __setattr__(self,name,val):
-        ori   = self.__dict__['_ori']
-        setattr(ori,name,val)
-    def ori(self):
-        return self.__dict__['_ori']
-    def set_ori(self,v):
-        self.__dict__['_ori'] =v
-    def set_oris(self,oris):
-        for k,v in oris.items():
-            self.__dict__[k] = v
-    def __getattr__(self,name):
-        prior = self.__dict__['_prior']
-        ori   = self.__dict__['_ori']
-        name  = name.upper()
-        if prior.has_key(name):
-            return prior[name]
-        else:
-            return getattr(ori,name)
+        return self.__dict__['impl'].set(name,val)
+
+    def set(self,name,val):
+        return self.__dict__['impl'].set(name,val)
+
+class porp_proxy(porp):
+    def __init__(self,p) :
+        self.impl = p
+    def get(self,name):
+        return getattr(self.impl,name)
+    def set(self,name,val):
+        return setattr(self.impl,name,val)
+
+class icase_porp(porp) :
+    def __init__(self) :
+        self._iattrs = {}
+    def set(self,name,val) :
+        self._iattrs[name.upper()] = val
+
+    def get(self,name) :
+        name = name.upper()
+        if  self._iattrs.has_key(name) :
+            return  self._iattrs[name]
+        return None
+
+class empty_porp(porp):
+    def get(self,name):
+        import pdb
+        pdb.set_trace()
+        raise interface.var_undefine("undefined value [%s]!" %name)
+
+class dict_porp(icase_porp):
+    def __init__(self,dict_obj) :
+        self._iattrs = {}
+        self._iattrs.update(upper_dict(dict_obj))
+
+class combo_porp(porp) :
+    def __init__(self,first,second):
+        utls.dbc.must_obj(first,porp)
+        utls.dbc.must_obj(second,porp)
+        self._first  = first
+        self._second = second
+
+    def get(self,name):
+        val =     self._first.get(name)
+        if  val is None :
+            return self._second.get(name)
+        return val
 
 
-class layzer_var:
+
+class layzer_porp(icase_porp):
     def __init__(self,var_funs={},default_fun=None):
-        ivar_funs = {}
-        for k,v in var_funs.items() :
-            ivar_funs[k.upper()] = v
-        self.__dict__['_var_funs']    = ivar_funs
-        self.__dict__['_default_fun'] = default_fun
-    def __getattr__(self,name):
-        if  self.__dict__['_var_funs'].has_key(name) :
-            v = self.__dict__['_var_funs'][name].execute(name)
-        else:
-            fun = self.__dict__['_default_fun']
-            if fun is not None:
-                v = fun.execute(name)
-        if v is  None :
-            return None
-        self.__dict__[name] =  v
-        return v
+        icase_porp.__init__(self)
+        self._var_funs    = upper_dict(var_funs)
+        self._default_fun = default_fun
+
+    def get(self,name):
+        name = name.upper()
+        val  = icase_porp.get(self,name)
+        if val is not None :
+            return val
+
+        fun  = self._default_fun
+        if  self._var_funs.has_key(name) :
+            fun = self._var_funs[name]
+
+        if fun is None :
+            raise interface.rigger_exception(" layzer_porp   %s no fun" %name)
+        val = fun(name)
+        if val is None :
+            raise interface.rigger_exception(" layzer_porp   %s is None" %name)
+        self.set(name,val)
+        return val
 
 
 def parse_assgin(defstr):
@@ -76,56 +115,10 @@ def parse_assgin(defstr):
         match = re.match(r'(\w+)=(.+)',ass)
         if match:
 
-            key = match.group(1).strip().upper()
+            key = match.group(1).strip()
             val = match.group(2).strip()
-            _logger.debug( "parse %s:%s " %(key,val))
+            rg_logger.debug( "parse %s:%s " %(key,val))
             res[key]=val
     return res
 
-def upper_dict(ori) :
-    now = {}
-    for k,v in ori.items() :
-        nkey = k.upper()
-        now[nkey] = v
-    return now
 
-class tpl_var(utls.pattern.singleton):
-    def __init__(self):
-        self.impl     = prior_dict(empty_dict(),os.environ)
-        self.restores = []
-
-    def import_dict(self,def_dict):
-        def_dict  = upper_dict(def_dict)
-        self.impl = prior_dict(self.impl,def_dict)
-
-    def import_str(self,asstr):
-        def_dict  = parse_assgin(asstr)
-        self.impl = prior_dict( self.impl,def_dict)
-    def dict(self):
-        return self.impl
-
-    def clean(self):
-        self.__init__()
-    def keep(self) :
-        import  copy
-        self.restores.append( copy.copy(self.impl))
-    def rollback(self) :
-        self.impl = self.restores.pop()
-
-
-var = tpl_var()
-
-def undefine_value(key):
-    return "__NOFOUND_[%s]__" %key
-    # nofound  = prompt_dict(os.environ)
-    # return getattr(nofound,key)
-
-
-# class scope_nofound:
-#     def __init__(self,new):
-#         self.nofound = new
-#     def __enter__(self):
-#         self.ori       = tpl_var.ins().base.ori()
-#         tpl_var.ins().base.set_ori(self.nofound)
-#     def __exit__(self,exc_type,exc_value,traceback):
-#         tpl_var.ins().base.set_ori(self.ori)

@@ -13,6 +13,7 @@ if __name__ == '__main__':
 
     from impl_tc.yaml_tc  import *
     from utls_tc.tpl_tc   import *
+    from utls_tc.rg_var_tc import *
     from impl_tc.vars_tc  import *
     from impl_tc.args_tc  import *
     from impl_tc.cmd_tc   import *
