@@ -4,7 +4,6 @@ import interface
 import os
 
 from utls.rg_io  import rg_logger
-from utls.rg_var import value_of
 from utls.rg_sh  import shexec
 from string import *
 
