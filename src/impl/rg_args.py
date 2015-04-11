@@ -22,11 +22,13 @@ class rg_args :
 class prj_args :
     def __init__(self):
         self.env  = None
-        self.conf = None
+        self.conf = os.getcwd() + "/_rg/prj.yaml"
         self.sys  = None
         self.cmds = []
 
     def clear(self):
+        if self.conf is None :
+            self.conf = os.getcwd() + "/_rg/prj.yaml"
         self.cmds = []
 
     def __str__(self) :

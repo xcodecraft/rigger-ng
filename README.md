@@ -22,3 +22,10 @@
 ./rgdemo check -s test -e dev
 ```
 
+#个人使用:
+
+``` shell
+ mkdir ~/devspace ; cd ~/devspace/
+ git clone git@github.com:xcodecraft/rigger-ng.git
+ source  ./rigger-gn/myrg.bashrc
+```

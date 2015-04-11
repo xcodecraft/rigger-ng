@@ -1,7 +1,8 @@
 #coding=utf8
 from utls.rg_io import rgio , rg_logger
 from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
-import utls.rg_var , interface
+import interface
+import utls.rg_var , utls.dbc , utls.check
 import res
 
 class prj_cmd_base :
@@ -21,14 +22,15 @@ class prj_cmd_base :
 
     @staticmethod
     def check_data(data):
-        if data is None :
-            raise interface.rigger_exception('no project yaml data')
-        if data.has_key('_env') and data.has_key('_prj') and data.has_key('_sys') :
-            return True
-        raise interface.rigger_exception('project data maybe no _env,_prj,or _sys')
+        utls.check.not_none(data ,"project no yaml data")
+        utls.check.must_true(data.has_key('_env'),"project no _env data")
+        utls.check.must_true(data.has_key('_prj'),"project no _prj data")
+        utls.check.must_true(data.has_key('_sys'),"project no _sys data")
+        return True
 
     def runcmd(self,rargs,fun) :
         import utls.rg_yaml,copy
+        utls.dbc.must_exists(rargs.prj.conf)
         loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
         rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
         data   = loader.load_data("!R","res")

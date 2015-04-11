@@ -2,6 +2,9 @@
 class rigger_exception(Exception):
     pass
 
+class bug_exception(Exception) :
+    pass
+
 class user_break(rigger_exception):
     pass
 

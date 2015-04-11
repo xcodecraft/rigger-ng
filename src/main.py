@@ -43,7 +43,8 @@ if __name__ == '__main__':
         rargs.save(rars_file)
     else:
         try :
-
+            #import pdb
+            #pdb.set_trace() ;
             rargs  = impl.rg_args.run_args.load(rars_file)
             rargs.parse_update(parser)
             impl.rg_run.run_rigger(rargs,parser.argv)

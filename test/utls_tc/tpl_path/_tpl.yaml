@@ -1,0 +1,3 @@
+need_mysql : !T.bool
+    prompt : "love rg ?"
+    default: "y"

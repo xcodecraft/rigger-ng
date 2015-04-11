@@ -1,6 +1,6 @@
 #coding=utf8
 import  utls.tpl ,utls.rg_var,interface
-import  impl.rg_yaml
+import  utls.rg_yaml
 import  res
 
 modules = {}
@@ -16,7 +16,7 @@ def find(name):
 def load(fname) :
     if fname in data_files :
         return
-    loader = impl.rg_yaml.conf_loader(fname)
+    loader = utls.rg_yaml.conf_loader(fname)
     data_files.append(fname)
     data   = loader.load_data("!R","res")
     if data.has_key('_mod') :
