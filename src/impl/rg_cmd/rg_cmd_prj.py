@@ -28,8 +28,8 @@ class prj_cmd_base :
         raise interface.rigger_exception('project data maybe no _env,_prj,or _sys')
 
     def runcmd(self,rargs,fun) :
-        import impl.rg_yaml,copy
-        loader = impl.rg_yaml.conf_loader(rargs.prj.conf)
+        import utls.rg_yaml,copy
+        loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
         rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
         data   = loader.load_data("!R","res")
         prj_cmd_base.check_data(data)

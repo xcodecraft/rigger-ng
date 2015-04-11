@@ -2,7 +2,7 @@
 import interface
 import base.tc_tools
 
-from impl.rg_yaml  import *
+from utls.rg_yaml  import *
 import utls.rg_var
 class yaml_conf_tc(base.tc_tools.rigger_tc):
     def test_resyaml(self):

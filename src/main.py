@@ -34,7 +34,7 @@ if __name__ == '__main__':
     parser.parse(sys.argv[1:] )
     setting_debug(parser.argv)
 
-    opts,args = getopt.getopt(sys.argv[1:],"d:s:e:")
+    opts,args = getopt.getopt(sys.argv[1:],"d:s:e:c:")
     rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
         rargs  = impl.rg_args.run_args.load(rars_file)

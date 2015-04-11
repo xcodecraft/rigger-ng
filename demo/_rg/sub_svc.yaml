@@ -1,4 +1,0 @@
-__env:
-    dev: !R.vars
-        defs: 
-            PRJ_ROOT: "${HOME}/devspace/pylon_rigger"

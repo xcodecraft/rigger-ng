@@ -1,7 +1,7 @@
 #coding=utf8
 import logging , re, os,sys
 import tpl_action,tpl_var
-import impl.rg_yaml
+import utls.rg_yaml
 from utls.rg_io import rgio ,rg_logger
 
 class tplstatus:
@@ -91,7 +91,7 @@ class engine:
     def load_conf(self,tplconf):
         self.var_input_funs = {}
         if tplconf and os.path.exists(tplconf) :
-            loader = impl.rg_yaml.conf_loader(tplconf)
+            loader = utls.rg_yaml.conf_loader(tplconf)
             data   = loader.load_data('!T','utls.tpl.tpl_action')
             if data is not None :
                 self.var_input_funs = data
