@@ -55,8 +55,9 @@ class control_box(controlable):
         self._res = []
 
     def items_call(self,fun,context,tag):
-        for r in self._res :
-            control_call(r,fun,context,tag)
+        if hasattr(self,"_res") :
+            for r in self._res :
+                control_call(r,fun,context,tag)
 
     def _start(self,context):
         fun = lambda x,y : x._start(y)

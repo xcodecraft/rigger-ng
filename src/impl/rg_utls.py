@@ -1,8 +1,8 @@
 #coding=utf-8
 import sys,re,os,string,logging  , setting
-import rg_sh
+import utls.rg_sh
 from string  import Template
-import inner
+import res.inner
 from utls.rg_io import *
 
 

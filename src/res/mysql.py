@@ -5,7 +5,7 @@ import interface
 
 from utls.rg_io  import rg_logger
 # from utls.rg_var import value_of
-import utls.rg_var
+import utls.rg_var , utls.check
 from utls.rg_sh  import shexec
 from string import *
 
@@ -15,7 +15,6 @@ class mysql(interface.resource):
         host: "127.0.0.1"
         init: "init.sql"
     """
-    bin        = "${RG_RES_BIN_BASE}/bin/mysql"
     host       = "localhost"
     name       = ""
     user       = ""
@@ -28,7 +27,6 @@ class mysql(interface.resource):
     def _allow(self,context) :
         return True
     def _before(self,context):
-        self.bin        = utls.rg_var.value_of(self.bin)
         self.host       = utls.rg_var.value_of(self.host)
         self.name       = utls.rg_var.value_of(self.name)
         self.password   = utls.rg_var.value_of(self.password)
@@ -39,11 +37,12 @@ class mysql(interface.resource):
         self.allow_addr = utls.rg_var.value_of(self.allow_addr)
 
     def _data(self,context):
+        utls.check.must_true(hasattr(context,"mysql_def"), " !R.mysql_def no found ")
         sql = "DROP DATABASE IF EXISTS $DBNAME;CREATE DATABASE $DBNAME DEFAULT CHARACTER SET UTF8;"
 #        sql +="GRANT ALL PRIVILEGES ON $DBNAME.* TO '$USER'@'$ADDR' IDENTIFIED BY '$PASSWD' ;"
         cmd   = Template(sql).substitute(DBNAME=self.name,USER=self.user,PASSWD=self.password,ADDR=self.allow_addr)
         # mysql = get_env_conf().mysql
-        mysql =  self.bin
+        mysql =  context.mysql_def.bin
         if len(self.rootpwd) > 0 :
             shexec.execmd("%s -h%s -u%s -p%s -e \"%s\" " %(mysql ,self.host,self.root, self.rootpwd,cmd) )
         else:

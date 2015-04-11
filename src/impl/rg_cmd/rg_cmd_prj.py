@@ -24,7 +24,7 @@ class prj_cmd_base :
     def check_data(data):
         utls.check.not_none(data ,"project no yaml data")
         utls.check.must_true(data.has_key('_env'),"project no _env data")
-        utls.check.must_true(data.has_key('_prj'),"project no _prj data")
+        # utls.check.must_true(data.has_key('_prj'),"project no _prj data")
         utls.check.must_true(data.has_key('_sys'),"project no _sys data")
         return True
 
@@ -37,17 +37,17 @@ class prj_cmd_base :
         prj_cmd_base.check_data(data)
 
         env_data    = data['_env']
-        prj_data    = data['_prj']
         sys_data    = data['_sys']
 
         main  = res.prj_main()
         if len(self.env) == 0 :
             return
+        #import pdb
+        #pdb.set_trace()
         for env in self.env :
             for env_obj  in env_data :
                 if env_obj._name == env :
                     main.append(env_obj)
-        main.append(prj_data)
         context = interface.run_context()
         # interface.control_call(main,fun,context)
 
@@ -131,6 +131,14 @@ class restart_cmd(prj_cmd_base,cmdtag_prj):
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x,y : x._stop(y))
         self.runcmd(rargs,lambda x,y : x._start(y))
+
+class reload_cmd(prj_cmd_base,cmdtag_prj):
+    """
+    rg reload -e <env> -s <sys> [-o <os>] "
+    rg reload -e debug,demo -s front,admin
+    """
+    def _execute(self,rargs):
+        self.runcmd(rargs,lambda x,y : x._reload(y))
 
 
 # class php_cmd(run_base,resconf_able,cmdtag_run):

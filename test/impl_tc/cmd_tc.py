@@ -22,7 +22,7 @@ class cmd_tc(rigger_tc):
 
     def test_conf(self):
         conf   = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/impl_tc/prj_vars.yaml")
-        self.asst_cmd(conf,"conf -s test1 -e env1 ")
-        self.asst_cmd(conf,"conf -s test2 -e env1 ")
-        self.asst_cmd(conf,"conf -s test1,test2 -e env1 ")
+        self.asst_cmd(conf,"conf -s test1 -e env1,base ")
+        self.asst_cmd(conf,"conf -s test2 -e env1,base ")
+        self.asst_cmd(conf,"conf -s test1,test2 -e env1,base ")
 

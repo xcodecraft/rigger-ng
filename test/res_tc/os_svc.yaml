@@ -1,0 +1,10 @@
+_mod:
+    - !R.modul
+        _name : "ubuntu"
+        _sandbox : False
+        _res  :
+            - !R.php_def
+                bin: "/usr/bin/php"
+            - !R.mysql_def
+                bin : "/usr/bin/mysql"
+

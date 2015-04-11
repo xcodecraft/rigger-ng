@@ -153,6 +153,7 @@ class modul(interface.control_box,interface.base) :
             ...
     """
     _name = ""
+    _sandbox = True
     def _resname(self):
         tag = self.__class__.__name__
         return tag
@@ -163,12 +164,14 @@ class modul(interface.control_box,interface.base) :
     def _before(self,context):
         # run_struct.push("modul %s" %(self._name))
         rg_logger.info("modul:%s start" %(self._name))
-        utls.rg_var.keep()
-        context.keep()
+        if self._sandbox:
+            utls.rg_var.keep()
+            context.keep()
 
     def _after(self,context):
-        context.rollback()
-        utls.rg_var.rollback()
+        if self._sandbox:
+            context.rollback()
+            utls.rg_var.rollback()
         rg_logger.info("modul:%s end" %(self._name))
         # run_struct.pop()
 
@@ -188,7 +191,7 @@ class using(interface.resource):
         if len(self.path) > 0 :
             modules.load(self.path)
         key            = utls.rg_var.value_of(self.modul)
-        msg = "load modul %s from '%s' failed! " %(key,self.path)
+        msg            = "load modul %s from '%s' failed! " %(key,self.path)
         self.modul_obj = utls.dbc.not_none(modules.find(key), msg)
         self.modul_obj._before(context)
 
@@ -220,7 +223,8 @@ class using(interface.resource):
     def _info(self,context):
         self.modul_obj._info(context)
 
-class env(vars):
+# class env(vars):
+class env(interface.control_box,interface.base):
     """
 
     """
@@ -231,7 +235,7 @@ class env(vars):
 
     def _before(self,context):
         rg_logger.info("env:%s start" %(self._name))
-        vars._before(self,context)
+        # vars._before(self,context)
 
     def _after(self,context):
         rg_logger.info("env:%s end" %(self._name))
