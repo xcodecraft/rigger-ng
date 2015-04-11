@@ -5,13 +5,11 @@
   _env:
       - !R.env
           _name: "dev"
-          prj_root : "${HOME}/devspace/rigger-ng/demo"
-
-  _prj: !R.project
-         _name: "rigger-demo"
-         _res:
-          - !R.path
-              dst: "${PRJ_ROOT}/run,${PRJ_ROOT}/run/demo"
+          _res:
+            - !R.vars
+                prj_root : "${HOME}/devspace/rigger-ng/demo"
+            - !R.path
+                dst: "${PRJ_ROOT}/run,${PRJ_ROOT}/run/demo"
 
 
   _sys:
@@ -29,7 +27,6 @@
 ## 规则
 包括：
 * _env  : 可包括多个 !R.env 对象。
-* _prj  : 只包括一个 !R.project 对象.
 * _sys :  可包括多个 !R.system 对象
 
 资源运行结构:
@@ -37,13 +34,13 @@
   系统 X 在 A 环境运行:
   ```
   rg start -s X -e A
-  env: A  -> project  -> system: X
+  env: A    -> system: X
   ```
 
   系统 X 在 A+debug 环境运行:
   ```
   rg start -s X -e A,debug
-  env: A  -> env:debug -> project -> system: X
+  env: A  -> env:debug  -> system: X
   ```
 
 ## 约定
