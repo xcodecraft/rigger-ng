@@ -4,6 +4,7 @@ from rg_cmd_base import  rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 import interface
 import utls.rg_var , utls.dbc , utls.check
 import res
+import res.node
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
@@ -24,15 +25,14 @@ class prj_cmd_base :
     def check_data(data):
         utls.check.not_none(data ,"project no yaml data")
         utls.check.must_true(data.has_key('_env'),"project no _env data")
-        # utls.check.must_true(data.has_key('_prj'),"project no _prj data")
         utls.check.must_true(data.has_key('_sys'),"project no _sys data")
         return True
 
     def runcmd(self,rargs,fun) :
         import utls.rg_yaml,copy
         utls.dbc.must_exists(rargs.prj.conf)
-        loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
         rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
+        loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
         data   = loader.load_data("!R","res")
         prj_cmd_base.check_data(data)
 
@@ -46,6 +46,7 @@ class prj_cmd_base :
         #pdb.set_trace()
         for env in self.env :
             for env_obj  in env_data :
+                res.node.env_regist(env_obj)
                 if env_obj._name == env :
                     main.append(env_obj)
         context = interface.run_context()
@@ -54,6 +55,7 @@ class prj_cmd_base :
         if len(self.sys) > 0 :
             for sys in self.sys :
                 for sysobj in   sys_data :
+                    res.node.sys_regist(sysobj)
                     if  sysobj._name ==  sys :
                         main.append(sysobj)
                     # interface.control_call(sysobj,fun,context)

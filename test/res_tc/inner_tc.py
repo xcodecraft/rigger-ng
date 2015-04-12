@@ -1,17 +1,19 @@
 #coding=utf8
 import  utls.tpl ,utls.rg_var,interface ,base.tc_tools
 import  res
-import  res.modules
+import  res.node
+import  impl.rg_run
+from base.tc_tools import *
 
 
 
-class inner_tc(base.tc_tools.rigger_tc):
+class inner_tc(rigger_tc):
     def setUp(self):
-        self.conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_modul.yaml")
+        self.conf = path_of_prj("/test/res_tc/res_modul.yaml")
 
     def test_modul(self) :
-        res.modules.load(self.conf)
-        m       = res.modules.find("m1")
+        res.node.module_load(self.conf)
+        m       = res.node.module_find("m1")
         self.assertMacroEqual(m._name,"m1")
     def test_using(self):
         u       = res.using()
@@ -29,3 +31,14 @@ class inner_tc(base.tc_tools.rigger_tc):
         context = interface.run_context()
         u._before(context)
         u._config(context)
+
+class  muti_env_tc(rigger_tc) :
+
+    def asst_cmd(self,conf,cmd):
+        impl.rg_run.run_cmd(cmd,conf)
+
+    def test_env(self) :
+        conf = path_of_prj("/test/res_tc/muti_env.yaml")
+        self.asst_cmd(conf,"conf -s test -e dev")
+        self.asst_cmd(conf,"conf -s test -e _test,base")
+        self.asst_cmd(conf,"conf -s test -e _dev,_test,base")

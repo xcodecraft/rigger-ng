@@ -12,7 +12,6 @@ import  interface
 class res_tc(base.tc_tools.rigger_tc):
 
     def test_context(self) :
-        print("xxxx")
         context = interface.run_context()
         context.x = 1
         context.keep()
@@ -50,7 +49,7 @@ class res_tc(base.tc_tools.rigger_tc):
         context = interface.run_context()
         run     = res_runner(resbox)
         run.config(context)
-        #æ£æ¥è°ç¨æ°æ®
+        #检查调用数据
         for res in resbox.res :
             self.asst_res(res,"_config")
 

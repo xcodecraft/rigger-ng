@@ -14,6 +14,9 @@ _env:
                     PRJ_ROOT: "${HOME}/devspace/rigger-ng"
                     PHP_INI: "${PRJ_ROOT}/test/prj/conf/php.ini"
 
+    - !R.env
+        _name: "dev-base"
+        _mix: "dev,base"
 
 _sys:
     -  !R.system

@@ -94,6 +94,8 @@ class control_box(controlable):
     def _allow(self,context):
         return True
     def append(self,item):
+        if not hasattr(self,'_res') :
+            self._res = []
         self._res.append(item)
     def push(self,item):
         self._res.insert(0,item)
