@@ -34,21 +34,6 @@ class res_mock(shexec_mock) :
         return True
 
 class rigger_tc(unittest.TestCase):
-    # def format_data(self,arr,ignrexs):
-    #     out=[];
-    #     for line in arr:
-    #         for ign in ignrexs:
-    #             line = re.sub(ign,'',line)
-    #         line = line.strip()
-    #         if len(line)  > 0 :
-    #             out.append(line)
-    #     return out
-    # def assertTextEqual(self,first,second,ignrexs=[],debug=False):
-    #     ignrexs.append(r'\d+\.\d+\.\d+\.\d+')
-    #     fst_arr  = self.format_data(first.split('\n'),ignrexs)
-    #     sec_arr  = self.format_data(second.split('\n'),ignrexs)
-    #     self.assertItemsEqual(fst_arr,sec_arr)
-    #
     def macro_data(self,arr):
         out = []
         for line in arr :
@@ -62,16 +47,6 @@ class rigger_tc(unittest.TestCase):
         fst_arr      = self.macro_data(first.split('\n'))
         sec_arr      = self.macro_data(second.split('\n'))
         self.assertListEqual(fst_arr,sec_arr)
-    #
-    # def assertFileEqual(self,first,second):
-    #     first_arr  = []
-    #     second_arr = []
-    #     with open(first) as  first_file :
-    #         first_arr = first_file.readlines()
-    #     with open(second) as  second_file :
-    #         second_arr = second_file.readlines()
-    #     self.assertItemsEqual(first_arr,second_arr)
-    #
     def assertMacroFile(self,first,second):
         first_arr  = []
         second_arr = []
@@ -81,12 +56,3 @@ class rigger_tc(unittest.TestCase):
             second_arr = second_file.readlines()
         self.assertItemsEqual(self.macro_data(first_arr),self.macro_data(second_arr))
 
-# class res_tc_base(rigger_tc):
-#     def setUp(self):
-#         self.maxDiff =None
-#         self.expect_header =""" """
-#         ignore_home     = os.environ['HOME']
-#         ignore_touch    =  r"touch .*"
-#         self.ignore_arr = [ignore_home,r".* mkdir -p .+/run.*;"
-#                 , r".* mkdir -p .+/log.*"
-#                 ]

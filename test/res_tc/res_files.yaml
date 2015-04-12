@@ -2,8 +2,8 @@ _env:
     - !R.env
         _name: "dev"
 
-_prj: !R.project
-       _name: "rigger-test"
+    - !R.env
+       _name: "base"
        _res:
         - !R.vars
                 PRJ_NAME: "RG_UT"

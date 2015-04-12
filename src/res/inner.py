@@ -1,8 +1,9 @@
 #coding=utf8
 import re,logging
 import interface,utls.rg_var
-import modules
-import utls.dbc
+import node
+import utls.dbc , utls.check
+import res.node
 # from utls.dbc import *
 from utls.rg_io import  rgio , run_struct,rg_logger
 
@@ -153,6 +154,7 @@ class modul(interface.control_box,interface.base) :
             ...
     """
     _name = ""
+    _sandbox = True
     def _resname(self):
         tag = self.__class__.__name__
         return tag
@@ -163,12 +165,14 @@ class modul(interface.control_box,interface.base) :
     def _before(self,context):
         # run_struct.push("modul %s" %(self._name))
         rg_logger.info("modul:%s start" %(self._name))
-        utls.rg_var.keep()
-        context.keep()
+        if self._sandbox:
+            utls.rg_var.keep()
+            context.keep()
 
     def _after(self,context):
-        context.rollback()
-        utls.rg_var.rollback()
+        if self._sandbox:
+            context.rollback()
+            utls.rg_var.rollback()
         rg_logger.info("modul:%s end" %(self._name))
         # run_struct.pop()
 
@@ -186,10 +190,10 @@ class using(interface.resource):
         # run_struct.push("using.module.%s" %self.modul)
         self.path       = utls.rg_var.value_of(self.path)
         if len(self.path) > 0 :
-            modules.load(self.path)
+            node.module_load(self.path)
         key            = utls.rg_var.value_of(self.modul)
-        msg = "load modul %s from '%s' failed! " %(key,self.path)
-        self.modul_obj = utls.dbc.not_none(modules.find(key), msg)
+        msg            = "load modul %s from '%s' failed! " %(key,self.path)
+        self.modul_obj = utls.check.not_none(node.module_find(key), msg)
         self.modul_obj._before(context)
 
     def _after(self,context):
@@ -220,10 +224,11 @@ class using(interface.resource):
     def _info(self,context):
         self.modul_obj._info(context)
 
-class env(vars):
+class env(interface.control_box,interface.base):
     """
 
     """
+    _mix = None
     def _resname(self):
         return  "%s(%s)" %(self.__class__.__name__,self._name)
     def _info(self,context):
@@ -231,7 +236,10 @@ class env(vars):
 
     def _before(self,context):
         rg_logger.info("env:%s start" %(self._name))
-        vars._before(self,context)
+        if self._mix is not None :
+            for key in  self._mix.split(",") :
+                self.append(res.node.env_find(key))
+        # vars._before(self,context)
 
     def _after(self,context):
         rg_logger.info("env:%s end" %(self._name))

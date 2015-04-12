@@ -10,7 +10,7 @@ class mysql_tc(base.tc_tools.rigger_tc):
         conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_mysql.yaml")
         mock = base.tc_tools.res_mock()
         with   mock :
-            self.asst_cmd(conf,"data -s mysql -e dev")
+            self.asst_cmd(conf,"data -s mysql -e dev,base")
 
         expect = """
         /usr/bin/mysql -hlocalhost -uroot -p  -e "DROP DATABASE IF EXISTS ;CREATE DATABASE  DEFAULT CHARACTER SET UTF8;"

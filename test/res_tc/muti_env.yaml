@@ -1,0 +1,39 @@
+_env:
+    - !R.env
+        _name: "_dev"
+        _res:
+            - !R.vars
+                X : "A"
+                Z : "A-A"
+    - !R.env
+        _name: "_test"
+        _res:
+            - !R.vars
+                X : "B"
+                Z : "B-B"
+    - !R.env
+        _name: "_online"
+        _res:
+            - !R.vars
+                X : "C"
+                Z : "C-C"
+
+    - !R.env
+       _name: "base"
+       _res:
+        - !R.vars
+           Y : "${X}-${X}"
+
+    - !R.env
+        _name: "dev"
+        _mix : "_dev,base"
+
+_sys:
+    -  !R.system
+        _name: "test"
+        _res:
+            - !R.echo
+                value : "${Y}"
+            - !R.assert_eq
+                value  : "${Y}"
+                expect : "${Z}"

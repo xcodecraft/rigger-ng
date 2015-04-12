@@ -55,8 +55,9 @@ class control_box(controlable):
         self._res = []
 
     def items_call(self,fun,context,tag):
-        for r in self._res :
-            control_call(r,fun,context,tag)
+        if hasattr(self,"_res") :
+            for r in self._res :
+                control_call(r,fun,context,tag)
 
     def _start(self,context):
         fun = lambda x,y : x._start(y)
@@ -93,6 +94,8 @@ class control_box(controlable):
     def _allow(self,context):
         return True
     def append(self,item):
+        if not hasattr(self,'_res') :
+            self._res = []
         self._res.append(item)
     def push(self,item):
         self._res.insert(0,item)

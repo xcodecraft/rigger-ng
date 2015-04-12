@@ -2,7 +2,10 @@
 from string     import Template
 from setting    import *
 
+from interface.rg_def import resource
 from utls.rg_io import  rg_logger
+from res.files import file_tpl
+from utls import pattern
 
 
 class svctag:
@@ -18,6 +21,75 @@ class pylontag:
 class rgtag:
     pass
 
+
+
+class controlor(resource):
+    def start(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_start(r,context)
+
+    def stop(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_stop(r,context)
+
+    def config(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_config(r,context)
+
+    def depend_check(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_depend(r,context)
+
+    def depend_ensure(self,context):
+#     这时子资源 locate 都没有执行   
+        pass
+    def locate(self,context):
+        if not self.obj_has('res'):
+            self.res = []
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_locate(r,context)
+    def data(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_data(r,context)
+    def check(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_check(r,context)
+
+    def reload(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_reload(r,context)
+    def clean(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_clean(r,context)
+    def shell(self,context):
+        if self.allow():
+            for r in self.res :
+                r.set_parent( self.respath())
+                call_shell(r,context)
+    def allow(self):
+        return True
+    def append(self,item):
+        self.res.append(item)
+    def push(self,item):
+        self.res.insert(0,item)
 
 
 class nginx (resource,svctag):
@@ -265,7 +337,7 @@ class dx_shell(resource):
         shexec.execmd(cmd)
 
 
-class phpunit(resource,patterns.singleton):
+class phpunit(resource,pattern.singleton):
     _ini        = "${PHP_INI}"
     _suffix     = "test.php"
     _path       = ""
@@ -1592,62 +1664,4 @@ class daemon_php(daemon_base):
         daemon_base.locate(self)
         self.php_ini    = env_exp.value(self.php_ini)
         self.program    = "%s -c %s -f %s " %(get_env_conf().php,self.php_ini,self.script)
-
-class varnishd(resource,svctag):
-    """
-    多实际的情况下，需要指定 workdir
-    """
-    _port       = "80"
-    _http_ip    = "0.0.0.0"
-    _admin_port = "2000"
-    _admin_ip   = "127.0.0.1"
-    _mem        = "20M"
-    _vcl        = ""
-    _extras     = ""
-    _name       = "rigger"
-    def locate(self):
-        self.port       = env_exp.value(self.port)
-        self.admin_port = env_exp.value(self.admin_port)
-        self.admin_ip   = env_exp.value(self.admin_ip)
-        self.http_ip    = env_exp.value(self.http_ip)
-        self.mem        = env_exp.value(self.mem)
-        self.vcl        = env_exp.value(self.vcl)
-        prj_key         = env_exp.value("${PRJ_KEY}")
-        extras          = env_exp.value(self.extras)
-        self.name       = env_exp.value(self.name)
-        self.pid        = get_env_conf().run_path  + "/varnishd_" + prj_key +"_" + self.port + ".pid"
-    def start(self):
-        cmdtpl="if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $HTTP_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"
-        cmd = Template(cmdtpl).substitute( VARNISHD=get_env_conf().varnishd,
-                MEM         =   self.mem,PORT= self.port,
-                VCL         =   self.vcl,
-                ADMIN_PORT  =   self.admin_port ,
-                ADMIN_IP    =   self.admin_ip   ,
-                HTTP_IP     =   self.http_ip,
-                PID         =   self.pid,
-                NAME        =   self.name,
-                EXTRAS      =   self.extras
-                )
-        shexec.execmd(cmd)
-    def stop(self):
-        if get_key("Are you share stop Varnishd? (y/N)" )  == "y" :
-            stop_service("Varnished",self.pid, True)
-    def reload(self):
-#        confname= "vcl_" +  time.strftime("%H_%M_%S",time.localtime()) + int(random.random() * 100 )
-        confname = "vcl_%s_%d" %(time.strftime("%H_%M_%S",time.localtime()) , int(random.random() * 100 ) )
-        cmdtpl = """ $VARNISHADM  -n $NAME vcl.load $CONFNAME $VCL ; $VARNISHADM  -n $NAME vcl.use $CONFNAME """;
-        cmd = Template(cmdtpl).substitute( VARNISHADM=get_env_conf().varnishadm,
-                VCL         = self.vcl,
-                ADMIN_PORT  = self.admin_port ,
-                NAME        = self.name,
-                CONFNAME=confname
-                )
-        shexec.execmd(cmd)
-    def check(self):
-        cmdtpl = "$VARNISHADM -T localhost:$ADMIN_PORT  status ";
-        vns_test = Template(cmdtpl).substitute( VARNISHADM=get_env_conf().varnishadm, ADMIN_PORT=self.admin_port )
-        cmd = " sudo rm -rf /tmp/varnish_ok  ; if  " +  vns_test + "  ; then  sudo  touch  /tmp/varnish_ok;  fi  "
-        shexec.execmd(cmd)
-        self.check_print(os.path.exists("/tmp/varnish_ok"),"varnishd")
-
 
