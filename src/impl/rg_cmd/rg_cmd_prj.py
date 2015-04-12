@@ -39,6 +39,11 @@ class prj_cmd_base :
         env_data    = data['_env']
         sys_data    = data['_sys']
 
+        if data.has_key('_mod') :
+            for m  in  data['_mod'] :
+                res.node.regist_mod(m)
+
+
         main  = res.prj_main()
         if len(self.env) == 0 :
             return
