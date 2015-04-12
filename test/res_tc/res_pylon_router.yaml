@@ -1,0 +1,15 @@
+_env:
+    - !R.env
+        _name: "dev"
+        _res:
+            - !R.project
+                name: "rigger-tc"
+                root: "${HOME}/devspace/rigger-ng"
+
+_sys:
+    -  !R.system
+        _name: "pylon_router"
+        _res:
+            - !R.pylon_router
+                src: "${HOME}/devspace/rigger-ng/test/data/"
+

@@ -8,6 +8,9 @@ _env:
     - !R.env
        _name: "base"
        _res:
+        - !R.project
+            name: "rigger-tc"
+            root: "${HOME}/devspace/rigger-ng"
         - !R.assert_eq
             value  : "${VAL_1}"
             expect : "A"
