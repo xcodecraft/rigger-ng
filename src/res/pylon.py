@@ -1,3 +1,4 @@
+
 #coding=utf-8
 import logging
 import interface
@@ -26,7 +27,7 @@ class pylon_autoload(interface.resource,res_utls):
         self.include   = res_utls.value( self.include)
         self.dst       = res_utls.value(self.dst)
         if not os.path.exists(self.dst) :
-            os.mkdir(self.dst)
+            os.makedirs(self.dst)
 
     def _config(self,context):
         src_paths = self.include.split(':')
@@ -102,3 +103,35 @@ class pylon_autoload(interface.resource,res_utls):
         if res2 :
             res= res2
         return res;
+
+class pylon_router(interface.resource,res_utls):
+    """
+    !R.pylon_router
+        include: "$${PRJ_ROOT}/src/apps/api"
+    """
+    include = ""
+    dst     = "${RUN_PATH}/router/"
+    def _before(self,context):
+        self.include = res_utls.value(self.include)
+        self.dst     = res_utls.value(self.dst)
+        res_utls.ensure_path(self.dst)
+        self.out_idx = os.path.join(self.dst , "_router.idx")
+
+    def _config(self,context):
+
+        sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
+        cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
+        cmd     = Template(cmdtpl).substitute(SRC = self.include,DST = self.out_idx)
+        shexec.execmd(cmd,False)
+
+    def _check(self,context):
+        self.check_print(os.path.exists(self.out_idx),self.out_idx)
+
+    def clean_file(self,filename):
+        cmdtpl = "if test -e $DST ; then rm -f  $DST ; fi ; "
+        cmd    = Template(cmdtpl).substitute(DST=filename)
+        shexec.execmd(cmd)
+
+    def _clean(self,context):
+        self.clean_file(self.out_idx)
+

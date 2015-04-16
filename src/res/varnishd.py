@@ -11,7 +11,6 @@ from impl.rg_utls  import *
 #from impl.rg_res  import *
 from string import *
 
-# import rg_res 而移除这个也会有些bug，所以先跑流程，后面fix bug   
 def stop_service(name,pidfile,sudo=False):
     path=os.path.dirname(os.path.realpath(__file__))
     if sudo :
@@ -59,12 +58,12 @@ class varnishd(interface.resource):
 
     def _start(self,context):
         cmdtpl = "if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $HTTP_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"
-        cmd = Template(cmdtpl).substitute( 
+        cmd = Template(cmdtpl).substitute(
                 VARNISHD    =   self.varnishd,
                 MEM         =   self.mem,
                 PORT        =   self.port,
-                VCL         =   self.vcl, 
-                ADMIN_PORT  =   self.admin_port, 
+                VCL         =   self.vcl,
+                ADMIN_PORT  =   self.admin_port,
                 ADMIN_IP    =   self.admin_ip,
                 HTTP_IP     =   self.http_ip,
                 PID         =   self.pid,
@@ -80,20 +79,20 @@ class varnishd(interface.resource):
     def _reload(self,context):
         confname = "vcl_%s_%d" %(time.strftime("%H_%M_%S",time.localtime()) , int(random.random() * 100 ) )
         cmdtpl = """ $VARNISHADM  -n $NAME vcl.load $CONFNAME $VCL ; $VARNISHADM  -n $NAME vcl.use $CONFNAME """;
-        cmd = Template(cmdtpl).substitute( 
+        cmd = Template(cmdtpl).substitute(
                 VARNISHADM  = self.varnishadm,
-                VCL         = self.vcl, 
-                ADMIN_PORT  = self.admin_port , 
+                VCL         = self.vcl,
+                ADMIN_PORT  = self.admin_port ,
                 NAME        = self.name,
-                CONFNAME    = confname 
+                CONFNAME    = confname
                 )
         shexec.execmd(cmd)
 
     def _check(self,context):
         cmdtpl = "$VARNISHADM -T localhost:$ADMIN_PORT  status ";
-        vns_test = Template(cmdtpl).substitute( 
+        vns_test = Template(cmdtpl).substitute(
                 VARNISHADM  = self.varnishadm,
-                ADMIN_PORT  = self.admin_port , 
+                ADMIN_PORT  = self.admin_port ,
                 )
         cmd = " sudo rm -rf /tmp/varnish_ok  ; if  " +  vns_test + "  ; then  sudo  touch  /tmp/varnish_ok;  fi  "
         shexec.execmd(cmd)

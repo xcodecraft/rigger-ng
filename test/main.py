@@ -8,6 +8,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root,"src") )
 
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
+    os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"
     import interface,impl
     impl.setup()
 
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     from res_tc.inner_tc  import *
     # from res_tc.varnishd_tc  import *
     from res_tc.fpm_tc  import *
-    from res_tc.pylon_router_tc   import *
-    from res_tc.pylon_autoload_tc   import *
+    from res_tc.pylon_tc   import *
+    from res_tc.websvc_tc   import *
 
     unittest.main()

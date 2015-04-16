@@ -15,6 +15,9 @@ class mysql_def(interface.resource) :
     pass
 
 class nginx_def(interface.resource) :
+    bin = "/usr/sbin/service nginx"
+    def _before(self,context):
+        context.nginx_def = self
     pass
 
 class apache_def(interface.resource) :

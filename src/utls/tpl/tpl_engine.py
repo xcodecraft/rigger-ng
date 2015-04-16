@@ -123,10 +123,11 @@ class engine:
 
 
     def file(self,tplfile,dstfile):
-        tpl=open(tplfile, 'r')
+        tpl      = open(tplfile, 'r')
         isstdout = dstfile == sys.stdout
-        dst = dstfile if isstdout else open(dstfile, 'w')
-        st = tplstatus.NONE
+        dst      = dstfile if isstdout else open(dstfile, 'w')
+        st       = tplstatus.NONE
+
         block   = []
         cond    = ""
         expect  = None
@@ -153,13 +154,16 @@ class engine:
                 block_match = self.re_block_beg.match(line)
                 if  block_match:
                     st=tplstatus.BLOCK_IN
-                    cond    = block_match.group(1).strip()
-                    expect  = block_match.group(2).strip()
+                    # cond    = block_match.group(1).strip()
+                    cond    = block_match.group(1)
+                    # expect  = block_match.group(2).strip()
+                    expect  = block_match.group(2)
                     if len(expect) == 0 :
                         expect = "TRUE"
                     pass
                 elif code_match :
-                    code = code_match.group(1).strip()
+                    # code = code_match.group(1).strip()
+                    code = code_match.group(1)
                     code = code.replace("T.","self.tpl_vars")
                     rg_logger.info(code)
                     exec code

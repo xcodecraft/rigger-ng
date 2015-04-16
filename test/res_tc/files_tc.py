@@ -7,7 +7,7 @@ _logger = logging.getLogger()
 
 class files_tc(base.tc_tools.rigger_tc):
     def setUp(self):
-        self.conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_files.yaml")
+        self.conf = utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/res_files.yaml")
 
     def test_path(self) :
         mock = base.tc_tools.res_mock()

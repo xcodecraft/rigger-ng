@@ -2,11 +2,9 @@
 import  os , string   , logging
 import  interface,utls.rg_sh
 
-# from utls.rg_var import value_of
 from utls.rg_io  import rgio ,rg_logger
-
 from string import Template
-from base import *
+from res.base   import *
 
 
 
@@ -228,34 +226,7 @@ class path(interface.resource,res_utls):
 #         cmd = Template(cmdtpl).substitute(DST=self.dst)
 #         self.execmd(cmd)
 #
-# class file_tpl(resource,restag_file):
-#     """Ã¦Â¨Â¡Ã¦ÂÂ¿Ã¦ÂÂÃ¤Â»Â¶Ã¦ÂÂ¿Ã¦ÂÂ¢"""
-#     _dst    = ""
-#     _tpl    = ""
-#     _mod    = "a+w"
-#
-#     def _before(self,context):
-#         self.dst        = env_exp.value(self.dst)
-#         self.tpl        = env_exp.value(self.tpl)
-#         self.mod        = env_exp.value(self.mod)
-#
-#     def _config(self,context):
-#         tpl_builder.build(self.tpl,self.dst)
-#         self.execmd("chmod %s %s " %(self.mod, self.dst))
-#     def path(self,context):
-#         return  self.dst
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst)
-#         self.execmd(cmd)
-#     def _info(self):
-#         return self.dst
-#     def _depend(self,m,context):
-#         m._check_writeable(self.dst)
-#
-#
+
 class intertpl(interface.resource,res_utls):
     """
     !R.tpl
