@@ -5,6 +5,8 @@ _env:
             - !R.project
                 name: "rigger-tc"
                 root: "${HOME}/devspace/rigger-ng"
+            - !R.nginx_def
+                bin : "/usr/sbin/service nginx"
 
 
 _sys:

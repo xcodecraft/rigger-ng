@@ -9,7 +9,7 @@ class websvc_tc(base.tc_tools.rigger_tc):
         conf = utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/websvc_res.yaml")
         mock = base.tc_tools.res_mock()
         with   mock :
-            self.asst_cmd(conf,"conf -s nginx_conf -e dev  ")
+            self.asst_cmd(conf,"conf,start -s nginx_conf -e dev  ")
 
         expect="""
 chmod o+w ${PRJ_ROOT}/test/data/websvc/nginx_src.conf

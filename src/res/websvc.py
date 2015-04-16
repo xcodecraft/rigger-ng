@@ -54,7 +54,7 @@ class nginx_conf(interface.resource):
         pass
 
     def _start(self,context) :
-        self.reload(context)
+        self._reload(context)
     def _clean(self,context) :
         self.link_res._clean(context)
         self.tpl_res._clean(context)
