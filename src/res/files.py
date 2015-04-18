@@ -2,13 +2,9 @@
 import  os , string   , logging
 import  interface,utls.rg_sh
 
-# from utls.rg_var import value_of
 from utls.rg_io  import rgio ,rg_logger
-
 from string import Template
-from base import *
-
-
+from res.base   import *
 
 
 
@@ -35,8 +31,7 @@ class link(interface.resource,res_utls):
         self.execmd(cmd)
 
     def _clean(self,context):
-        self._check_print(os.path.exists(self.dst),self.dst);
-        cmdtpl = "if test -e $DST ; then rm -rf  $DST ; fi ; "
+        cmdtpl = "if test -L $DST ; then rm -rf  $DST ; fi ; "
         cmd    = Template(cmdtpl).substitute(DST=self.dst)
         self.execmd(cmd)
 
@@ -44,8 +39,9 @@ class link(interface.resource,res_utls):
         self._check_print(os.path.exists(self.dst),self.dst)
 
     def _info(self,context):
-        self.struct_out("link")
-        pass
+        rgio.struct_out("link")
+        rgio.struct_out("src: " + self.src,1)
+        rgio.struct_out("dst: " + self.dst,1)
 
 # class copy(resource,restag_file):
 #     """
@@ -141,7 +137,6 @@ class path(interface.resource,res_utls):
 #
 # class file_merge(resource,restag_file):
 #     """
-#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
@@ -199,7 +194,6 @@ class path(interface.resource,res_utls):
 #
 # class merge(resource,restag_file):
 #     """
-#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         files:
@@ -228,34 +222,7 @@ class path(interface.resource,res_utls):
 #         cmd = Template(cmdtpl).substitute(DST=self.dst)
 #         self.execmd(cmd)
 #
-# class file_tpl(resource,restag_file):
-#     """Ã¦Â¨Â¡Ã¦ÂÂ¿Ã¦ÂÂÃ¤Â»Â¶Ã¦ÂÂ¿Ã¦ÂÂ¢"""
-#     _dst    = ""
-#     _tpl    = ""
-#     _mod    = "a+w"
-#
-#     def _before(self,context):
-#         self.dst        = env_exp.value(self.dst)
-#         self.tpl        = env_exp.value(self.tpl)
-#         self.mod        = env_exp.value(self.mod)
-#
-#     def _config(self,context):
-#         tpl_builder.build(self.tpl,self.dst)
-#         self.execmd("chmod %s %s " %(self.mod, self.dst))
-#     def path(self,context):
-#         return  self.dst
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst)
-#         self.execmd(cmd)
-#     def _info(self):
-#         return self.dst
-#     def _depend(self,m,context):
-#         m._check_writeable(self.dst)
-#
-#
+
 class intertpl(interface.resource,res_utls):
     """
     !R.tpl

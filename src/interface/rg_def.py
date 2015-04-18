@@ -98,6 +98,8 @@ class control_box(controlable):
             self._res = []
         self._res.append(item)
     def push(self,item):
+        if not hasattr(self,'_res') :
+            self._res = []
         self._res.insert(0,item)
 
 

@@ -47,6 +47,10 @@ class fpm_conf:
                 shexec.execmd("mv '%s' '%s'" % (tmp_path, self.f_conf))
 
 
+
+
+
+
 class fpm(interface.resource,fpm_conf):
     fpm_conf   = "dev"
     fpm_cnt    = "20"

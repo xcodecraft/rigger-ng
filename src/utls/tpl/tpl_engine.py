@@ -123,10 +123,11 @@ class engine:
 
 
     def file(self,tplfile,dstfile):
-        tpl=open(tplfile, 'r')
+        tpl      = open(tplfile, 'r')
         isstdout = dstfile == sys.stdout
-        dst = dstfile if isstdout else open(dstfile, 'w')
-        st = tplstatus.NONE
+        dst      = dstfile if isstdout else open(dstfile, 'w')
+        st       = tplstatus.NONE
+
         block   = []
         cond    = ""
         expect  = None

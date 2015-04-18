@@ -6,6 +6,26 @@ import utls.dbc , utls.check
 import res.node
 # from utls.dbc import *
 from utls.rg_io import  rgio , run_struct,rg_logger
+from base import *
+
+import  res.files
+
+class project(interface.resource,res_utls) :
+    """
+    """
+    root = ""
+    name = ""
+    def _before(self,context):
+#        import pdb
+#        pdb.set_trace()
+        self.root = res_utls.value(self.root)
+        self.name = res_utls.value(self.name)
+
+        context.prj = self
+        prjdata = {}
+        prjdata['PRJ_ROOT'] = self.root
+        prjdata['PRJ_NAME'] = self.name
+        utls.rg_var.import_dict(prjdata)
 
 class vars(interface.resource):
     """
@@ -44,7 +64,7 @@ class vars(interface.resource):
             if re.match(r'__.+__',name):
                 continue
             name= name.upper()
-            rgio.struct_out("%s = %s" %(name,val),1)
+            rgio.struct_out("%-15s = %s" %(name,val),1)
 
 class echo(interface.resource) :
     """
@@ -57,7 +77,7 @@ class echo(interface.resource) :
     def _before(self,context):
         pass
     def _config(self,context):
-        v = utls.rg_var.value_of(self.value)
+        v = res_utls.value(self.value)
         print("[echo] %s :%s " %(self.value,v))
 
 class assert_eq(interface.resource) :
@@ -72,8 +92,8 @@ class assert_eq(interface.resource) :
     def _config(self,context):
         self.assert_eq(context)
     def assert_eq(self,context):
-        value  = utls.rg_var.value_of(self.value)
-        expect = utls.rg_var.value_of(self.expect)
+        value  = res_utls.value(self.value)
+        expect = res_utls.value(self.expect)
         if value != expect :
             raise interface.rigger_exception("value: %s , expect : %s " %(value,expect))
     def _start(self,context) :
@@ -91,15 +111,27 @@ __sys:
             - !R.echo
                 value : "${TEST_CASE}"
     """
+    _name = ""
     def _before(self,context):
-        rg_logger.info("system:%s start" %(self._name))
+        rg_logger.info("system:%s _before " %(self._name))
         utls.rg_var.keep()
         context.keep()
+
+        #support run_path var
+        auto_vars = vars()
+        auto_vars.SYS_NAME = self._name
+        auto_vars.RUN_PATH = "%s/run/%s" %(context.prj.root,self._name)
+
+        run_path = res.files.path()
+        run_path.dst = auto_vars.RUN_PATH
+
+        self.push(run_path)
+        self.push(auto_vars)
 
     def _after(self,context):
         context.rollback()
         utls.rg_var.rollback()
-        rg_logger.info("system:%s end" %(self._name))
+        rg_logger.info("system:%s _after" %(self._name))
 
     def _resname(self):
         return self._name
@@ -112,26 +144,6 @@ __sys:
         rgio.struct_out("system: %s" %(self._name))
         interface.control_box._info(self,context)
 
-class project(interface.control_box, interface.base) :
-    """
-
-    """
-    def _resname(self):
-        tag = self.__class__.__name__
-        return tag
-    def _info(self,context):
-        rgio.struct_out("project: %s" %(self._name))
-        interface.control_box._info(self,context)
-
-    def _check(self,context):
-        self._check_print(True,"project: %s" %self._name)
-        interface.control_box._check(self,context)
-
-    def _before(self,context):
-        rg_logger.info("project: start")
-
-    def _after(self,context):
-        rg_logger.info("project: end")
 
 class prj_main(interface.control_box, interface.base) :
     """
@@ -141,10 +153,10 @@ class prj_main(interface.control_box, interface.base) :
         rgio.struct_out("rg: %s" %(self._name))
         interface.control_box._info(self,context)
     def _before(self,context):
-        rg_logger.info("main: start")
+        rg_logger.info("main: _before")
 
     def _after(self,context):
-        rg_logger.info("main: end")
+        rg_logger.info("main: _after")
 
 class modul(interface.control_box,interface.base) :
     """
@@ -164,7 +176,7 @@ class modul(interface.control_box,interface.base) :
 
     def _before(self,context):
         # run_struct.push("modul %s" %(self._name))
-        rg_logger.info("modul:%s start" %(self._name))
+        rg_logger.info("modul:%s _before" %(self._name))
         if self._sandbox:
             utls.rg_var.keep()
             context.keep()
@@ -173,7 +185,7 @@ class modul(interface.control_box,interface.base) :
         if self._sandbox:
             context.rollback()
             utls.rg_var.rollback()
-        rg_logger.info("modul:%s end" %(self._name))
+        rg_logger.info("modul:%s _after" %(self._name))
         # run_struct.pop()
 
 class using(interface.resource):
@@ -188,10 +200,10 @@ class using(interface.resource):
         return True
     def _before(self,context):
         # run_struct.push("using.module.%s" %self.modul)
-        self.path       = utls.rg_var.value_of(self.path)
+        self.path       = res_utls.value(self.path)
         if len(self.path) > 0 :
             node.module_load(self.path)
-        key            = utls.rg_var.value_of(self.modul)
+        key            = res_utls.value(self.modul)
         msg            = "load modul %s from '%s' failed! " %(key,self.path)
         self.modul_obj = utls.check.not_none(node.module_find(key), msg)
         self.modul_obj._before(context)
@@ -228,18 +240,21 @@ class env(interface.control_box,interface.base):
     """
 
     """
-    _mix = None
+    _mix      = None
     def _resname(self):
         return  "%s(%s)" %(self.__class__.__name__,self._name)
     def _info(self,context):
         rgio.struct_out("env: %s" %(self._name))
+        interface.control_box._info(self,context)
 
     def _before(self,context):
-        rg_logger.info("env:%s start" %(self._name))
+        rg_logger.info("env:%s _before" %(self._name))
         if self._mix is not None :
             for key in  self._mix.split(",") :
                 self.append(res.node.env_find(key))
+
+
         # vars._before(self,context)
 
     def _after(self,context):
-        rg_logger.info("env:%s end" %(self._name))
+        rg_logger.info("env:%s _after " %(self._name))

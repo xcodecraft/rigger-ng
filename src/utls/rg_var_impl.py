@@ -72,7 +72,8 @@ class env_exp:
 
     @staticmethod
     def var_proc(string,tplvars):
-        tpl     = string.strip()
+        # tpl     = string.strip()
+        tpl     = string
         var_exp = re.compile(r'\$\{(\w+)\}')
         ass     = assginer(tpl,tplvars)
         while var_exp.search(tpl):

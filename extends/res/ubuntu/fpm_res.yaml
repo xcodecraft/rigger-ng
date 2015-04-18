@@ -8,10 +8,10 @@ _env:
     - !R.env
         _name: "base"
         _res:
+            - !R.project
+                name: "rigger-tc"
+                root: "${HOME}/devspace/rigger-ng"
             - !R.vars
-                    PRJ_NAME: "RG_UT"
-                    PRJ_KEY : "RG_UT"
-                    PRJ_ROOT: "${HOME}/devspace/rigger-ng"
                     PHP_INI: "${PRJ_ROOT}/test/prj/conf/php.ini"
 
     - !R.env
@@ -19,8 +19,13 @@ _env:
         _mix: "dev,base"
 
 _sys:
+    # -  !R.system
+    #     _name: "fpm"
+    #     _res:
+    #         - !R.fpm
+    #             sudo: "True"
     -  !R.system
-        _name: "fpm"
+        _name: "fpm_pool"
         _res:
-            - !R.fpm
+            - !R.fpm_pool
                 sudo: "True"

@@ -87,14 +87,14 @@ class tpl_tc(rigger_tc):
 
 
     def test_file(self):
-        base = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_simple")
+        base = utls.rg_var.value_of("${PRJ_ROOT}/test/utls_tc/tpl_simple")
         ngx  = utls.tpl.engine(base + "/_tpl.yaml")
         ngx.append_vars("youname=abc,love=TRUE,db=mysql")
         ngx.proc_file( base +"/example.sh", base+ "/example.out")
         self.assertMacroFile(base + "/example.out" , base + "/example.expect")
 
     def test_path(self):
-        base     = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/utls_tc/tpl_path")
+        base     = utls.rg_var.value_of("${PRJ_ROOT}/test/utls_tc/tpl_path")
         ngx      = utls.tpl.engine(base + "/_tpl.yaml")
         # for auto-test
         ngx.append_vars("sys_name=abc,need_mysql=TRUE")
