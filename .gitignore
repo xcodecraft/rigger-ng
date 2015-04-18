@@ -6,3 +6,8 @@ cscope.out
 *.log
 tags
 rigger.data
+run
+test/data/_router.idx
+test/data/files/prj_use.yaml
+tmp/_rg/
+demo/conf/used

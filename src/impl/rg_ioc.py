@@ -9,9 +9,6 @@ from utls.rg_io import rg_logger
 def setup() :
     interface.regist_res("project,env,system,modul,prj_main,using"    , "res.inner")
     interface.regist_res("php_def,mysql_def,nginx_def"                , "res.os_svc")
-    interface.regist_res("mysql"                                      , "res.mysql")
-    interface.regist_res("nginx_conf"                                 , "res.websvc")
-    interface.regist_res("varnishd"                                   , "res.varnishd")
     interface.regist_res("echo,vars,assert_eq"                        , "res.inner")
 
     interface.regist_res("link,path,intertpl,file_tpl"                , "res.files")

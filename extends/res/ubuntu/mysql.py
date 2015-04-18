@@ -3,13 +3,13 @@ import logging
 import interface
 
 
-from utls.rg_io  import rg_logger
-# from utls.rg_var import value_of
 import utls.rg_var , utls.check
+from utls.rg_io  import rg_logger
 from utls.rg_sh  import shexec
+from res.base import *
 from string import *
 
-class mysql(interface.resource):
+class mysql(interface.resource,res_utls):
     """
     !R.mysql:
         host: "127.0.0.1"

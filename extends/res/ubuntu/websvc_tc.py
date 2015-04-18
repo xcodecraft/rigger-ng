@@ -12,8 +12,9 @@ class websvc_tc(base.tc_tools.rigger_tc):
             self.asst_cmd(conf,"conf,start -s nginx_conf -e dev  ")
 
         expect="""
+if test ! -e ${PRJ_ROOT}/run/nginx_conf; then   mkdir -p ${PRJ_ROOT}/run/nginx_conf ; fi ;   chmod o+w  ${PRJ_ROOT}/run/nginx_conf;
 chmod o+w ${PRJ_ROOT}/test/data/websvc/nginx_src.conf
-if ! test -L ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ; then   dirname ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf | xargs mkdir -p ;  ln -s   ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ; fi;
+if ! test -L /etc/nginx/sites-enabled/rigger-tc_nginx_conf_${USER}.conf ; then   dirname /etc/nginx/sites-enabled/rigger-tc_nginx_conf_${USER}.conf | xargs mkdir -p ;  ln -s   ${PRJ_ROOT}/test/data/websvc/nginx_src.conf /etc/nginx/sites-enabled/rigger-tc_nginx_conf_${USER}.conf ; fi;
 /usr/sbin/service nginx reload
         """
 

@@ -154,16 +154,13 @@ class engine:
                 block_match = self.re_block_beg.match(line)
                 if  block_match:
                     st=tplstatus.BLOCK_IN
-                    # cond    = block_match.group(1).strip()
-                    cond    = block_match.group(1)
-                    # expect  = block_match.group(2).strip()
-                    expect  = block_match.group(2)
+                    cond    = block_match.group(1).strip()
+                    expect  = block_match.group(2).strip()
                     if len(expect) == 0 :
                         expect = "TRUE"
                     pass
                 elif code_match :
-                    # code = code_match.group(1).strip()
-                    code = code_match.group(1)
+                    code = code_match.group(1).strip()
                     code = code.replace("T.","self.tpl_vars")
                     rg_logger.info(code)
                     exec code

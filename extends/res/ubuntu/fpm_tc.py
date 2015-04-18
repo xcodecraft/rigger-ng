@@ -6,7 +6,7 @@ _logger = logging.getLogger()
 
 class fpm_tc(base.tc_tools.rigger_tc):
     def asst_cmd(self,cmd):
-        conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_fpm.yaml")
+        conf = utls.rg_var.value_of("${PRJ_ROOT}/extends/res/ubuntu/fpm_res.yaml")
         mock = base.tc_tools.res_mock()
         with mock :
             impl.rg_run.run_cmd(cmd,conf)
@@ -51,13 +51,14 @@ class fpm_tc(base.tc_tools.rigger_tc):
 
 class fpm_tc(base.tc_tools.rigger_tc):
     def asst_cmd(self,cmd):
-        conf = utls.rg_var.value_of("${HOME}/devspace/rigger-ng/test/res_tc/res_fpm.yaml")
+        conf = utls.rg_var.value_of("${PRJ_ROOT}/extends/res/ubuntu/fpm_res.yaml")
         mock = base.tc_tools.res_mock()
         with mock :
             impl.rg_run.run_cmd(cmd,conf)
         return mock.cmds
 
     def test_restart(self) :
-        # result = self.asst_cmd("restart -s fpm -e dev,base")
+        result = self.asst_cmd("restart -s fpm_pool -e dev,base")
         expect = """
         """
+        print result
