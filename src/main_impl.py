@@ -1,9 +1,12 @@
 #!/usr/bin/pylon.27
 import sys ,  os ,logging,getopt ,setting
+import interface
 
-root  = os.path.dirname(os.path.realpath(__file__))
-root  = os.path.dirname(root)
-sys.path.append(os.path.join(root,"src") )
+def set_modul_path() :
+    root  = os.path.dirname(os.path.realpath(__file__))
+    root  = os.path.dirname(root)
+    sys.path.append(os.path.join(root,"src") )
+    sys.path.append(os.path.join(root,"extends/res") )
 
 def setting_debug(opts) :
     log_level = logging.ERROR
@@ -24,12 +27,9 @@ def setting_debug(opts) :
         logging.getLogger().addHandler(console)
 
 
-
-if __name__ == '__main__':
-    import interface,impl
+def main():
     import impl.rg_run , impl.rg_args
     from   utls.rg_io import rgio
-    impl.setup()
     parser = impl.rg_args.rarg_parser()
     parser.parse(sys.argv[1:] )
     setting_debug(parser.argv)
@@ -64,3 +64,13 @@ if __name__ == '__main__':
             e.monitor.out()
         except interface.rigger_exception as e:
              rgio.error(e)
+
+
+# if __name__ == '__main__':
+#     set_modul_path()
+#     import interface,impl
+#     import ubuntu
+#     impl.setup()
+#     ubuntu.setup()
+#     main()
+#

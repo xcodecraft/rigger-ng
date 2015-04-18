@@ -8,8 +8,6 @@ from res.base   import *
 
 
 
-
-
 class link(interface.resource,res_utls):
     """
     !R.link :
@@ -33,8 +31,7 @@ class link(interface.resource,res_utls):
         self.execmd(cmd)
 
     def _clean(self,context):
-        self._check_print(os.path.exists(self.dst),self.dst);
-        cmdtpl = "if test -e $DST ; then rm -rf  $DST ; fi ; "
+        cmdtpl = "if test -L $DST ; then rm -rf  $DST ; fi ; "
         cmd    = Template(cmdtpl).substitute(DST=self.dst)
         self.execmd(cmd)
 
@@ -42,8 +39,9 @@ class link(interface.resource,res_utls):
         self._check_print(os.path.exists(self.dst),self.dst)
 
     def _info(self,context):
-        self.struct_out("link")
-        pass
+        rgio.struct_out("link")
+        rgio.struct_out("src: " + self.src,1)
+        rgio.struct_out("dst: " + self.dst,1)
 
 # class copy(resource,restag_file):
 #     """
@@ -139,7 +137,6 @@ class path(interface.resource,res_utls):
 #
 # class file_merge(resource,restag_file):
 #     """
-#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
@@ -197,7 +194,6 @@ class path(interface.resource,res_utls):
 #
 # class merge(resource,restag_file):
 #     """
-#     Ã¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â¹Â¶,Ã¦ÂÂsrcÃ§ÂÂ®Ã¥Â½ÂÃ¤Â¸ÂÃ¯Â¼ÂÃ§Â¬Â¦Ã¥ÂÂfilterÃ§ÂÂÃ¦ÂÂÃ¤Â»Â¶Ã¥ÂÂÃ¥Â®Â¹Ã¥ÂÂÃ¥Â¹Â¶Ã¥ÂÂ°srcÃ¦ÂÂÃ¤Â»Â¶
 #     !R.file_merge
 #         dst : "$${PRJ_ROOT}/conf/used/my.conf
 #         files:

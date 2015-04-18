@@ -13,8 +13,11 @@ class websvc_tc(base.tc_tools.rigger_tc):
 
         expect="""
 chmod o+w ${PRJ_ROOT}/test/data/websvc/nginx_src.conf
-if ! test -L ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ; then   dirname ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf | xargs mkdir -p ;  ln -s   ${PRJ_ROOT}test/data/websvc/nginx_dst.conf ${PRJ_ROOT}test/data/websvc/nginx_dst.conf ; fi;
+if ! test -L ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ; then   dirname ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf | xargs mkdir -p ;  ln -s   ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ${PRJ_ROOT}/test/data/websvc/nginx_dst.conf ; fi;
+/usr/sbin/service nginx reload
         """
 
-        print mock.cmds
-        # self.assertMacroEqual(expect, mock.cmds)
+        # print("\n")
+        # print mock.cmds
+        # print expect
+        self.assertMacroEqual(expect, mock.cmds)

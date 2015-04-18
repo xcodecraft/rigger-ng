@@ -1,5 +1,5 @@
 import  utls.tpl ,interface ,base.tc_tools
-import  impl.rg_args
+import  impl.rg_args , impl.rg_run
 import  os
 
 class pylon_autoload_tc(base.tc_tools.rigger_tc):
@@ -7,7 +7,7 @@ class pylon_autoload_tc(base.tc_tools.rigger_tc):
         impl.rg_run.run_cmd(cmd,conf)
 
     def test_pylon_autoload(self) :
-        conf = utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/res_pylon_autoload.yaml")
+        conf = utls.rg_var.value_of("${PRJ_ROOT}/extends/res/pylon/pylon_res.yaml")
         mock = base.tc_tools.res_mock()
         with   mock :
             self.asst_cmd(conf,"conf -s pylon_autoload -e dev ")
@@ -27,7 +27,7 @@ class pylon_router_tc(base.tc_tools.rigger_tc):
         impl.rg_run.run_cmd(cmd,conf)
 
     def test_pylon_router(self) :
-        conf = utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/res_pylon_router.yaml")
+        conf = utls.rg_var.value_of("${PRJ_ROOT}/extends/res/pylon/pylon_res.yaml")
         mock = base.tc_tools.res_mock()
         with   mock :
             self.asst_cmd(conf,"conf -s pylon_router -e dev")

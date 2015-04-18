@@ -13,34 +13,30 @@ from utls.rg_sh  import shexec
 class nginx_conf(interface.resource):
     """
     !R.nginx_conf
-        port:       "80"
-        http_ip:    "0.0.0.0"
-        admin_port: "2000"
-        admin_ip:   "127.0.0.1"
-        mem:        "20M"
-        vcl:        "${PRJ_ROOT}/conf/used/local_cache.vcl"
-        name:       "local_proxy_${ENV}"
-        extras:     "-w 100,1000,60"
+        tpl : "${PRJ_ROOT}/conf/option/nginx.conf"
     """
 
-    dst        = "i/etc/nginx/sites-enable/default"
-    src        = "${PRJ_ROOT}/conf/used/nginx.conf"
-    tpl        = "${PRJ_ROOT}/conf/option/nginx.conf"
+    name = "${PRJ_NAME}_${SYS_NAME}_${USER}.conf"
+    src  = "${PRJ_ROOT}/conf/used/nginx.conf"
+    tpl  = "${PRJ_ROOT}/conf/option/nginx.conf"
 
 
     def _before(self,context):
-        self.dst =  res_utls.value(self.dst)
+        self.name =  res_utls.value(self.name)
+        self.dst =  res_utls.value(os.path.join(context.nginx_def.conf_root,self.name) )
         self.src =  res_utls.value(self.src)
         self.tpl =  res_utls.value(self.tpl)
 
         self.tpl_res      = res.file_tpl()
+        self.tpl_res.sudo = self.sudo
         self.tpl_res.tpl  = self.tpl
         self.tpl_res.dst  = self.src
         self.tpl_res._before(context)
 
-        self.link_res     = res.link()
-        self.link_res.dst = self.dst
-        self.link_res.src = self.dst
+        self.link_res      = res.link()
+        self.link_res.sudo = self.sudo
+        self.link_res.dst  = self.dst
+        self.link_res.src  = self.src
         self.link_res._before(context)
 
     def _after(self,context):

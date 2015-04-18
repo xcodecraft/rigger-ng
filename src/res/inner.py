@@ -25,8 +25,6 @@ class project(interface.resource,res_utls) :
         prjdata = {}
         prjdata['PRJ_ROOT'] = self.root
         prjdata['PRJ_NAME'] = self.name
-
-
         utls.rg_var.import_dict(prjdata)
 
 class vars(interface.resource):
@@ -124,6 +122,10 @@ __sys:
         auto_vars.SYS_NAME = self._name
         auto_vars.RUN_PATH = "%s/run/%s" %(context.prj.root,self._name)
 
+        run_path = res.files.path()
+        run_path.dst = auto_vars.RUN_PATH
+
+        self.push(run_path)
         self.push(auto_vars)
 
     def _after(self,context):

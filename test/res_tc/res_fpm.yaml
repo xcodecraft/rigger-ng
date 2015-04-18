@@ -27,3 +27,8 @@ _sys:
         _res:
             - !R.fpm
                 sudo: "True"
+    -  !R.system
+        _name: "fpm_pool"
+        _res:
+            - !R.fpm
+                sudo: "True"
