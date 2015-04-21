@@ -23,6 +23,7 @@ if __name__ == '__main__':
     from impl_tc.cmd_tc   import *
     from res_tc.files_tc  import *
     from res_tc.inner_tc  import *
+    from res_tc.shell_tc  import *
     # from res_tc.mysql_tc  import *
     # from res_tc.varnishd_tc  import *
     # from res_tc.fpm_tc  import *

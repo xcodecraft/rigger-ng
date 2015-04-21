@@ -23,6 +23,9 @@ def import_context(context) :
 def import_dict(d) :
     rg_vars.import_dict(d)
 
+def export_env():
+    rg_vars.export_env()
+
 def value_of(exp):
     attr_vars = tpl.tpl_var.attr_proxy(rg_vars.current())
     tmp_exp   = rg_var_impl.env_exp.var_proc(str(exp),attr_vars)

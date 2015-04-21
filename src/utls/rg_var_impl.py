@@ -50,6 +50,9 @@ class rgvar_god(utls.pattern.singleton):
         dict_obj  = parse_assgin(asstr)
         self.impl = combo_porp(dict_porp(dict_obj),self.impl)
 
+    def export_env(self) :
+        self.impl.export(os.environ)
+
     def current(self):
         return self.impl
 
