@@ -18,6 +18,22 @@ class rg_args :
     def clear(self):
         pass
 
+class dev_args :
+    def __init__(self):
+        self.conf = os.getcwd() + "/_rg/dev.yaml"
+        self.message = ""
+        self.cmds = []
+
+    def clear(self):
+        if self.conf is None :
+            self.conf = os.getcwd() + "/_rg/dev.yaml"
+        self.cmds = []
+        self.message = ""
+
+    def __str__(self) :
+        cmd = "," . join(self.cmds)
+        return cmd
+
 
 class prj_args :
     def __init__(self):
@@ -40,10 +56,12 @@ class run_args :
     def __init__(self):
         self.rg  = rg_args()
         self.prj = prj_args()
+        self.dev = dev_args()
 
     def clear(self):
         self.rg.clear()
         self.prj.clear()
+        self.dev.clear()
 
     def parse_cmd(self):
         if len(self.cmds) == 0 :

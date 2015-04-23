@@ -4,6 +4,7 @@ from  rg_err  import *
 
 registed_resource = {}
 registed_cmd      = {}
+registed_conf     = {}
 
 def regist_res(name,module) :
     name = name.split(',')
@@ -14,3 +15,8 @@ def regist_cmd(name,module) :
     name = name.split(',')
     for  c in name:
         registed_cmd[c] = module
+
+def regist_conf(name,module) :
+    name = name.split(',')
+    for  c in name:
+        registed_conf[c] = module

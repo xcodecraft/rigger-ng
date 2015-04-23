@@ -1,0 +1,9 @@
+_dev:
+    - !C.project
+        name : "rigger-ng"
+        root : "${HOME}/devspace/rigger-ng"
+    - !C.version
+        file : "src/version.txt"
+    - !C.git
+        remote : "git@github.com:xcodecraft/rigger-ng.git"
+

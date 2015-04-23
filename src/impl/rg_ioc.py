@@ -18,6 +18,8 @@ def setup() :
     interface.regist_cmd("check,clean,info"                           , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,data,reload" , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("help,init"                                  , "impl.rg_cmd.rg_cmd")
+    interface.regist_cmd("ci,rc"                                      , "impl.rg_cmd.rg_cmd_dev")
+    interface.regist_conf("git,project,version"                       , "conf.dev_conf")
 
 def list_res() :
     import  res
