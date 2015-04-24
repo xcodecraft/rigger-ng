@@ -62,11 +62,16 @@ class empty_porp(porp):
         import pdb
         pdb.set_trace()
         raise interface.var_undefine("undefined value [%s]!" %name)
+    def export(self,target) :
+        pass
 
 class dict_porp(icase_porp):
     def __init__(self,dict_obj) :
         self._iattrs = {}
         self._iattrs.update(upper_dict(dict_obj))
+
+    def export(self,target) :
+        target.update(self._iattrs)
 
 class combo_porp(porp) :
     def __init__(self,first,second):
@@ -80,6 +85,10 @@ class combo_porp(porp) :
         if  val is None :
             return self._second.get(name)
         return val
+    def export(self,target) :
+        # 反序
+        self._second.export(target)
+        self._first.export(target)
 
 
 

@@ -13,12 +13,12 @@ from utls.rg_sh  import shexec
 class nginx_conf(interface.resource):
     """
     !R.nginx_conf
-        tpl : "${PRJ_ROOT}/conf/option/nginx.conf"
+        tpl : "${PRJ_ROOT}/conf/options/nginx.conf"
     """
 
     name = "${PRJ_NAME}_${SYS_NAME}_${USER}.conf"
     src  = "${PRJ_ROOT}/conf/used/nginx.conf"
-    tpl  = "${PRJ_ROOT}/conf/option/nginx.conf"
+    tpl  = "${PRJ_ROOT}/conf/options/nginx.conf"
 
 
     def _before(self,context):

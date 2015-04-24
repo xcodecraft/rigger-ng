@@ -16,7 +16,7 @@ import utls.check
 class fpm_pool(interface.control_box,interface.base):
     name = "${PRJ_NAME}_${SYS_NAME}.conf"
     src  = "${PRJ_ROOT}/conf/used/fpm.conf"
-    tpl  = "${PRJ_ROOT}/conf/option/fpm.conf"
+    tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
     def _before(self,context):
         self.name     = res_utls.value(self.name)

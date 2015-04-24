@@ -41,6 +41,12 @@ _sys:
             - !R.using
                 path          : "${PRJ_ROOT}/_rg/modul.yaml"
                 modul         : "m2"
+            - !R.echo
+                value         : "${PRJ_ROOT}"
+            - !R.shell
+                script : "${PRJ_ROOT}/src/demo.sh"
+            - !R.php
+                script : "${PRJ_ROOT}/src/demo.php"
 
     -  !R.system
         _name : "fpm"
@@ -52,3 +58,4 @@ _sys:
                 sudo : True
             - !R.fpm_pool
                 sudo : True
+
