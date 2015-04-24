@@ -9,6 +9,7 @@ import conf
 
 class dev_cmd_base :
     def _config(self,argv,rargs):
+        print(argv)
         pass
 
     def loadconf(self,rargs) :
@@ -22,7 +23,6 @@ class dev_cmd_base :
         dev_data = data['_dev']
         for confobj in dev_data :
             confobj._load()
-        # context = interface.run_context()
 
 
 class ci_cmd(dev_cmd_base) :

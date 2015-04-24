@@ -2,12 +2,6 @@
 import  os , string   , logging ,re ,sys
 import  interface,utls.rg_sh
 
-# from utls.rg_io import rgio ,rg_logger
-# from string     import Template
-# from define     import *
-# import  utls.check , utls.dbc , utls.rg_sh
-
-
 conf_objs = {}
 class singleton :
     def _load( self ) :
