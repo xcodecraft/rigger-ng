@@ -4,33 +4,9 @@ import  interface,utls.rg_sh
 
 from utls.rg_io import rgio ,rg_logger
 from string     import Template
+from define     import *
 import  utls.check , utls.dbc , utls.rg_sh
 
-conf_objs = {}
-class singleton :
-    def _load( self ) :
-        key = self.__class__.__name__
-        # utls.dbc.must_true(conf_objs.has_key(key), "%s have call _load " %(key))
-        self.__init__()
-        conf_objs[self.__class__.__name__] = self
-        return
-
-    def execmd(self,cmd,check=True, okcode= [0] ,tag = None ):
-        utls.rg_sh.shexec.execmd(cmd,check,okcode,tag=self.__class__.__name__)
-    @staticmethod
-    def get_ins(cls):
-        key = cls.__name__
-        return conf_objs[key]
-        # import  pdb
-        # pdb.set_trace()
-        # return  cls._inst
-
-    # def __new__(cls, *args,** kwargs):
-    #     import  pdb
-    #     pdb.set_trace()
-    #     if '_inst' not in vars(cls):
-    #         raise interface.rigger_exception("not _load the %s obj" %(cls))
-    #     return  cls._inst
 
 class project(interface.rg_conf.base,singleton):
     name = ""
@@ -43,14 +19,13 @@ class project(interface.rg_conf.base,singleton):
 
 class version (interface.rg_conf.base,singleton):
     file = None
-    first  = 0
-    second = 1
-    third  = 0
-    forth  = 0
+    # first  = 0
+    # second = 1
+    # third  = 0
+    # forth  = 0
     @staticmethod
     def ins():
         return singleton.get_ins(version)
-        # return version._inst
     def __init__(self):
         # import  pdb
         # pdb.set_trace()
