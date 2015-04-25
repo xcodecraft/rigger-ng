@@ -1,0 +1,9 @@
+_dev:
+    - !C.project
+        name : "%{PRJ_NAME}"
+        root : "${HOME}/devspace/%{PRJ_NAME}"
+    - !C.version
+        file : "src/version.txt"
+    - !C.git
+        remote : "git@github.com:xcodecraft/xxxx.git"
+

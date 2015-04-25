@@ -1,0 +1,45 @@
+_env:
+    - !R.env
+        _name    : "_dev"
+        _res :
+            - !R.project
+                root : "${HOME}/devspace/rigger-ng/%{PRJ_NAME}"
+                name : "%{PRJ_NAME}"
+
+    - !R.env
+        _name    : "_test"
+        _res :
+            - !R.project
+                root : "/home/x/system/%{PRJ_NAME}"
+                name : "%{PRJ_NAME}"
+    - !R.env
+        _name : "base"
+        _res :
+            - !R.path
+                dst  : "${PRJ_ROOT}/conf/used"
+            - !R.php_def
+                bin: "/usr/bin/php"
+                fpm: "/usr/sbin/service php5-fpm"
+            - !R.nginx_def
+                none : ""
+
+
+    - !R.env
+        _name    : "dev"
+        _mix     : "_dev,base"
+
+    - !R.env
+        _name    : "test"
+        _mix     : "_dev,base"
+
+_sys:
+    -  !R.system
+        _name : "test"
+        _res  :
+            - !R.vars
+                    TEST_CASE : "${PRJ_ROOT}/test/main.py"
+            - !R.echo
+                value         : "${PRJ_ROOT}"
+            - !R.shell
+                script : "${PRJ_ROOT}/src/demo.sh"
+
