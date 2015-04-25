@@ -24,3 +24,5 @@ class nginx_def(interface.resource) :
 
 class apache_def(interface.resource) :
     pass
+
+

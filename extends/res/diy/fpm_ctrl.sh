@@ -1,7 +1,7 @@
 #! /bin/bash
-if [ $# -lt 7 ] 
+if [ $# -lt 7 ]
 then
-    echo "Usage: $0 -b /usr/local/php-5.3/sbin/php-fpm -c /usr/local/php-5.3/etc/php-fpm-9001.conf -f /usr/local/php-5.3/etc/php.ini -p /path/to/prefix -r /home/q/system/wan -d {start|stop|restart|reload} -n /path/to/rigger/run"
+    echo "Usage: $0 -b /usr/local/php-5.3/sbin/php-fpm -c /usr/local/php-5.3/etc/php-fpm-9001.conf -f /usr/local/php-5.3/etc/php.ini -p /path/to/prefix -r /home/q/system/wan -d {_start|_stop|_restart|_reload} -n /path/to/rigger/run"
     exit
 fi
 while getopts "b:c:f:p:r:n:d:" OPTION
@@ -69,7 +69,7 @@ check_fpm_conf () {
 
 force-quit () {
    echo 'force terminating php-fpm : '
-   ps auxw | grep -v fpm_ctrl.sh | grep -v grep | grep ${prefix} 
+   ps auxw | grep -v fpm_ctrl.sh | grep -v grep | grep ${prefix}
    pidcount=`ps auxw | grep -v fpm_ctrl.sh | grep -v grep | grep ${prefix} | wc -l `
    pids=`ps auxw | grep -v fpm_ctrl.sh | grep -v grep | grep ${prefix} | awk '{print $2}'`
    [ $pidcount = "0" ] && echo nothing to kill || kill -9 $pids;
@@ -86,10 +86,10 @@ case "$do" in
         ln -s $prjroot/run/${prefix}.env $php_fpm_PREFIX/env.conf
         echo done
         ;;
-    start)
+    _start)
         echo -n "Starting php-fpm "
-   
-        #检查FPM配置是否生成 
+
+        #检查FPM配置是否生成
         check_fpm_conf
 
         #如果有pid文件且进程存在，结束
@@ -117,9 +117,9 @@ case "$do" in
         fi
     ;;
 
-    stop)
+    _stop)
         echo -n "Gracefully shutting down php-fpm "
-       
+
         #如果没有pid，强行清理
         if [ ! -r $php_fpm_PID ] ; then
             echo "warning, no pid file found - php-fpm is not running ?"
@@ -134,9 +134,9 @@ case "$do" in
             proc=`ps --no-heading $pid | wc -l`
             [ $proc = "0" ] && rm -rf $php_fpm_PID && echo " cleaned" && exit 0
         fi
-        
-        kill -QUIT $pid 
-        
+
+        kill -QUIT $pid
+
         wait_for_pid removed $php_fpm_PID
 
         if [ -n "$try" ] ; then

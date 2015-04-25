@@ -73,6 +73,23 @@ class dict_porp(icase_porp):
     def export(self,target) :
         target.update(self._iattrs)
 
+class  safe_env_porp(icase_porp) :
+    _ins = None
+    @staticmethod
+    def ins():
+        if safe_env_porp._ins is None :
+            safe_env_porp._ins = safe_env_porp()
+        return  safe_env_porp._ins
+    def __init__(self) :
+        self.update(['HOME','USER','PRJ_ROOT'])
+    def update(self,keys) :
+        self._iattrs = {}
+        for i in keys :
+            if os.environ.has_key(i) :
+                self._iattrs[i] = os.environ[i]
+    def export(self,target) :
+        target.update(self._iattrs)
+
 class combo_porp(porp) :
     def __init__(self,first,second):
         utls.dbc.must_obj(first,porp)

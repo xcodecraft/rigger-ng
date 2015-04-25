@@ -7,6 +7,7 @@ import res.node
 # from utls.dbc import *
 from utls.rg_io import  rgio , run_struct,rg_logger
 from base import *
+from utls.tpl.tpl_var import safe_env_porp
 
 import  res.files
 
@@ -15,6 +16,7 @@ class project(interface.resource,res_utls) :
     """
     root = ""
     name = ""
+    env  = 'HOME,USER,PRJ_ROOT'
     def _before(self,context):
 #        import pdb
 #        pdb.set_trace()
@@ -26,6 +28,9 @@ class project(interface.resource,res_utls) :
         prjdata['PRJ_ROOT'] = self.root
         prjdata['PRJ_NAME'] = self.name
         utls.rg_var.import_dict(prjdata)
+        safe_env_porp.ins().update(self.env.split(','))
+
+
 
 class vars(interface.resource):
     """

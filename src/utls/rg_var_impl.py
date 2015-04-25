@@ -30,9 +30,11 @@ class assginer :
                 val = unfound_call(var,self.tpl)
                 return val
 
+
 class rgvar_god(utls.pattern.singleton):
     def __init__(self):
-        self.impl     = combo_porp(dict_porp(os.environ),empty_porp())
+        # self.impl     = combo_porp(dict_porp(os.environ),empty_porp())
+        self.impl     = combo_porp(safe_env_porp.ins(),empty_porp())
         self.restores = []
 
     def import_dict(self,dict_obj):
@@ -52,6 +54,8 @@ class rgvar_god(utls.pattern.singleton):
 
     def export_env(self) :
         self.impl.export(os.environ)
+    def export2dict(self,target) :
+        self.impl.export(target)
 
     def current(self):
         return self.impl

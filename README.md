@@ -6,7 +6,7 @@
 
 ### 主要目标:
 #### 对项目(系统) 进行运行管理
-#### 对项目(系统) 进行发布管理
+#### 对项目(系统) 进行开发管理
 
 ```
 程序  =  数据结构 + 算法
@@ -15,10 +15,10 @@
 
 示例:
 ``` shell
-./rgdemo conf -s test -e dev
+./rgdemo conf  -s test -e dev
 ./rgdemo start -s test -e dev
 
-./rgdemo info -s test -e dev
+./rgdemo info  -s test -e dev
 ./rgdemo check -s test -e dev
 ```
 

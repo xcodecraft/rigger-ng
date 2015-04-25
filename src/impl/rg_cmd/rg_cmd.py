@@ -5,6 +5,7 @@ from utls.rg_io  import rgio,export_objdoc ,rg_logger
 from rg_cmd_base import rg_cmd , cmdtag_rg , cmdtag_prj ,cmdtag_pub
 
 import res,  interface
+import conf
 
 import impl.rg_dev , impl.rg_ioc
 
@@ -23,7 +24,8 @@ class init_cmd(rg_cmd) :
 
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
-        ver  =  impl.rg_dev.version(os.path.join(rargs.rg.root ,"version.txt" ))
+        conf.version.file=os.path.join(rargs.rg.root ,"version.txt" )
+        ver    = conf.version()
         rgio.simple_out("rigger-ng ver: " + ver.info())
         cmdlen = len(rargs.prj.cmds)
         print(rargs.prj.cmds)

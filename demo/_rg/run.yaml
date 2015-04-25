@@ -1,6 +1,6 @@
 _env:
     - !R.env
-        _name    : "dev"
+        _name    : "_dev"
         _res :
             - !R.vars
                     TEST_CASE : "${PRJ_ROOT}/test/main.py"
@@ -20,8 +20,8 @@ _env:
 
 
     - !R.env
-        _name    : "mydev"
-        _mix     : "dev,base"
+        _name    : "dev"
+        _mix     : "_dev,base"
 
 
 _sys:
@@ -49,13 +49,15 @@ _sys:
                 script : "${PRJ_ROOT}/src/demo.php"
 
     -  !R.system
-        _name : "fpm"
+        _name : "web"
         _res  :
             - !R.vars
                 SOCK_FILE : "${RUN_PATH}/fpm.sock"
                 DOMAIN    : "${USER}.rigger.io"
             - !R.nginx_conf
                 sudo : True
-            - !R.fpm_pool
+            - !R.fpm
+                ini_tpl  : "${PRJ_ROOT}/conf/options/php.ini"
+                conf_tpl : "${PRJ_ROOT}/conf/options/fpm.conf"
                 sudo : True
 

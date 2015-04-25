@@ -25,6 +25,8 @@ def import_dict(d) :
 
 def export_env():
     rg_vars.export_env()
+def export2dict(target):
+    rg_vars.export2dict(target)
 
 def value_of(exp):
     attr_vars = tpl.tpl_var.attr_proxy(rg_vars.current())

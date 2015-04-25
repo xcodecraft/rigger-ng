@@ -5,6 +5,7 @@ import  interface,utls.rg_sh
 from utls.rg_io  import rgio ,rg_logger
 from string import Template
 from res.base   import *
+import  utls.check , utls.dbc
 
 
 
@@ -275,6 +276,7 @@ class file_tpl(interface.resource,res_utls):
         self.dst        = utls.rg_var.value_of(self.dst)
         self.tpl        = utls.rg_var.value_of(self.tpl)
         self.mod        = utls.rg_var.value_of(self.mod)
+        utls.check.must_true(os.path.exists(self.tpl),"tpl not exists : %s" %(self.tpl))
 
     def _config(self,context):
         tpl_builder.build(self.tpl,self.dst)
