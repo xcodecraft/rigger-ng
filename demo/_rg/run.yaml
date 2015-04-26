@@ -52,7 +52,7 @@ _sys:
         _name : "web"
         _res  :
             - !R.vars
-                SOCK_FILE : "${RUN_PATH}/fpm.sock"
+                SOCK_FILE : "/var/run/web_fpm.sock"
                 DOMAIN    : "${USER}.rigger.io"
             - !R.nginx_conf
                 sudo : True

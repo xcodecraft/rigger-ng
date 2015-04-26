@@ -78,7 +78,8 @@ class fpm_ctrl(interface.resource,res_utls):
     def _start(self,context) :
         if os.path.exists(self.pid) :
             return
-        tpl = "$BIN -c $INI -g $PID -y $CONF $EXTRA"
+        # tpl = "$BIN -c $INI -g $PID -y $CONF $EXTRA"
+        tpl = "$BIN  --pid $PID --fpm-config $CONF $EXTRA"
         cmd = Template(tpl).substitute(
                 BIN   = self.bin,
                 INI   = self.ini,
