@@ -7,20 +7,22 @@ import random
 from utls.rg_io  import rg_logger
 from utls.rg_var import value_of
 from utls.rg_sh  import shexec
-from impl.rg_utls  import *
-from string import *
-from res.base import *
+from impl.rg_utls import *
+from string     import *
+from res.base   import *
 import utls.check
 
 
 class fpm_pool(interface.control_box,interface.base):
-    name = "${PRJ_NAME}_${SYS_NAME}.conf"
+    bin  = "/usr/sbin/service php5-fpm"
     src  = "${PRJ_ROOT}/conf/used/fpm.conf"
+    dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
     tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
     def _before(self,context):
+        self.bin      = res_utls.value(self.bin)
         self.name     = res_utls.value(self.name)
-        self.dst      = res_utls.value(os.path.join(context.php_def.fpm_conf_root,self.name) )
+        self.dst      = res_utls.value(self.dst)
         self.src      = res_utls.value(self.src)
         self.tpl      = res_utls.value(self.tpl)
 
@@ -36,7 +38,7 @@ class fpm_pool(interface.control_box,interface.base):
         link_res.src  = self.src
         self.append(link_res)
 
-        sc            = service_ctrol("php5-fpm")
+        sc            = service_ctrol(self.bin)
         sc.sudo       = self.sudo
         self.append(sc)
         interface.control_box._before(self,context)
@@ -46,23 +48,24 @@ class fpm_pool(interface.control_box,interface.base):
 
 
 class fpm_ctrl(interface.resource,res_utls):
-    prefix = ""
-    ini    = ""
-    conf   = ""
-    extra  = "-D"
+    bin  = ""
+    tag  = ""
+    ini  = ""
+    conf = ""
+    args = ""
     """
-    pid: ${RUN_PATH}/fpm_${PREFIX}.pid
-    env: ${RUN_PATH}/fpm_${PREFIX}.env
+    pid: ${RUN_PATH}/fpm_${tag}.pid
+    env: ${RUN_PATH}/fpm_${tag}.env
     """
 
     def _before(self,context):
-        self.bin    = "/usr/sbin/php5-fpm"
-        self.prefix = res_utls.value(self.prefix)
-        self.ini    = res_utls.value(self.ini)
-        self.conf   = res_utls.value(self.conf)
-        self.extra  = res_utls.value(self.extra)
-        self.env    = res_utls.value("${RUN_PATH}/fpm_%s.env" %self.prefix)
-        self.pid    = res_utls.value("${RUN_PATH}/fpm_%s.pid" %self.prefix)
+        self.bin  = res_utls.value(self.bin)
+        self.tag  = res_utls.value(self.tag)
+        self.ini  = res_utls.value(self.ini)
+        self.conf = res_utls.value(self.conf)
+        self.args = res_utls.value(self.args)
+        self.env  = res_utls.value("${RUN_PATH}/fpm_%s.env" %self.tag)
+        self.pid  = res_utls.value("${RUN_PATH}/fpm_%s.pid" %self.tag)
 
     def _config(self,context):
         self.export_env(context)
@@ -78,14 +81,14 @@ class fpm_ctrl(interface.resource,res_utls):
     def _start(self,context) :
         if os.path.exists(self.pid) :
             return
-        # tpl = "$BIN -c $INI -g $PID -y $CONF $EXTRA"
-        tpl = "$BIN  --pid $PID --fpm-config $CONF $EXTRA"
+        # tpl = "$BIN -c $INI -g $PID -y $CONF $args"
+        tpl = "$BIN  --pid $PID --fpm-config $CONF $args"
         cmd = Template(tpl).substitute(
                 BIN   = self.bin,
                 INI   = self.ini,
                 PID   = self.pid,
                 CONF  = self.conf,
-                EXTRA = self.extra
+                args  = self.args
                 )
         self.execmd(cmd)
     def _stop(self,context) :
@@ -99,11 +102,13 @@ class fpm_ctrl(interface.resource,res_utls):
 
 
 class fpm(interface.control_box,interface.base):
-    prefix   = ""
+    tag      = ""
+    bin      = "/usr/sbin/php5-fpm"
     ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.ini"
     ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
     conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.conf"
     conf_tpl = "${PRJ_ROOT}/conf/options/fpm.conf"
+    args     = "-D"
     # socket   = "${RUN_PATH}/${SYS_NAME}.socket"
 
     def _before(self,context):
@@ -114,17 +119,19 @@ class fpm(interface.control_box,interface.base):
         tpl_ini.dst   = res_utls.value(self.ini)
         self.append(tpl_ini)
 
-        tpl_conf       = res.file_tpl()
-        tpl_conf.sudo  = self.sudo
-        tpl_conf.tpl   = res_utls.value(self.conf_tpl)
-        tpl_conf.dst   = res_utls.value(self.conf)
+        tpl_conf      = res.file_tpl()
+        tpl_conf.sudo = self.sudo
+        tpl_conf.tpl  = res_utls.value(self.conf_tpl)
+        tpl_conf.dst  = res_utls.value(self.conf)
         self.append(tpl_conf)
 
-        ctrl        = fpm_ctrl()
-        ctrl.sudo   = self.sudo
-        ctrl.prefix = self.prefix
-        ctrl.ini    = self.ini
-        ctrl.conf   = self.conf
+        ctrl          = fpm_ctrl()
+        ctrl.sudo     = self.sudo
+        ctrl.tag      = self.tag
+        ctrl.ini      = self.ini
+        ctrl.conf     = self.conf
+        ctrl.args     = self.args
+        ctrl.bin      = self.bin
 
         self.append(ctrl)
         interface.control_box._before(self,context)

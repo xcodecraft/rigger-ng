@@ -12,11 +12,6 @@ _env:
                 name : "rg_demo"
             - !R.path
                 dst  : "${PRJ_ROOT}/conf/used"
-            - !R.php_def
-                bin: "/usr/bin/php"
-                fpm: "/usr/sbin/service php5-fpm"
-            - !R.nginx_def
-                none : ""
 
 
     - !R.env
@@ -52,8 +47,8 @@ _sys:
         _name : "web"
         _res  :
             - !R.vars
-                SOCK_FILE : "/var/run/web_fpm.sock"
-                DOMAIN    : "${USER}.rigger.io"
+                SOCK_FILE : "${RUN_PATH}/fpm.sock"
+                DOMAIN    : "${USER}.rigger-ng.com"
             - !R.nginx_conf
                 sudo : True
             - !R.fpm
