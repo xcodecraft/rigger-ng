@@ -13,11 +13,11 @@ from res.base   import *
 import utls.check
 
 
-class fpm_pool(interface.control_box,interface.base):
-    bin  = "/usr/sbin/service php5-fpm"
-    src  = "${PRJ_ROOT}/conf/used/fpm.conf"
-    dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
-    tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
+class fpm_pool_base(interface.control_box,interface.base):
+    # bin  = "/usr/sbin/service php5-fpm"
+    # src  = "${PRJ_ROOT}/conf/used/fpm.conf"
+    # dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
+    # tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
     def _before(self,context):
         self.bin      = res_utls.value(self.bin)
@@ -101,15 +101,14 @@ class fpm_ctrl(interface.resource,res_utls):
 
 
 
-class fpm(interface.control_box,interface.base):
-    tag      = ""
-    bin      = "/usr/sbin/php5-fpm"
-    ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.ini"
-    ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
-    conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.conf"
-    conf_tpl = "${PRJ_ROOT}/conf/options/fpm.conf"
-    args     = "-D"
-    # socket   = "${RUN_PATH}/${SYS_NAME}.socket"
+class fpm_base(interface.control_box,interface.base):
+    # tag      = ""
+    # bin      = "/usr/sbin/php5-fpm"
+    # ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.ini"
+    # ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
+    # conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.conf"
+    # conf_tpl = "${PRJ_ROOT}/conf/options/fpm.conf"
+    # args     = "-D"
 
     def _before(self,context):
 

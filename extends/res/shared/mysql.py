@@ -3,18 +3,19 @@ import logging
 import interface
 
 
-import utls.rg_var , utls.check
 from utls.rg_io  import rg_logger
 from utls.rg_sh  import shexec
 from res.base import *
 from string import *
+import utls.rg_var , utls.check
 
-class mysql(interface.resource,res_utls):
+class mysql_base(interface.resource,res_utls):
     """
     !R.mysql:
         host: "127.0.0.1"
         init: "init.sql"
     """
+    bin        = "/usr/bin/mysql"
     host       = "localhost"
     name       = ""
     user       = ""
