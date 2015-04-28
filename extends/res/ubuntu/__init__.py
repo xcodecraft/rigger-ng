@@ -7,7 +7,7 @@ from utls.rg_io import rg_logger
 
 
 def setup() :
-    interface.regist_res("fpm,fpm_pool,nginx_conf"   , "ubuntu.port")
-    interface.regist_res("mysql"      , "ubuntu.mysql")
-    interface.regist_res("varnishd"   , "ubuntu.varnishd")
+    interface.regist_res("fpm,fpm_pool,nginx_conf,mysql"   , "ubuntu.port")
+    # interface.regist_res("mysql"      , "ubuntu.mysql")
+    # interface.regist_res("varnishd"   , "ubuntu.varnishd")
 
