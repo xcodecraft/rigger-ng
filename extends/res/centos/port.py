@@ -5,14 +5,14 @@ import random
 from shared.fpm import *
 
 class fpm_pool(fpm_pool_base):
-    bin  = "/usr/sbin/service php5-fpm"
+    bin  = "/sbin/service php5-fpm"
     src  = "${PRJ_ROOT}/conf/used/fpm.conf"
     dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
     tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
 class fpm(fpm_base):
     tag      = ""
-    bin      = "/usr/local/php-5.3/sbin/php-fpm"
+    bin      = "/usr/local/php/sbin/php-fpm"
     ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.ini"
     ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
     conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.conf"
@@ -31,7 +31,7 @@ class nginx_conf(nginx_conf_base):
     src  = "${PRJ_ROOT}/conf/used/nginx.conf"
     tpl  = "${PRJ_ROOT}/conf/options/nginx.conf"
     dst  = "/usr/local/nginx/conf/include/"
-    bin  = "/usr/sbin/service nginx"
+    bin  = "/sbin/service nginx"
 
 from shared.mysql import *
 class mysql(mysql_base):
