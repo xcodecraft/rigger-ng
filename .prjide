@@ -1,0 +1,324 @@
+rigger-ng=$HOME/devspace/rigger-ng CD=. filter="*" in="_prj/in.vim" {
+ README.md
+ _rg=_rg {
+  dev.yaml
+  pub.yaml
+  run.yaml
+ }
+ demo=demo {
+  _rg=_rg {
+   modul.yaml
+   res_v1.yaml
+   res_v2.yaml
+   run.yaml
+   sub_svc.yaml
+  }
+  conf=conf {
+   options=options {
+    fpm.conf
+    nginx.conf
+    php.ini
+   }
+   used=used {
+    nginx.conf
+    web.fpm.ini
+    web.fpm.conf
+   }
+  }
+  files=files {
+   prj_tpl.yaml
+   prj_use.yaml
+  }
+  src=src {
+   demo.php
+   demo.sh
+   index.php
+   verify_url.sh
+  }
+  run=run {
+   web=web {
+    fpm_.env
+   }
+  }
+ }
+ doc=doc {
+  dev_guide.md
+  main.md
+  prj_conf.md
+  res.md
+  res_howto.md
+  tpl.md
+  vim.md
+ }
+ extends=extends {
+  res=res {
+   diy=diy {
+    fpm.py
+    fpm_ctrl.sh
+    stop_proc.sh
+   }
+   howto.md
+   pylon=pylon {
+    __init__.py
+    pylon_res.py
+    pylon_res.yaml
+    pylon_tc.py
+    test_main.py
+    __init__.pyc
+    pylon_res.pyc
+   }
+   ubuntu=ubuntu {
+    __init__.py
+    conf=conf {
+     fpm_svc.conf.dev
+     fpm_svc.conf.online
+     ubuntu_fpm_tpl.conf
+    }
+    port.py
+    fpm_res.yaml
+    fpm_tc.py
+    mysql_res.yaml
+    mysql_tc.py
+    res_varnishd.yaml
+    test_main.py
+    varnishd_tc.py
+    websvc_res.yaml
+    websvc_tc.py
+    __init__.pyc
+    varnishd.pyc
+    mysql.pyc
+    websvc.pyc
+    fpm.pyc
+   }
+   centos=centos{
+    __init__.py
+    port.py
+    test_main.py
+    conf=conf{
+     centos_fpm_tpl.conf
+     fpm_svc.conf.dev
+     fpm_svc.conf.online
+    }
+   }
+   shared=shared {
+    __init__.py
+    fpm.py
+    mysql.py
+    varnishd.py
+    websvc.py
+   }
+  }
+ }
+ join_us.md
+ myrg.bashrc
+ rgdemo
+ src=src {
+  README.md
+  conf=conf {
+   __init__.py
+   define.py
+   dev_conf.py
+   __init__.pyc
+   dev_conf.pyc
+   define.pyc
+  }
+  impl=impl {
+   __init__.py
+   rg_args.py
+   rg_cmd=rg_cmd {
+    __init__.py
+    rg_cmd.py
+    rg_cmd_base.py
+    rg_cmd_dev.py
+    rg_cmd_prj.py
+    rg_cmd_pub.py
+    __init__.pyc
+    rg_cmd_prj.pyc
+    rg_cmd_base.pyc
+    rg_cmd_dev.pyc
+    rg_cmd.pyc
+   }
+   rg_dev.py
+   rg_exp.py
+   rg_ioc.py
+   rg_res.py
+   rg_run.py
+   rg_utls.py
+   __init__.pyc
+   rg_ioc.pyc
+   rg_run.pyc
+   rg_args.pyc
+   rg_utls.pyc
+   rg_dev.pyc
+  }
+  interface=interface {
+   __init__.py
+   rg_conf.py
+   rg_def.py
+   rg_err.py
+   __init__.pyc
+   rg_conf.pyc
+   rg_err.pyc
+   rg_def.pyc
+  }
+  main_impl.py
+  main_ubuntu.py
+  main_centos.py
+  res=res {
+   __init__.py
+   base.py
+   conf=conf {
+    fpm_svc.conf.dev
+    fpm_svc.conf.online
+   }
+   files.py
+   inner.py
+   node.py
+   shell.py
+   __init__.pyc
+   inner.pyc
+   node.pyc
+   base.pyc
+   files.pyc
+   os_svc.pyc
+   shell.pyc
+  }
+  rg
+  rg.bashrc
+  rg_tpl=rg_tpl {
+   _tpl.yaml
+   dev.yaml
+   run.yaml
+  }
+  setting.py
+  utls=utls {
+   __init__.py
+   check.py
+   dbc.py
+   pattern.py
+   rg_io.py
+   rg_sh.py
+   rg_var.py
+   rg_var_impl.py
+   rg_yaml.py
+   tpl=tpl {
+    __init__.py
+    tpl.md
+    tpl_action.py
+    tpl_engine.py
+    tpl_var.py
+    __init__.pyc
+    tpl_engine.pyc
+    tpl_action.pyc
+    tpl_var.pyc
+   }
+   __init__.pyc
+   rg_sh.pyc
+   pattern.pyc
+   rg_io.pyc
+   rg_var.pyc
+   rg_var_impl.pyc
+   dbc.pyc
+   rg_yaml.pyc
+   check.pyc
+  }
+  version.txt
+  main_impl.pyc
+  setting.pyc
+ }
+ test.sh
+ test=test {
+  base=base {
+   __init__.py
+   tc_data.py
+   tc_tools.py
+  }
+  data=data {
+   _autoload_clsname.tmp
+   _autoload_clspath.tmp
+   _find_cls.tmp
+   _rest_conf.idx
+   files=files {
+    prj_tpl.yaml
+    use.yaml
+   }
+   init.sql
+   res_v2.yaml
+   rest.php
+   tpl=tpl {
+    ori=ori {
+     _tpl.yaml
+     main.vcl
+     pub.yaml
+     single.sh
+     sub=sub {
+      main.vcl
+     }
+     test.sh
+     test_fpm.conf
+    }
+    ori2=ori2 {
+     #%T.mode=#%T.mode {
+      main.vcl
+     }
+     _tpl.yaml
+     main.vcl
+     pub.yaml
+     single.sh
+     test.sh
+    }
+   }
+   websvc=websvc {
+    nginx_dst.conf
+    nginx_src.conf
+    nginx_tpl.conf
+   }
+  }
+  impl_tc=impl_tc {
+   __init__.py
+   args_tc.py
+   cmd_tc.py
+   core_tc.py
+   prj_struct.yaml
+   prj_vars.yaml
+   vars_tc.py
+   yaml_tc.py
+  }
+  main.py
+  res_tc=res_tc {
+   __init__.py
+   files_tc.py
+   init.sql
+   inner_tc.py
+   muti_env.yaml
+   os_svc.yaml
+   res_files.yaml
+   res_modul.yaml
+   res_pylon_router.yaml
+   shell_res.yaml
+   shell_tc.py
+   shell_tc.sh
+  }
+  utls_tc=utls_tc {
+   __init__.py
+   rg_var_tc.py
+   tpl_path=tpl_path {
+    %{NEED_MYSQL}=%{NEED_MYSQL} {
+     test.yaml
+    }
+    _tpl.yaml
+   }
+   tpl_simple=tpl_simple {
+    _tpl.yaml
+    example.expect
+    example.out
+    example.sh
+   }
+   tpl_tc.py
+  }
+ }
+ run.log
+ _prj=_prj {
+  in.vim
+ }
+}
