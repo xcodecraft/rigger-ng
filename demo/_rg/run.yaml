@@ -55,4 +55,6 @@ _sys:
                 ini_tpl  : "${PRJ_ROOT}/conf/options/php.ini"
                 conf_tpl : "${PRJ_ROOT}/conf/options/fpm.conf"
                 sudo : True
+            - !R.shell
+                script : "${PRJ_ROOT}/src/verify_url.sh"
 
