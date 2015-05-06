@@ -4,8 +4,7 @@ import interface
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
-    root  = os.path.dirname(root)
-    sys.path.append(os.path.join(root,"src") )
+    sys.path.append(root)
     sys.path.append(os.path.join(root,"extends/res") )
 
 def setting_debug(opts) :
