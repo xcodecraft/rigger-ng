@@ -9,6 +9,41 @@ import  utls.check , utls.dbc
 
 
 
+class copy(interface.resource,res_utls):
+    """
+    !R.copy :
+        dst: "/home/q/system/mysys"
+        src: "$${PRJ_ROOT}/src/apps/console"
+    """
+    force   = False
+    dst     = ""
+    src     = ""
+    def _before(self,context):
+        self.dst = utls.rg_var.value_of(self.dst)
+        self.src = utls.rg_var.value_of(self.src)
+
+    def _config(self,context):
+        cmdtpl = ""
+        if self.force is True :
+            cmdtpl ="if test -L $DST ; then rm -rf  $DST ; fi ; dirname $DST | xargs mkdir -p ; cp  $SRC $DST"
+        else :
+            cmdtpl ="if ! test -L $DST ; then   dirname $DST | xargs mkdir -p ;  cp    $SRC $DST ; fi;  "
+        cmd = Template(cmdtpl).substitute(DST=self.dst,SRC =self.src)
+        self.execmd(cmd)
+
+    def _clean(self,context):
+        cmdtpl = "if test -L $DST ; then rm -rf  $DST ; fi ; "
+        cmd    = Template(cmdtpl).substitute(DST=self.dst)
+        self.execmd(cmd)
+
+    def _check(self,context):
+        self._check_print(os.path.exists(self.dst),self.dst)
+
+    def _info(self,context):
+        rgio.struct_out("copy")
+        rgio.struct_out("src: " + self.src,1)
+        rgio.struct_out("dst: " + self.dst,1)
+
 class link(interface.resource,res_utls):
     """
     !R.link :

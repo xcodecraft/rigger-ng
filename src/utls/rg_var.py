@@ -8,6 +8,11 @@ import tpl.tpl_var
 
 rg_vars = rg_var_impl.rgvar_god()
 
+class export_target_env :
+    def update(self,attr):
+        for k,v in attr.items() :
+            os.environ[k] = value_of(v)
+
 def clean() :
     rg_vars.clean()
 
@@ -24,7 +29,8 @@ def import_dict(d) :
     rg_vars.import_dict(d)
 
 def export_env():
-    rg_vars.export_env()
+    rg_vars.export2dict(export_target_env())
+    # rg_vars.export_env()
 def export2dict(target):
     rg_vars.export2dict(target)
 
