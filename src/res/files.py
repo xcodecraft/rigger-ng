@@ -18,11 +18,12 @@ class copy(interface.resource,res_utls):
     force   = False
     dst     = ""
     src     = ""
+    run     = "conf"
     def _before(self,context):
         self.dst = utls.rg_var.value_of(self.dst)
         self.src = utls.rg_var.value_of(self.src)
 
-    def _config(self,context):
+    def doit(self,context) :
         cmdtpl = ""
         if self.force is True :
             cmdtpl ="if test -L $DST ; then rm -rf  $DST ; fi ; dirname $DST | xargs mkdir -p ; cp  $SRC $DST"
@@ -30,6 +31,13 @@ class copy(interface.resource,res_utls):
             cmdtpl ="if ! test -L $DST ; then   dirname $DST | xargs mkdir -p ;  cp    $SRC $DST ; fi;  "
         cmd = Template(cmdtpl).substitute(DST=self.dst,SRC =self.src)
         self.execmd(cmd)
+
+    def _config(self,context):
+        if self.run == "conf" :
+            self.doit(context)
+    def _start(self,context):
+        if self.run == "start" :
+            self.doit(context)
 
     def _clean(self,context):
         cmdtpl = "if test -L $DST ; then rm -rf  $DST ; fi ; "
@@ -49,15 +57,24 @@ class link(interface.resource,res_utls):
     !R.link :
         dst: "/home/q/system/mysys"
         src: "$${PRJ_ROOT}/src/apps/console"
+        run     = "conf"
     """
     force   = False
     dst     = ""
     src     = ""
+    run     = "conf"
     def _before(self,context):
         self.dst = utls.rg_var.value_of(self.dst)
         self.src = utls.rg_var.value_of(self.src)
 
     def _config(self,context):
+        if self.run == "conf" :
+            self.doit(context)
+    def _start(self,context):
+        if self.run == "start" :
+            self.doit(context)
+
+    def doit(self,context):
         cmdtpl = ""
         if self.force is True :
             cmdtpl ="if test -L $DST ; then rm -rf  $DST ; fi ; dirname $DST | xargs mkdir -p ; ln -s  $SRC $DST"
@@ -79,35 +96,6 @@ class link(interface.resource,res_utls):
         rgio.struct_out("src: " + self.src,1)
         rgio.struct_out("dst: " + self.dst,1)
 
-# class copy(resource,restag_file):
-#     """
-#     !R.copy:
-#         dst: "/home/q/system/mysys/a.txt"
-#         src: "$${PRJ_ROOT}/src/apps/console/a.txt"
-#     """
-#     _dst=None
-#     _src=None
-#     _force=True
-#
-#     def _before(self,context):
-#         self.dst = env_exp.value(self.dst)
-#         self.src = env_exp.value(self.src)
-#
-#     def _config(self,context):
-#         cmdtpl = ""
-#         if self.force is True :
-#             cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi ; dirname $DST | xargs mkdir -p ; cp -r  $SRC $DST"
-#         else :
-#             cmdtpl ="if ! test -e $DST ; then   dirname $DST | xargs mkdir -p ; cp -r  $SRC $DST ; fi;  "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst,SRC =self.src)
-#         self.execmd(cmd)
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi ; "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst,SRC =self.src)
-#         self.execmd(cmd)
-#
 
 class path(interface.resource,res_utls):
     """
