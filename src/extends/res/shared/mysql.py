@@ -3,7 +3,7 @@ import logging
 import interface
 
 
-from utls.rg_io  import rg_logger
+from utls.rg_io  import rgio,rg_logger
 from utls.rg_sh  import shexec
 from res.base import *
 from string import *
