@@ -20,17 +20,19 @@ class pylon_autoload(interface.resource,res_utls):
     """
     sdk_base = "/home/"
     include  = ""
+    relpath  = ""
     dst      = "${RUN_PATH}/autoload"
     def _before(self,context):
         # self.sdk_file  = self.dst_path("phpsdk.txt")
         self.include   = res_utls.value( self.include)
+        self.relpath   = res_utls.value( self.relpath)
         self.dst       = res_utls.value(self.dst)
         if not os.path.exists(self.dst) :
             os.makedirs(self.dst)
 
     def _config(self,context):
         src_paths = self.include.split(':')
-        self.build_php_index(src_paths,self.dst,True,"");
+        self.build_php_index(src_paths,self.dst,True,self.relpath);
 
     def dst_path(self,filename) :
         abs_path  = res_utls.value(os.path.join(self.dst,  filename))
