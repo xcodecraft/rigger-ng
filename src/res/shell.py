@@ -3,15 +3,23 @@ import  os , string   , logging ,copy
 import  interface,utls.rg_sh , utls.rg_var
 from utls.rg_io  import rgio ,rg_logger
 from res.base   import *
+from string import Template
 
 
 
 class shell(interface.resource,res_utls):
     """
     !R.shell:
-        script : "/test.sh"
+        script : "/test.sh $_POS"
+        args   : ""
+
+    !R.shell:
+        script : "/test.sh "
+        args   : ""
     """
     script = None
+    args   = ""
+    run    = "start"
     def _before(self,context) :
         self.env_keep = None
         if self.script is not None :
@@ -25,27 +33,40 @@ class shell(interface.resource,res_utls):
     def _after(self,context) :
         if self.env_keep is not None :
             os.environ = copy.copy(self.env_keep)
+    def doit(self,context,pos) :
+        if self.run == pos :
+            cmd = Template( self.script + " $_POS $ARGS").substitute(
+                    _POS  = pos ,
+                    ARGS = self.args
+                    )
+            utls.rg_var.export_env()
+            self.execmd(cmd)
+
 
     def _start(self,context) :
-
-        utls.rg_var.export_env()
-        self.execmd(self.script + " _start")
+        self.doit(context,"start")
         pass
     def _stop(self,context) :
-        self.execmd(self.script + " _stop")
+        self.doit(context,"stop")
         pass
 
 class php(interface.resource,res_utls):
     """
     !R.php:
         ini    : "${PHP_INI}"
-        script : "/test.sh"
+        script : "demo.php $_POS "
+        args   : ""
+
+    !R.php:
+        ini    : "${PHP_INI}"
+        script : "demo.php "
         args   : ""
     """
     bin    = "/usr/bin/php"
     ini    = ""
     script = None
-    args   = None
+    args   = ""
+    run    = "start"
     def _before(self,context) :
 
         self.ini  = res_utls.value(self.ini)
@@ -58,26 +79,32 @@ class php(interface.resource,res_utls):
                 self.env_keep = copy.copy(os.environ)
                 return
 
-
         raise interface.rigger_exception( "script is bad! %s " %(self.script))
+
     def _after(self,context) :
         if self.env_keep is not None :
             os.environ = copy.copy(self.env_keep)
 
-    def phpcmd(self,context) :
-        if len(self.ini) >= 1 :
-            cmd = "%s -c %s %s %s" %(self.bin, self.ini,self.script, self.args)
-        else:
-            cmd = "%s %s %s" %(self.bin, self.script, self.args)
-        return cmd
+
+    def doit(self,context,pos) :
+        if self.run != pos :
+            return
+
+        ini = self.ini
+        if len(self.ini ) >=1 :
+            ini =  " -c " + self.ini
+        cmd = Template("$BIN  $INI " + self.script + "  $ARGS").substitute(
+                BIN  = self.bin,
+                INI  = ini,
+                _POS = pos ,
+                ARGS = self.args
+                )
+        utls.rg_var.export_env()
+        self.execmd(cmd)
 
 
     def _start(self,context) :
+        self.doit(context,"start")
 
-        utls.rg_var.export_env()
-        cmd = " %s _start" %(self.phpcmd(context))
-        self.execmd(cmd)
     def _stop(self,context) :
-        utls.rg_var.export_env()
-        cmd = " %s _stop" %(self.phpcmd(context))
-        self.execmd(cmd)
+        self.doit(context,"stop")
