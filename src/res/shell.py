@@ -40,14 +40,17 @@ class php(interface.resource,res_utls):
     !R.php:
         ini    : "${PHP_INI}"
         script : "/test.sh"
+        args   : ""
     """
     bin    = "/usr/bin/php"
     ini    = ""
     script = None
+    args   = None
     def _before(self,context) :
 
-        self.ini = res_utls.value(self.ini)
-        self.bin = res_utls.value(self.bin)
+        self.ini  = res_utls.value(self.ini)
+        self.bin  = res_utls.value(self.bin)
+        self.args = res_utls.value(self.args)
         self.env_keep = None
         if self.script is not None :
             self.script = res_utls.value(self.script)
@@ -63,9 +66,9 @@ class php(interface.resource,res_utls):
 
     def phpcmd(self,context) :
         if len(self.ini) >= 1 :
-            cmd = "%s -c %s %s " %(self.bin, self.ini,self.script)
+            cmd = "%s -c %s %s %s" %(self.bin, self.ini,self.script, self.args)
         else:
-            cmd = "%s %s " %(self.bin, self.script)
+            cmd = "%s %s %s" %(self.bin, self.script, self.args)
         return cmd
 
 
