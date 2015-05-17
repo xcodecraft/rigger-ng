@@ -10,12 +10,11 @@ from string import Template
 class shell(interface.resource,res_utls):
     """
     !R.shell:
-        script : "/test.sh $_POS"
-        args   : ""
-
-    !R.shell:
         script : "/test.sh "
         args   : ""
+        run    : "start"
+
+    run =  conf | start |  stop
     """
     script = None
     args   = ""
@@ -35,8 +34,7 @@ class shell(interface.resource,res_utls):
             os.environ = copy.copy(self.env_keep)
     def doit(self,context,pos) :
         if self.run == pos :
-            cmd = Template( self.script + " $_POS $ARGS").substitute(
-                    _POS  = pos ,
+            cmd = Template( self.script + "  $ARGS").substitute(
                     ARGS = self.args
                     )
             utls.rg_var.export_env()
@@ -54,13 +52,9 @@ class php(interface.resource,res_utls):
     """
     !R.php:
         ini    : "${PHP_INI}"
-        script : "demo.php $_POS "
-        args   : ""
-
-    !R.php:
-        ini    : "${PHP_INI}"
         script : "demo.php "
         args   : ""
+        run    = "start"
     """
     bin    = "/usr/bin/php"
     ini    = ""
@@ -96,7 +90,6 @@ class php(interface.resource,res_utls):
         cmd = Template("$BIN  $INI " + self.script + "  $ARGS").substitute(
                 BIN  = self.bin,
                 INI  = ini,
-                _POS = pos ,
                 ARGS = self.args
                 )
         utls.rg_var.export_env()
