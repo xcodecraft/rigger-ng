@@ -198,9 +198,12 @@ class using(interface.resource):
     !R.using
       path  : "/usr/local/lib/rigger-ng/php.yaml"
       modul : "php-web"
+      args  : !R.args
+        PHP_INI : "php.ini"
     """
     path  = ""
     modul = ""
+    args  = None
     def _allow(self,context):
         return True
     def _before(self,context):
@@ -211,11 +214,13 @@ class using(interface.resource):
         key            = res_utls.value(self.modul)
         msg            = "load modul %s from '%s' failed! " %(key,self.path)
         self.modul_obj = utls.check.not_none(node.module_find(key), msg)
+        if self.args is not None :
+            self.modul_obj.push(self.args)
+        #     self.args._before(context) ;
         self.modul_obj._before(context)
 
     def _after(self,context):
         self.modul_obj._after(context)
-        # run_struct.pop()
 
     def _start(self,context):
         self.modul_obj._start(context)

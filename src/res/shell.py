@@ -101,3 +101,5 @@ class php(interface.resource,res_utls):
 
     def _stop(self,context) :
         self.doit(context,"stop")
+    def _data(self,context) :
+        self.doit(context,"data")

@@ -10,17 +10,6 @@ from string import *
 import utls.rg_var , utls.check
 
 class mysql_base(interface.resource,res_utls):
-    """
-    !R.mysql:
-        host: "127.0.0.1"
-        sql: "init.sql"
-    """
-    bin      = "/usr/bin/mysql"
-    host     = "localhost"
-    name     = ""
-    user     = ""
-    password = ""
-    sql      = ""
 
     def _allow(self,context) :
         return True

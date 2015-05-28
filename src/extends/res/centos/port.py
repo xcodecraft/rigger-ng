@@ -35,4 +35,15 @@ class nginx_conf(nginx_conf_base):
 
 from shared.mysql import *
 class mysql(mysql_base):
+
+    """
+    !R.mysql:
+        host: "127.0.0.1"
+        sql: "init.sql"
+    """
+    host     = "localhost"
+    name     = ""
+    user     = ""
+    password = ""
+    sql      = ""
     bin        = "/usr/local/mysql/bin/mysql"
