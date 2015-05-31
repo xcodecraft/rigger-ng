@@ -1,0 +1,34 @@
+_mod :
+    - !R.modul
+        _name : "pylon_web"
+        _args : "${PH_TAG},${PH_ENTRY},${PH_INCLUDE}"
+        _res  :
+            - !R.vars
+                tpl_root : "${PRJ_ROOT}/conf/options/"
+                use_root : "${PRJ_ROOT}/conf/used/"
+            - !R.pylon_autoload
+                include  : "${PH_INCLUDE}"
+            - !R.pylon_router
+                include  : "${PH_ENTRY}"
+            - !R.nginx_conf
+                sudo     : true
+                src      : "${USE_ROOT}/${PH_TAG}.ngx.conf"
+                tpl      : "${TPL_ROOT}/${PH_TAG}_ngx.conf"
+            - !R.fpm
+                sudo     : True
+                ini_tpl  : "${TPL_ROOT}/${PH_TAG}_php.ini"
+                conf_tpl : "${TPL_ROOT}/${PH_TAG}_fpm.conf"
+
+    - !R.modul
+        _name : "pylon_php"
+        _args : "${PH_TAG},${PH_INCLUDE}"
+        _res  :
+            - !R.vars
+                tpl_root : "${PRJ_ROOT}/conf/options/"
+                use_root : "${PRJ_ROOT}/conf/used/"
+
+            - !R.file_tpl
+                tpl      : "${TPL_ROOT}/${PH_TAG}_php.ini"
+                dst      : "${USE_ROOT}/${PH_TAG}_php.ini"
+            - !R.pylon_autoload
+                include  : "${PH_INCLUDE}"
