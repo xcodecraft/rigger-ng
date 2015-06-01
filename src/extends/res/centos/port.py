@@ -13,9 +13,9 @@ class fpm_pool(fpm_pool_base):
 class fpm(fpm_base):
     tag      = ""
     bin      = "/usr/local/php/sbin/php-fpm"
-    ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.ini"
+    ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}_php.ini"
     ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
-    conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}.fpm.conf"
+    conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}_fpm.conf"
     conf_tpl = "${PRJ_ROOT}/conf/options/fpm.conf"
     args     = ""
 

@@ -12,7 +12,7 @@ _mod :
                 include  : "${MOD_ENTRY}"
             - !R.nginx_conf
                 sudo     : true
-                src      : "${USE_ROOT}/${MOD_TAG}.ngx.conf"
+                src      : "${USE_ROOT}/${MOD_TAG}_ngx.conf"
                 tpl      : "${TPL_ROOT}/${MOD_TAG}_ngx.conf"
             - !R.fpm
                 sudo     : True
