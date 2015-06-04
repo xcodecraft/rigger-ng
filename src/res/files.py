@@ -1,5 +1,5 @@
 #coding=utf-8
-import  os , string   , logging
+import  os , string   , logging ,re
 import  interface,utls.rg_sh
 
 from utls.rg_io  import rgio ,rg_logger

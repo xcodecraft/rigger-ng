@@ -4,6 +4,7 @@ import interface,utls.rg_var
 import node
 import utls.dbc , utls.check
 import res.node
+import copy
 # from utls.dbc import *
 from utls.rg_io import  rgio , run_struct,rg_logger
 from base import *
@@ -18,8 +19,6 @@ class project(interface.resource,res_utls) :
     name = ""
     env  = 'HOME,USER,PRJ_ROOT'
     def _before(self,context):
-#        import pdb
-#        pdb.set_trace()
         self.root = res_utls.value(self.root)
         self.name = res_utls.value(self.name)
 
@@ -127,7 +126,7 @@ __sys:
         auto_vars.SYS_NAME = self._name
         auto_vars.RUN_PATH = "%s/run/%s" %(context.prj.root,self._name)
 
-        run_path = res.files.path()
+        run_path     = res.files.path()
         run_path.dst = auto_vars.RUN_PATH
 
         self.push(run_path)
@@ -213,10 +212,11 @@ class using(interface.resource):
             node.module_load(self.path)
         key            = res_utls.value(self.modul)
         msg            = "load modul %s from '%s' failed! " %(key,self.path)
-        self.modul_obj = utls.check.not_none(node.module_find(key), msg)
+        module         = utls.check.not_none(node.module_find(key), msg)
+        #需要deepcopy , 避免对module 的使用污染!
+        self.modul_obj = copy.deepcopy(module)
         if self.args is not None :
             self.modul_obj.push(self.args)
-        #     self.args._before(context) ;
         self.modul_obj._before(context)
 
     def _after(self,context):
