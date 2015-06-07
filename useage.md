@@ -24,5 +24,7 @@ cd <you-project>
     rg help
     rg help res
 ```
+[extends/moduls](https://github.com/xcodecraft/rigger-ng/blob/master/src/extends/moduls/readme.md)
+
 
 ## 开发支持
