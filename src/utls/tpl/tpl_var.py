@@ -136,7 +136,7 @@ class layzer_porp(icase_porp):
         return val
 
 
-def parse_assgin(defstr):
+def parse_assign(defstr):
     """x=1,y=2 """
     res={}
     for ass  in defstr.split(','):

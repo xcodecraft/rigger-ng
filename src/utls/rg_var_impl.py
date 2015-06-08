@@ -12,18 +12,18 @@ def unound_break(key,tplstr):
 
 unfound_call= unound_break
 
-class assginer :
+class assigner :
     def __init__(self,tpl,rgvar_gods):
         self.tpl          = tpl
         self.rgvar_gods     = rgvar_gods
         self.unfound_call = unfound_call
-    def assgin_value(self,match):
+    def assign_value(self,match):
         var= str(match.group(1))
         var=var.upper()
         while True:
             try:
                 val  = getattr(self.rgvar_gods,var)
-                rg_logger.info("[assgin] %-15s:%s" %(var,val ))
+                rg_logger.info("[assign] %-15s:%s" %(var,val ))
                 return val
             except interface.var_undefine:
                 rg_logger.error( "undefine %s, in %s" %(var,self.tpl))
@@ -49,7 +49,7 @@ class rgvar_god(utls.pattern.singleton):
         self.impl = combo_porp(porp_proxy(porpobj),self.impl)
 
     def import_str(self,asstr):
-        dict_obj  = parse_assgin(asstr)
+        dict_obj  = parse_assign(asstr)
         self.impl = combo_porp(dict_porp(dict_obj),self.impl)
 
     def export2dict(self,target) :
@@ -80,9 +80,9 @@ class env_exp:
         # tpl     = string.strip()
         tpl     = string
         var_exp = re.compile(r'\$\{(\w+)\}')
-        ass     = assginer(tpl,tplvars)
+        ass     = assigner(tpl,tplvars)
         while var_exp.search(tpl):
-            tpl = var_exp.sub(ass.assgin_value,tpl)
+            tpl = var_exp.sub(ass.assign_value,tpl)
         return tpl
 
     @staticmethod

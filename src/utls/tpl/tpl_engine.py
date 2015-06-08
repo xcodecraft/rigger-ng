@@ -85,7 +85,7 @@ class engine:
         self.re_var             = re.compile('%s\{(\w+)\}' %tpl_conf.var_tag)
 
     def append_vars(self,asstr):
-        dict_obj      = tpl_var.parse_assgin(asstr)
+        dict_obj      = tpl_var.parse_assign(asstr)
         self.tpl_vars = tpl_var.attr_proxy(tpl_var.combo_porp(tpl_var.dict_porp(dict_obj),self.tpl_vars))
 
     def load_conf(self,tplconf):
