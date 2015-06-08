@@ -133,7 +133,7 @@ class path(interface.resource,res_utls):
             else :
                 if not self._checkWrite(v) :
                     if not self.sudo :
-                        raise interface.rigger_exception( "%s ä¸å¯è®¿é®" %(v) )
+                        raise interface.rigger_exception("没有sudo,不能写入 %s" %(v) )
             cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod $CHMOD  $DST; "
             cmd = Template(cmdtpl).substitute(DST=v,CHMOD=self.chmod)
             self.execmd(cmd)
