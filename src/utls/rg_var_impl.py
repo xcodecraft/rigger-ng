@@ -11,19 +11,28 @@ def unound_break(key,tplstr):
     raise  interface.var_undefine("%s not define in [%s]" %(key,tplstr))
 
 unfound_call= unound_break
+assign_unique = dict()
 
 class assigner :
+    def log(self,var,val):
+        if assign_unique.has_key(var)  and assign_unique[var] == val :
+            return
+        assign_unique[var] = val
+        rg_logger.info("[assign] %-15s:%s" %(var,val ))
+
     def __init__(self,tpl,rgvar_gods):
         self.tpl          = tpl
-        self.rgvar_gods     = rgvar_gods
+        self.rgvar_gods   = rgvar_gods
         self.unfound_call = unfound_call
+        self.unique       = dict( )
     def assign_value(self,match):
         var= str(match.group(1))
         var=var.upper()
         while True:
             try:
                 val  = getattr(self.rgvar_gods,var)
-                rg_logger.info("[assign] %-15s:%s" %(var,val ))
+                self.log(var,val)
+                #rg_logger.info("[assign] %-15s:%s" %(var,val ))
                 return val
             except interface.var_undefine:
                 rg_logger.error( "undefine %s, in %s" %(var,self.tpl))

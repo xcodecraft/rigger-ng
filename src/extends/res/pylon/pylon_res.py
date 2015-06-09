@@ -119,7 +119,6 @@ class pylon_router(interface.resource,res_utls):
         self.out_idx = os.path.join(self.dst , "_router.idx")
 
     def _config(self,context):
-
         sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
         cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
         cmd     = Template(cmdtpl).substitute(SRC = self.include,DST = self.out_idx)

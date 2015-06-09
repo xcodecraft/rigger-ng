@@ -26,21 +26,29 @@ class dev_cmd_base :
 
 
 class ci_cmd(dev_cmd_base) :
+    def _config(self,argv,rargs):
+        self.message = ""
+        if argv.has_key('-m') :
+            self.message = argv['-m']
     def _execute(self,rargs):
         self.loadconf(rargs)
         conf.version.ins().update_ver()
         conf.version.ins().save()
         ver =  conf.version.ins().info()
-        conf.git.ins().commit(ver,rargs.dev.message)
+        conf.git.ins().commit(ver,self.message)
         conf.git.ins().push()
 
 class rc_cmd(dev_cmd_base) :
+    def _config(self,argv,rargs):
+        self.message = ""
+        if argv.has_key('-m') :
+            self.message = argv['-m']
     def _execute(self,rargs):
         self.loadconf(rargs)
         conf.version.ins().update_ver()
         conf.version.ins().save()
         ver =  conf.version.ins().info()
-        conf.git.ins().commit(ver,rargs.dev.message)
+        conf.git.ins().commit(ver,self.message)
         conf.git.ins().push()
         conf.git.ins().set_tag(ver)
 
