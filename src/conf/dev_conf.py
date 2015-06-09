@@ -173,7 +173,7 @@ class git (interface.rg_conf.base,singleton) :
         self.execmd(cmd,True)
     def commit(self,ver,message):
         cmd = """git commit -a -m "$MSG" """
-        cimsg = "[ " + ver  + " ]"
+        cimsg = "[" + ver  + "]"
         if message is not None:
             cimsg  = cimsg + " " +  message
         cmd = Template(cmd).substitute(MSG=cimsg)
