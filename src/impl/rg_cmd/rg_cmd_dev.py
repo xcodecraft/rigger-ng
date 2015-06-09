@@ -30,6 +30,9 @@ class ci_cmd(dev_cmd_base) :
         self.message = ""
         if argv.has_key('-m') :
             self.message = argv['-m']
+        print (argv)
+        print (rargs)
+        print (self.message)
     def _execute(self,rargs):
         self.loadconf(rargs)
         conf.version.ins().update_ver()

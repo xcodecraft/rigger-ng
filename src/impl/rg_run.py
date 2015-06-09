@@ -4,6 +4,8 @@ import interface, rg_args, rg_ioc
 from utls.rg_io import rg_logger
 
 def run_cmd(cmdstr,yaml_conf=None) :
+    # import pdb
+    # pdb.set_trace()
     rargs  = rg_args.run_args()
     parser = rg_args.rarg_parser()
     parser.parse(cmdstr.split(' '))
