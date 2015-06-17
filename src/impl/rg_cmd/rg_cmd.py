@@ -22,6 +22,27 @@ class init_cmd(rg_cmd) :
         tpl = rargs.rg.root + "/rg_tpl"
         utls.tpl.tplworker().execute(tpl,dst)
 
+class tpl_cmd(rg_cmd) :
+    def _config(self,argv,rargs):
+        dst = ""
+        tpl = ""
+        if argv.has_key('-t') :
+            tpl  = argv['-t']
+        if argv.has_key('-o') :
+            dst  = argv['-o']
+        if len(dst) == 0 :
+            print("rg tpl -t <template> -o <dst>")
+            raise interface.rigger_exception("dst: %s is empty" %dst)
+        if os.path.exists(dst) :
+            raise interface.rigger_exception("dst: %s have exists" %dst)
+        if not os.path.exists(tpl) :
+            raise interface.rigger_exception("tpl: %s not exists" %tpl)
+        self.dst = dst
+        self.tpl = tpl
+    def _execute(self,rargs):
+        import utls.tpl
+        utls.tpl.tplworker().execute(self.tpl,self.dst)
+
 class help_cmd(rg_cmd,cmdtag_rg):
     def _execute(self,rargs):
         conf.version.file=os.path.join(rargs.rg.root ,"version.txt" )
