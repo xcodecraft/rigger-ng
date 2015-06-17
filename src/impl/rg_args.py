@@ -85,8 +85,12 @@ class run_args :
         rargs.clear()
         return rargs
     def save(self,data_file):
-        with open(data_file,'w')  as f:
-            pickle.dump(self, f)
+        dirname = os.path.dirname(data_file)
+        if os.path.exists(dirname) :
+            with open(data_file,'w')  as f:
+                pickle.dump(self, f)
+        else :
+            print("ignore save args")
 
     def parse_update(self,parser) :
         argv          = parser.argv
