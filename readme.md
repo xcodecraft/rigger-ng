@@ -38,4 +38,4 @@
 ## extends
 
 ### [res](src/extends/res/readme.md)
-### [module](src/extends/modules/readme.md)
+### [module](src/extends/moduls/readme.md)
