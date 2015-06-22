@@ -61,10 +61,6 @@ __sys:
 ## res
 ## impl
 
-## extends
-
-### [res](src/extends/res/readme.md)
-### [module](src/extends/modules/readm.md)
 
 
 
