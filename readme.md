@@ -22,17 +22,18 @@
 ./rgdemo check -s test -e dev
 ```
 
-#个人使用:
+# [依赖](doc/depends.md)
+
+#使用:
 
 ``` shell
 
  mkdir ~/devspace ; cd ~/devspace/
  git clone git@github.com:xcodecraft/rigger-ng.git
- source  ./rigger-gn/myrg.bashrc
+ source  ./rigger-ng/myrg.bashrc
 
  rg help
 ```
-# 团队使用:
 
 ## [使用指南] (doc/use_guide.md)
 ## extends
