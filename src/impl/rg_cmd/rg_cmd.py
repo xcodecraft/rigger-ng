@@ -68,6 +68,7 @@ class help_cmd(rg_cmd,cmdtag_rg):
 
                 else:
                     impl.rg_ioc.list_res()
+
         #TODO :
             # elif subcmd == "remote":
             #     if len(sys.argv) == 4:

@@ -154,9 +154,11 @@ class reload_cmd(prj_cmd_base,cmdtag_prj):
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x,y : x._reload(y))
 
+def allow_res(c) :
+    return True
 
 class php_cmd(prj_cmd_base,cmdtag_prj):
-    """execut php eg: rg php -f 'xxx.php arg1 arg2' -i <php.ini> -b <php.bin>  """
+    """rg php -f 'xxx.php' -i <php.ini> -b <php.bin>  """
     def _config(self,argv,rargs):
         self.ini = None
         self.bin = None
@@ -179,11 +181,16 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
         if self.ini is not None :
             phpres.ini    = self.ini
         execmd        = lambda x,c :  x._start(c)
-        interface.resource.allow_res = 'php'
+        phpres._allow = allow_res
+        interface.resource.allow_res = 'no'
         self.runcmd(rargs,execmd,phpres)
 
+
 class shell_cmd(prj_cmd_base,cmdtag_prj):
-    """execut shell eg: rg shell -f xxx.sh  -u 'arg1 arg2' """
+    """
+        rg shell -f xxx.sh  '
+        rg shell -f xxx.sh  -u 'arg1 arg2'
+    """
     def _config(self,argv,rargs):
         prj_cmd_base._config(self,argv,rargs)
         self.args = None
@@ -200,7 +207,8 @@ class shell_cmd(prj_cmd_base,cmdtag_prj):
         if self.args is not None :
             shres.args = self.args
         execmd       = lambda x,c :  x._start(c)
-        interface.resource.allow_res = 'shell'
+        shres._allow = allow_res
+        interface.resource.allow_res = 'no'
         self.runcmd(rargs,execmd,shres)
     # def _usage(self):
     #     rgio.prompt('usage: shell -f <script>')

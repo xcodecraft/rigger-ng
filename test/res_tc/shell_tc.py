@@ -14,3 +14,20 @@ class shell_tc(base.tc_tools.rigger_tc):
         # with   mock :
         impl.rg_run.run_cmd("conf,start -s shell -e dev,base",self.conf)
 
+    def test_rg_shell(self) :
+        mock = base.tc_tools.res_mock()
+        shfile =  utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/demo.sh")
+        with   mock :
+            impl.rg_run.run_cmd("shell -s shell -e dev,base -f %s -u 'x' " %(shfile),self.conf)
+        expect = """${PRJ_ROOT}/test/res_tc/demo.sh  'x'"""
+        self.assertMacroEqual( expect, mock.cmds)
+
+
+    def test_rg_php(self) :
+        mock = base.tc_tools.res_mock()
+        shfile =  utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/demo.php")
+        with   mock :
+            impl.rg_run.run_cmd("php -s php -e dev,base -f %s " %(shfile),self.conf)
+        expect = """/usr/bin/php   -c php.ini ${PRJ_ROOT}/test/res_tc/demo.php """
+        # print mock.cmds
+        self.assertMacroEqual( expect, mock.cmds)

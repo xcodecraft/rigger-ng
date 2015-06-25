@@ -27,3 +27,10 @@ _sys:
                     Y  : "3"
             - !R.shell
                 script : "${PRJ_ROOT}/test/res_tc/shell_tc.sh"
+
+    -  !R.system
+        _name: "php"
+        _res:
+            - !R.vars
+                    PHP_INI : "php.ini"
+                    PHP_BIN : "/usr/bin/php"
