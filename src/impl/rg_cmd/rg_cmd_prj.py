@@ -181,6 +181,30 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
         execmd        = lambda x,c :  x._start(c)
         interface.resource.allow_res = 'php'
         self.runcmd(rargs,execmd,phpres)
+
+class shell_cmd(prj_cmd_base,cmdtag_prj):
+    """execut shell eg: rg shell -f xxx.sh  -u 'arg1 arg2' """
+    def _config(self,argv,rargs):
+        prj_cmd_base._config(self,argv,rargs)
+        self.args = None
+        for o, a in argv.items():
+            if o == "-f":
+                rargs.script = a
+            if o == "-u":
+                self.args = a
+        if  not os.path.exists(rargs.script)  :
+            raise error.rigger_exception("script not exists ,%s " %(rargs.script))
+    def _execute(self,rargs):
+        shres        = res.shell()
+        shres.script = rargs.script
+        if self.args is not None :
+            shres.args = self.args
+        execmd       = lambda x,c :  x._start(c)
+        interface.resource.allow_res = 'shell'
+        self.runcmd(rargs,execmd,shres)
+    # def _usage(self):
+    #     rgio.prompt('usage: shell -f <script>')
+    #     rgio.prompt('eg: rg shell -f "test/test_run.sh -a -b -c "')
 #
 # class phpunit_cmd(run_base,resconf_able, cmdtag_run):
 #     """execut php eg: rg phpunit -f '<your.xml> | <test path>'  """
@@ -197,21 +221,3 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
 #         execmd = lambda x,c :  call_shell(x,c)
 #         self.runner.run_cmd(rargs,execmd,punit)
 #
-# class shell_cmd(run_base,resconf_able, cmdtag_run):
-#     """execut shell eg: rg shell -f 'xxx.sh arg1 arg2' """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         if rargs.script is None or len(rargs.script)  == 0 :
-#             raise error.rigger_exception(" need -f  argu")
-#         dxshell = resouce.dx_shell(vars(),rargs.script.lstrip())
-#         execmd = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,dxshell)
-#     def _usage(self):
-#         rgio.prompt('usage: shell -f <script>')
-#         rgio.prompt('eg: rg shell -f "test/test_run.sh -a -b -c "')
