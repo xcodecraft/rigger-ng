@@ -34,20 +34,18 @@ def main():
     setting_debug(parser.argv)
 
     opts,args = getopt.getopt(sys.argv[1:],"d:s:e:c:")
-    rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
+    # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
-        rargs  = impl.rg_args.run_args.load(rars_file)
+        rargs  = impl.rg_args.run_args.load()
         rargs.parse_update(parser)
         impl.rg_run.run_rigger(rargs,parser.argv)
-        rargs.save(rars_file)
     else:
         try :
             #import pdb
             #pdb.set_trace() ;
-            rargs  = impl.rg_args.run_args.load(rars_file)
+            rargs  = impl.rg_args.run_args.load()
             rargs.parse_update(parser)
             impl.rg_run.run_rigger(rargs,parser.argv)
-            rargs.save(rars_file)
 
         except interface.user_break as e:
             rgio.error(e)

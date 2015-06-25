@@ -28,6 +28,8 @@ class project(interface.resource,res_utls) :
         prjdata['PRJ_NAME'] = self.name
         utls.rg_var.import_dict(prjdata)
         safe_env_porp.ins().update(self.env.split(','))
+    def _allow(self,context):
+        return True
 
 
 
@@ -116,6 +118,9 @@ __sys:
                 value : "${TEST_CASE}"
     """
     _name = ""
+
+    def _allow(self,context):
+        return True
     def _before(self,context):
         rg_logger.info("system:%s _before " %(self._name))
         utls.rg_var.keep()
@@ -153,6 +158,8 @@ class prj_main(interface.control_box, interface.base) :
     """
     """
     _name = "main"
+    def _allow(self,context):
+        return True
     def _info(self,context):
         rgio.struct_out("rg: %s" %(self._name))
         interface.control_box._info(self,context)

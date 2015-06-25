@@ -344,55 +344,6 @@ class help_cmd(rg_cmd,cmdtag_rg):
 #
 #
 #
-# class php_cmd(run_base,resconf_able,cmdtag_run):
-#     """execut php eg: rg php -f 'xxx.php arg1 arg2'  """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         if  rargs.script is None or len(rargs.script)  == 0 :
-#             raise error.rigger_exception(" need -f  argu")
-#         dxphp   = resouce.dx_php(rargs.script.lstrip())
-#         execmd  = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,dxphp)
-#
-# class phpunit_cmd(run_base,resconf_able, cmdtag_run):
-#     """execut php eg: rg phpunit -f '<your.xml> | <test path>'  """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         rargs.script = ""
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         punit = resouce.phpunit(rargs.script.lstrip())
-#         execmd = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,punit)
-#
-# class shell_cmd(run_base,resconf_able, cmdtag_run):
-#     """execut shell eg: rg shell -f 'xxx.sh arg1 arg2' """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         if rargs.script is None or len(rargs.script)  == 0 :
-#             raise error.rigger_exception(" need -f  argu")
-#         dxshell = resouce.dx_shell(vars(),rargs.script.lstrip())
-#         execmd = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,dxshell)
-#     def _usage(self):
-#         rgio.prompt('usage: shell -f <script>')
-#         rgio.prompt('eg: rg shell -f "test/test_run.sh -a -b -c "')
 #
 # class tpl_cmd(dev_cmd,cmdtag_rg):
 #     """

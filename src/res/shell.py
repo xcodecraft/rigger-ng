@@ -56,8 +56,8 @@ class php(interface.resource,res_utls):
         args   : ""
         run    = "start"
     """
-    bin    = "/usr/bin/php"
-    ini    = ""
+    bin    = "${PHP_BIN}"
+    ini    = "${PHP_INI}"
     script = None
     args   = ""
     run    = "start"

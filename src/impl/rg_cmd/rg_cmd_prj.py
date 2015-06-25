@@ -5,6 +5,7 @@ import interface
 import utls.rg_var , utls.dbc , utls.check
 import res
 import res.node
+import os
 
 class prj_cmd_base :
     def _config(self,argv,rargs):
@@ -28,7 +29,7 @@ class prj_cmd_base :
         utls.check.must_true(data.has_key('_sys'),"project no _sys data")
         return True
 
-    def runcmd(self,rargs,fun) :
+    def runcmd(self,rargs,fun,extra=None) :
         import utls.rg_yaml,copy
         utls.dbc.must_exists(rargs.prj.conf)
         rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
@@ -57,13 +58,17 @@ class prj_cmd_base :
         context = interface.run_context()
         # interface.control_call(main,fun,context)
 
+        extra_used = False
         if len(self.sys) > 0 :
             for sys in self.sys :
                 for sysobj in   sys_data :
                     res.node.sys_regist(sysobj)
                     if  sysobj._name ==  sys :
+                        # 传入的外部res
+                        if not extra_used and  extra is not None :
+                            sysobj.append(extra)
+                            extra_used = True
                         main.append(sysobj)
-                    # interface.control_call(sysobj,fun,context)
 
         interface.control_call(main,fun,context,"unknow")
 
@@ -83,6 +88,8 @@ class conf_cmd(prj_cmd_base,cmdtag_prj):
     """
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x , y : x._config(y))
+        # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
+        rargs.save()
 
 class reconf_cmd(conf_cmd):
     """
@@ -148,21 +155,32 @@ class reload_cmd(prj_cmd_base,cmdtag_prj):
         self.runcmd(rargs,lambda x,y : x._reload(y))
 
 
-# class php_cmd(run_base,resconf_able,cmdtag_run):
-#     """execut php eg: rg php -f 'xxx.php arg1 arg2'  """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         if  rargs.script is None or len(rargs.script)  == 0 :
-#             raise error.rigger_exception(" need -f  argu")
-#         dxphp   = resouce.dx_php(rargs.script.lstrip())
-#         execmd  = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,dxphp)
+class php_cmd(prj_cmd_base,cmdtag_prj):
+    """execut php eg: rg php -f 'xxx.php arg1 arg2' -i <php.ini> -b <php.bin>  """
+    def _config(self,argv,rargs):
+        self.ini = None
+        self.bin = None
+        prj_cmd_base._config(self,argv,rargs)
+        for o, a in argv.items():
+            if o == "-f":
+                rargs.script = a
+            if o == "-i":
+                self.ini = a
+            if o == "-b":
+                self.bin = a
+
+        if  not os.path.exists(rargs.script)  :
+            raise error.rigger_exception("script not exists ,%s " %(rargs.script))
+    def _execute(self,rargs):
+        phpres        = res.php()
+        phpres.script = rargs.script
+        if self.bin is not None :
+            phpres.bin    = self.bin
+        if self.ini is not None :
+            phpres.ini    = self.ini
+        execmd        = lambda x,c :  x._start(c)
+        interface.resource.allow_res = 'php'
+        self.runcmd(rargs,execmd,phpres)
 #
 # class phpunit_cmd(run_base,resconf_able, cmdtag_run):
 #     """execut php eg: rg phpunit -f '<your.xml> | <test path>'  """

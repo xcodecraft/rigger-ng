@@ -113,9 +113,9 @@ class control_box(controlable):
 class resource (controlable,rg_conf.base):
     allow_res   = "ALL"
     def _allow(self,context):
-        allowd =  self.allow_res == "ALL"  or self.allow_res == self.clsname()
-        if allowd:
-            rg_logger.debug( "allowd resource %s ,current resouce is %s " %(self.allow_res,self._resname()))
+        allowd =  self.allow_res == "ALL"  or self.allow_res == self.__class__.__name__
+        if not allowd:
+            rg_logger.debug( "not allowd resource %s " %(self._resname()))
         return  allowd
 
     def _check_print(self,is_true,msg):

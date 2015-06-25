@@ -29,10 +29,11 @@ class args_tc(base.tc_tools.rigger_tc):
         save_file = value_of("${HOME}/devspace/rigger-ng/test/data/rigger.data")
 
         rargs          = run_args()
+        rargs.rg.save_path = save_file
         rargs.prj.env  = "diy"
         rargs.prj.sys  = "api,test"
         rargs.prj.cmds = "conf,start"
-        rargs.save(save_file)
+        rargs.save()
 
         loaded  = run_args.load(save_file)
         self.assertEqual(loaded.prj.env  , rargs.prj.env)

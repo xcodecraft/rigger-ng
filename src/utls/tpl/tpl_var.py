@@ -59,8 +59,8 @@ class icase_porp(porp) :
 
 class empty_porp(porp):
     def get(self,name):
-        import pdb
-        pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         raise interface.var_undefine("undefined value [%s]!" %name)
     def export(self,target) :
         pass

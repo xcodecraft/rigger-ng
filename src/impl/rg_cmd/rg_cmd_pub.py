@@ -5,8 +5,6 @@
 #         self.pub.init(self.publish,self.svrs)
 #         pass
 #
-#
-#
 # class pub_cmd(publish_base,cmdtag_pub):
 #     """
 #     åå¸é¡¹ç® åæ° -t -l -h:
@@ -17,6 +15,8 @@
 #     def _execute(self,cmd,rargs):
 #         publish_base._execute(self,cmd,rargs)
 #         self.pub.pub(self.project)
+#
+#
 #
 # class patch_cmd(publish_base,cmdtag_pub):
 #     """

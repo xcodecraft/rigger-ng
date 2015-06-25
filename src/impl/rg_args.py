@@ -15,6 +15,7 @@ class rg_args :
         self.root          = os.path.dirname(os.path.realpath(__file__))
         self.root          = os.path.dirname(self.root)
         self.save          = True
+        self.save_path     = os.getcwd() + "/_rg/.rigger-ng-v1.data"
 
     def clear(self):
         self.save          = True
@@ -75,8 +76,11 @@ class run_args :
         return cmdarr
 
     @staticmethod
-    def load(data_file):
+    def load(dfile=None):
         rargs     = run_args()
+        data_file = dfile
+        if data_file is None :
+            data_file = rargs.rg.save_path
         if os.path.exists(data_file):
             try:
                 with open(data_file,'r')  as f:
@@ -86,7 +90,8 @@ class run_args :
 
         rargs.clear()
         return rargs
-    def save(self,data_file):
+    def save(self):
+        data_file = self.rg.save_path
         if not self.rg.save :
             return
         dirname = os.path.dirname(data_file)
@@ -110,9 +115,6 @@ class run_args :
         if argv.has_key('-s'):
             self.prj.sys = argv['-s']
 
-        if argv.has_key('-k'):
-            if argv['-k'] == "n" :
-                self.rg.save = False
 
     def __str__(self):
         info = str(self.prj)
@@ -120,7 +122,7 @@ class run_args :
     @staticmethod
     def help():
         # rgio.prompt("rg  <dev cmd>   [-m <message>] ")
-        rgio.prompt("rg  <svc cmd> [-e <env>] [-s <system>] [-c <run.yaml>] [-k n]")
+        rgio.prompt("rg  <svc cmd> [-e <env>] [-s <system>] [-c <run.yaml>] ")
         # rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
         # rgio.prompt("rg  <pub cmd>   [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         # rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")

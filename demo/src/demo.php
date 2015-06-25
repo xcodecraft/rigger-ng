@@ -8,3 +8,4 @@ case  '_start' :
         break;
 
 }
+echo "demo.php called \n" ;
