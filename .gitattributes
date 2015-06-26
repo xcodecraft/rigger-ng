@@ -1,6 +1,6 @@
-conf export-ignore
-_prj export-ignore
-_rg export-ignore
-simple_setup.sh export-ignore
-test export-ignore
-demo export-ignore
+/conf export-ignore
+/_prj export-ignore
+/_rg export-ignore
+/simple_setup.sh export-ignore
+/test export-ignore
+/demo export-ignore
