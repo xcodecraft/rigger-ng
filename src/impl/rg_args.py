@@ -15,7 +15,7 @@ class rg_args :
         self.root          = os.path.dirname(os.path.realpath(__file__))
         self.root          = os.path.dirname(self.root)
         self.save          = True
-        self.save_path     = os.getcwd() + "/_rg/.rigger-ng-v1.data"
+        self.save_path     = os.getcwd() + "/_rg/.rigger-ng-v2.data"
 
     def clear(self):
         self.save          = True

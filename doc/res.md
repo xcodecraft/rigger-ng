@@ -48,3 +48,4 @@ _mod:
     path          : "${PRJ_ROOT}/_rg/modul.yaml"
     modul         : "m1"
 ```
+
