@@ -1,8 +1,10 @@
+#coding=utf-8
 import logging
 import interface
 import time
 import random
 from shared.fpm import *
+from shared.daemon import *
 
 class fpm_pool(fpm_pool_base):
     bin  = "/sbin/service php5-fpm"
@@ -47,3 +49,40 @@ class mysql(mysql_base):
     password = ""
     sql      = ""
     bin        = "/usr/local/mysql/bin/mysql"
+
+class daemon(daemon_base):
+    """
+    示例:
+    !R.daemon:
+        script : "$${PRJ_ROOT}/src/apps/console/work.sh"
+    """
+    script   = ""
+    daemon   = "True"
+    umask    = "022"
+    forever  = "True"
+    logpath  = "${RUN_PATH}"
+    confpath = "${PRJ_ROOT}/conf/used"
+    runpath  = "${RUN_PATH}"
+    worker   = 1
+    tag      = ""
+    zdaemon  = "/usr/local/python/bin/zdaemon"
+
+class daemon_php(daemon_base_php):
+    """
+    示例:
+    !R.daemon_php :
+        script : "$${PRJ_ROOT}/src/apps/console/work.php"
+        php_ini: "$${PRJ_ROOT}/conf/used/php.ini"
+    """
+    confpath = "${PRJ_ROOT}/conf/used"
+    php_ini  = "${PHP_INI}"
+    php_bin  = "${PHP_BIN}"
+    script   = ""
+    daemon   = "True"
+    umask    = "022"
+    forever  = "True"
+    logpath  = "${RUN_PATH}"
+    runpath  = "${RUN_PATH}"
+    zdaemon  = "/usr/local/python/bin/zdaemon"
+    worker   = 1
+    tag      = ""

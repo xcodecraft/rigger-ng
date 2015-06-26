@@ -37,12 +37,23 @@ class controlable :
     def _info(self,context):
         return ""
 
+class exception_monitor:
+    def __init__(self,res):
+        self.res = res
+    def __enter__(self):
+        pass
+    def __exit__(self,exc_type,exc_value,traceback):
+        if exc_type is not None :
+            self.res.echo( utls.rg_io.rgio.simple_out)
+            # print(exc_type)
+            # print(exc_value)
 
 def control_call(res,fun,context,tag) :
 
     with utls.rg_io.scope_iotag(res.__class__.__name__ ,tag) :
         if res._allow(context) :
             with utls.rg_sh.scope_sudo(res.sudo) :
+                with exception_monitor(res) :
                     utls.rg_io.run_struct.push( res.__class__.__name__)
                     res._before(context)
                     fun(res,context)
