@@ -78,3 +78,12 @@ _sys:
             - !R.daemon_php
                 script   : "${PRJ_ROOT}/src/daemon.php"
                 tag      : "php"
+    - !R.system
+        _name : "beanstalk"
+        _res  :
+            - !R.path
+                dst  : "/data/${PRJ_NAME}"
+                chmod : "a+w"
+                sudo : True
+            - !R.beanstalkd
+                port : 11300

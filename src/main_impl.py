@@ -1,6 +1,7 @@
 #!/usr/bin/pylon.27
 import sys ,  os ,logging,getopt ,setting
 import interface
+import yaml
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
@@ -47,6 +48,8 @@ def main():
             rargs.parse_update(parser)
             impl.rg_run.run_rigger(rargs,parser.argv)
 
+        except yaml.constructor.ConstructorError as e :
+            rgio.error(e)
         except interface.user_break as e:
             rgio.error(e)
         except interface.badargs_exception  as e :

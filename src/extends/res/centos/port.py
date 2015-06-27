@@ -5,6 +5,7 @@ import time
 import random
 from shared.fpm import *
 from shared.daemon import *
+from shared.basesvc import *
 
 class fpm_pool(fpm_pool_base):
     bin  = "/sbin/service php5-fpm"
@@ -86,3 +87,18 @@ class daemon_php(daemon_base_php):
     zdaemon  = "/usr/local/python/bin/zdaemon"
     worker   = 1
     tag      = ""
+
+class beanstalkd (beanstalkd_shared):
+    port       = "11300"
+    ip         = "0.0.0.0"
+    verbosity  = False
+    daemon     = "True"
+    umask      = "022"
+    forever    = "True"
+    logpath    = "${RUN_PATH}/"
+    binlog     = "/data/${PRJ_NAME}"
+    runpath    = "${RUN_PATH}"
+    beanstalkd = "/usr/local/beanstalkd/bin/beanstalkd"
+    zdaemon    = "/usr/local/python/bin/zdaemon"
+    confpath   = "${PRJ_ROOT}/conf/used"
+
