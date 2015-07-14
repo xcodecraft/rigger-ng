@@ -276,14 +276,23 @@ class intertpl(interface.resource,res_utls):
     def _depend(self,m,context):
         m._check_writeable(self.dst)
 
+# class tpl_builder:
+#     @staticmethod
+#     def build(tplfile,dstfile):
+#         tpl=open(tplfile, 'r')
+#         dst=open(dstfile, 'w')
+#         for line in tpl:
+#             data= utls.rg_var.value_of(line)
+#             dst.write(data)
+
 class tpl_builder:
     @staticmethod
     def build(tplfile,dstfile):
-        tpl=open(tplfile, 'r')
-        dst=open(dstfile, 'w')
-        for line in tpl:
-            data= utls.rg_var.value_of(line)
-            dst.write(data)
+        with open(tplfile, 'r') as tpl :
+            with open(dstfile, 'w') as dst :
+                for line in tpl:
+                    data= utls.rg_var.value_of(line)
+                    dst.write(data)
 
 class file_tpl(interface.resource,res_utls):
     """

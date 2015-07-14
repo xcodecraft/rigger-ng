@@ -65,11 +65,11 @@ class remote_op:
 class tpl_builder:
     @staticmethod
     def build(tplfile,dstfile):
-        tpl=open(tplfile, 'r')
-        dst=open(dstfile, 'w')
-        for line in tpl:
-            data= env_exp.value(line)
-            dst.write(data)
+        with open(tplfile, 'r') as tpl :
+            with open(dstfile, 'w') as dst :
+                for line in tpl:
+                    data= env_exp.value(line)
+                    dst.write(data)
 
 
 

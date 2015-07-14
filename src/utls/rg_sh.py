@@ -55,7 +55,8 @@ class shexec:
     @staticmethod
     def execmd_impl(cmd,check=True, okcode= [0] ):
         # cmd_txt =  setting.tmp_file("sh")
-        cmd_txt = "/tmp/rigger-ng.cmd"
+        pid     = os.getpid()
+        cmd_txt = "/tmp/rigger-ng_%s.cmd" %(pid)
         cmd     = re.sub(r'/bin/php ' ,'/bin/php  -d error_reporting="E_ALL&~E_NOTICE" ',cmd)
         if setting.debug :
             rgio.simple_out(cmd)
