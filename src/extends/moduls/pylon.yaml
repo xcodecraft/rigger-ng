@@ -16,6 +16,7 @@ _mod :
                 tpl      : "${TPL_ROOT}/${MOD_TAG}_ngx.conf"
             - !R.fpm
                 sudo     : True
+                bin      : "/usr/local/php-5.6/sbin/php-fpm"
                 ini_tpl  : "${TPL_ROOT}/${MOD_TAG}_php.ini"
                 conf_tpl : "${TPL_ROOT}/${MOD_TAG}_fpm.conf"
 

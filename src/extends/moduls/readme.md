@@ -4,6 +4,7 @@
 * MOD_TAG    TAG
 * MOD_ENTRY  入口，router入口目录
 * MOD_INCLUDE  需要的PHP include
+* php: /usr/local/php-5.6
 
 示例
 ```
