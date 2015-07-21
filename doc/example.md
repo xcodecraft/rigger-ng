@@ -27,3 +27,23 @@
               - !R.shell
                   script : "${PRJ_ROOT}/src/init/env_init.sh"
 ```
+
+
+## 测试系统 
+``` yaml
+      -  !R.system
+              _name : "test"
+              _res:
+                  - !R.vars
+                      MODULES      : "${PRJ_ROOT}/src/logic:${PRJ_ROOT}/test/:${PRJ_ROOT}/conf/:${SDK_PATH}"
+                  - !R.file_tpl
+                      tpl : "${PRJ_ROOT}/conf/options/console_php.ini"
+                      dst : "${PRJ_ROOT}/conf/used/console_php.ini"
+                  - !R.pylon_autoload
+                      include : "${MODULES}"
+                  - !R.php
+                      bin    : "/usr/local/php-5.6/bin/php"
+                      ini    : "${PRJ_ROOT}/conf/used/console_php.ini"
+                      script : "/usr/local/php/bin/phpunit"
+                      args   : "--configuration ${PRJ_ROOT}/test/phpunit.xml"
+```
