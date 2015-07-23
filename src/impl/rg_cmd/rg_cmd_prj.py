@@ -160,8 +160,9 @@ def allow_res(c) :
 class php_cmd(prj_cmd_base,cmdtag_prj):
     """rg php -f 'xxx.php' -i <php.ini> -b <php.bin>  """
     def _config(self,argv,rargs):
-        self.ini = None
-        self.bin = None
+        self.ini  = None
+        self.bin  = None
+        self.args = ""
         prj_cmd_base._config(self,argv,rargs)
         for o, a in argv.items():
             if o == "-f":
@@ -170,12 +171,15 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
                 self.ini = a
             if o == "-b":
                 self.bin = a
+            if o == "-a" : 
+                self.args = a 
 
         if  not os.path.exists(rargs.script)  :
             raise error.rigger_exception("script not exists ,%s " %(rargs.script))
     def _execute(self,rargs):
         phpres        = res.php()
         phpres.script = rargs.script
+        phpres.args   = self.args 
         if self.bin is not None :
             phpres.bin    = self.bin
         if self.ini is not None :
