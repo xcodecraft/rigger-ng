@@ -20,28 +20,29 @@ class fpm_pool_base(interface.control_box,interface.base):
     # tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
     def _before(self,context):
-        self.bin      = res_utls.value(self.bin)
-        self.name     = res_utls.value(self.name)
-        self.dst      = res_utls.value(self.dst)
-        self.src      = res_utls.value(self.src)
-        self.tpl      = res_utls.value(self.tpl)
+        with res_context(self.__class__.__name__) :
+            self.bin      = res_utls.value(self.bin)
+            self.name     = res_utls.value(self.name)
+            self.dst      = res_utls.value(self.dst)
+            self.src      = res_utls.value(self.src)
+            self.tpl      = res_utls.value(self.tpl)
 
-        tpl_res       = res.file_tpl()
-        tpl_res.sudo  = self.sudo
-        tpl_res.tpl   = self.tpl
-        tpl_res.dst   = self.src
-        self.append(tpl_res)
+            tpl_res       = res.file_tpl()
+            tpl_res.sudo  = self.sudo
+            tpl_res.tpl   = self.tpl
+            tpl_res.dst   = self.src
+            self.append(tpl_res)
 
-        link_res      = res.link()
-        link_res.sudo = self.sudo
-        link_res.dst  = self.dst
-        link_res.src  = self.src
-        self.append(link_res)
+            link_res      = res.link()
+            link_res.sudo = self.sudo
+            link_res.dst  = self.dst
+            link_res.src  = self.src
+            self.append(link_res)
 
-        sc            = service_ctrol(self.bin)
-        sc.sudo       = self.sudo
-        self.append(sc)
-        interface.control_box._before(self,context)
+            sc            = service_ctrol(self.bin)
+            sc.sudo       = self.sudo
+            self.append(sc)
+            interface.control_box._before(self,context)
 
     def _check(self,context):
         self._check_print(os.path.exists(self.dst),self.dst)
@@ -59,13 +60,14 @@ class fpm_ctrl(interface.resource,res_utls):
     """
 
     def _before(self,context):
-        self.bin  = res_utls.value(self.bin)
-        self.tag  = res_utls.value(self.tag)
-        self.ini  = res_utls.value(self.ini)
-        self.conf = res_utls.value(self.conf)
-        self.args = res_utls.value(self.args)
-        self.env  = res_utls.value("${RUN_PATH}/fpm_%s.env" %self.tag)
-        self.pid  = res_utls.value("${RUN_PATH}/fpm_%s.pid" %self.tag)
+        with res_context(self.__class__.__name__) :
+            self.bin  = res_utls.value(self.bin)
+            self.tag  = res_utls.value(self.tag)
+            self.ini  = res_utls.value(self.ini)
+            self.conf = res_utls.value(self.conf)
+            self.args = res_utls.value(self.args)
+            self.env  = res_utls.value("${RUN_PATH}/fpm_%s.env" %self.tag)
+            self.pid  = res_utls.value("${RUN_PATH}/fpm_%s.pid" %self.tag)
 
     def _config(self,context):
         self.export_env(context)
@@ -111,27 +113,27 @@ class fpm_base(interface.control_box,interface.base):
     # args     = "-D"
 
     def _before(self,context):
+        with res_context(self.__class__.__name__) :
+            tpl_ini       = res.file_tpl()
+            tpl_ini.sudo  = self.sudo
+            tpl_ini.tpl   = res_utls.value(self.ini_tpl)
+            tpl_ini.dst   = res_utls.value(self.ini)
+            self.append(tpl_ini)
 
-        tpl_ini       = res.file_tpl()
-        tpl_ini.sudo  = self.sudo
-        tpl_ini.tpl   = res_utls.value(self.ini_tpl)
-        tpl_ini.dst   = res_utls.value(self.ini)
-        self.append(tpl_ini)
+            tpl_conf      = res.file_tpl()
+            tpl_conf.sudo = self.sudo
+            tpl_conf.tpl  = res_utls.value(self.conf_tpl)
+            tpl_conf.dst  = res_utls.value(self.conf)
+            self.append(tpl_conf)
 
-        tpl_conf      = res.file_tpl()
-        tpl_conf.sudo = self.sudo
-        tpl_conf.tpl  = res_utls.value(self.conf_tpl)
-        tpl_conf.dst  = res_utls.value(self.conf)
-        self.append(tpl_conf)
+            ctrl          = fpm_ctrl()
+            ctrl.sudo     = self.sudo
+            ctrl.tag      = self.tag
+            ctrl.ini      = self.ini
+            ctrl.conf     = self.conf
+            ctrl.args     = self.args
+            ctrl.bin      = self.bin
 
-        ctrl          = fpm_ctrl()
-        ctrl.sudo     = self.sudo
-        ctrl.tag      = self.tag
-        ctrl.ini      = self.ini
-        ctrl.conf     = self.conf
-        ctrl.args     = self.args
-        ctrl.bin      = self.bin
-
-        self.append(ctrl)
-        interface.control_box._before(self,context)
+            self.append(ctrl)
+            interface.control_box._before(self,context)
 

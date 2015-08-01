@@ -218,9 +218,6 @@ class shell_cmd(prj_cmd_base,cmdtag_prj):
         shres._allow = allow_res
         interface.resource.allow_res = 'no'
         self.runcmd(rargs,execmd,shres)
-    # def _usage(self):
-    #     rgio.prompt('usage: shell -f <script>')
-    #     rgio.prompt('eg: rg shell -f "test/test_run.sh -a -b -c "')
 #
 # class phpunit_cmd(run_base,resconf_able, cmdtag_run):
 #     """execut php eg: rg phpunit -f '<your.xml> | <test path>'  """

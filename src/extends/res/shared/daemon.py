@@ -139,7 +139,8 @@ class daemon_base_php(daemon_base):
     worker   = 1
 
     def _before(self,context):
-        daemon_base._before(self,context)
-        self.php_ini    = res_utls.value(self.php_ini)
-        self.php_bin    = res_utls.value(self.php_bin)
-        self.program    = "%s -c %s -f %s " %(self.php_bin,self.php_ini,self.script)
+        with res_context(self.__class__.__name__) :
+            daemon_base._before(self,context)
+            self.php_ini    = res_utls.value(self.php_ini)
+            self.php_bin    = res_utls.value(self.php_bin)
+            self.program    = "%s -c %s -f %s " %(self.php_bin,self.php_ini,self.script)

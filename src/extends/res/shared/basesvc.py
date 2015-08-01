@@ -25,15 +25,16 @@ class beanstalkd_shared (daemon_base):
     # runpath    = "${RUN_PATH}"
     # beanstalkd = "/usr/local/beanstalkd/bin/beanstalkd"
     def _before(self,context):
-        self.worker     = 1
-        self.ip         = res_utls.value(self.ip)
-        self.binlog     = res_utls.value(self.binlog)
-        self.port       = res_utls.value(str(self.port))
-        self.beanstalkd = res_utls.value(self.beanstalkd)
-        self.tag        = "beanstalk-%s" %self.port
-        self.blog_path  = "%s/beanstalk-%s" %(self.binlog, self.port)
-        self.script     = "%s -l %s -p%s -b %s " %(self.beanstalkd, self.ip,self.port,self.blog_path)
-        daemon_base._before(self,context)
+        with res_context(self.__class__.__name__) :
+            self.worker     = 1
+            self.ip         = res_utls.value(self.ip)
+            self.binlog     = res_utls.value(self.binlog)
+            self.port       = res_utls.value(str(self.port))
+            self.beanstalkd = res_utls.value(self.beanstalkd)
+            self.tag        = "beanstalk-%s" %self.port
+            self.blog_path  = "%s/beanstalk-%s" %(self.binlog, self.port)
+            self.script     = "%s -l %s -p%s -b %s " %(self.beanstalkd, self.ip,self.port,self.blog_path)
+            daemon_base._before(self,context)
     def _config(self,context):
         cmdtpl ="if test ! -e $DST; then   mkdir -p $DST ; fi ;   chmod a+rw $DST; "
         cmd = Template(cmdtpl).substitute(DST=self.blog_path)

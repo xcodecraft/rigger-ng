@@ -308,10 +308,11 @@ class file_tpl(interface.resource,res_utls):
     mod    = "o+w"
 
     def _before(self,context):
-        self.dst        = utls.rg_var.value_of(self.dst)
-        self.tpl        = utls.rg_var.value_of(self.tpl)
-        self.mod        = utls.rg_var.value_of(self.mod)
-        utls.check.must_true(os.path.exists(self.tpl),"tpl not exists : %s" %(self.tpl))
+        with res_context(self.__class__.__name__) :
+            self.dst        = utls.rg_var.value_of(self.dst)
+            self.tpl        = utls.rg_var.value_of(self.tpl)
+            self.mod        = utls.rg_var.value_of(self.mod)
+        self.must_exists(self.tpl)
 
     def _config(self,context):
         tpl_builder.build(self.tpl,self.dst)
