@@ -7,7 +7,7 @@ import res
 import res.node
 import os
 
-class prj_cmd_base :
+class prj_cmd_base(rg_cmd) :
     def _config(self,argv,rargs):
         self.env = []
         if argv.has_key('-e') :
@@ -158,11 +158,15 @@ def allow_res(c) :
     return True
 
 class php_cmd(prj_cmd_base,cmdtag_prj):
-    """rg php -f 'xxx.php' -i <php.ini> -b <php.bin>  """
+    """
+    rg php -f 'xxx.php' -a "args"  -i <php.ini> -b <php.bin>
+    rg php -f 'xxx.php' -a "args   -e <env> -s <system> 
+    """
     def _config(self,argv,rargs):
-        self.ini  = None
-        self.bin  = None
-        self.args = ""
+        self.ini     = None
+        self.bin     = None
+        self.args    = ""
+        rargs.script = ""
         prj_cmd_base._config(self,argv,rargs)
         for o, a in argv.items():
             if o == "-f":
@@ -175,7 +179,7 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
                 self.args = a 
 
         if  not os.path.exists(rargs.script)  :
-            raise error.rigger_exception("script not exists ,%s " %(rargs.script))
+            raise interface.cmd_use_error("php","rg php  script['%s'] not exists   " %(rargs.script))
     def _execute(self,rargs):
         phpres        = res.php()
         phpres.script = rargs.script
@@ -204,7 +208,7 @@ class shell_cmd(prj_cmd_base,cmdtag_prj):
             if o == "-u":
                 self.args = a
         if  not os.path.exists(rargs.script)  :
-            raise error.rigger_exception("script not exists ,%s " %(rargs.script))
+            raise interface.cmd_use_error("shell","rg php  script['%s'] not exists   " %(rargs.script))
     def _execute(self,rargs):
         shres        = res.shell()
         shres.script = rargs.script

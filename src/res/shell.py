@@ -48,6 +48,9 @@ class shell(interface.resource,res_utls):
         self.doit(context,"stop")
         pass
 
+
+
+
 class php(interface.resource,res_utls):
     """
     !R.php:
@@ -62,19 +65,18 @@ class php(interface.resource,res_utls):
     args   = ""
     run    = "start"
     def _before(self,context) :
-
-        self.ini  = res_utls.value(self.ini)
-        self.bin  = res_utls.value(self.bin)
-        self.args = res_utls.value(self.args)
-        self.env_keep = None
-        if self.script is not None :
+        with res_context(self.__class__.__name__) :
+            self.ini    = res_utls.value(self.ini)
+            self.bin    = res_utls.value(self.bin)
+            self.args   = res_utls.value(self.args)
             self.script = res_utls.value(self.script)
-            if os.path.exists(self.script) :
-                self.env_keep = copy.copy(os.environ)
-                return
 
-        raise interface.rigger_exception( "script is bad! %s " %(self.script))
-
+        self.must_exists(self.ini)
+        self.must_exists(self.bin)
+        self.must_exists(self.script)
+        self.env_keep = None
+        self.env_keep = copy.copy(os.environ)
+        return
     def _after(self,context) :
         if self.env_keep is not None :
             os.environ = copy.copy(self.env_keep)

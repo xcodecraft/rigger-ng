@@ -15,16 +15,17 @@ import utls.check
 class daemon_base(interface.resource,res_utls):
 
     def _before(self,context):
-        self.script     = res_utls.value(self.script)
-        self.logpath    = res_utls.value(self.logpath)
-        self.runpath    = res_utls.value(self.runpath)
-        self.zdaemon    = res_utls.value(self.zdaemon)
-        self.confpath   = res_utls.value(self.confpath)
-        self.tag        = res_utls.value(self.tag)
-        self.worker     = int(res_utls.value(self.worker))
-        self.main_ukey  = self.tag
-        self.ukeys      = {}
-        self.confs      = {}
+        with res_context(self.__class__.__name__) :
+            self.script     = res_utls.value(self.script)
+            self.logpath    = res_utls.value(self.logpath)
+            self.runpath    = res_utls.value(self.runpath)
+            self.zdaemon    = res_utls.value(self.zdaemon)
+            self.confpath   = res_utls.value(self.confpath)
+            self.tag        = res_utls.value(self.tag)
+            self.worker     = int(res_utls.value(self.worker))
+            self.main_ukey  = self.tag
+            self.ukeys      = {}
+            self.confs      = {}
 
         for i in range(1,self.worker + 1 ):
             self.confs[i]       = self.confpath +  "/zdaemon-%s-%d.xml" %(self.main_ukey,i)

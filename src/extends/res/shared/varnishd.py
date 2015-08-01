@@ -46,15 +46,16 @@ class varnishd(interface.resource):
     varnishadm = "/usr/local/sbin/varnishadm"
 
     def _before(self,context):
-        self.port       = value_of(self.port)
-        self.admin_port = value_of(self.admin_port)
-        self.admin_ip   = value_of(self.admin_ip)
-        self.http_ip    = value_of(self.http_ip)
-        self.mem        = value_of(self.mem)
-        self.vcl        = value_of(self.vcl)
-        self.extras          = value_of(self.extras)
-        self.name       = value_of(self.name)
-        self.pid        = value_of("${PRJ_ROOT}/varnishd_${PRJ_KEY}_" + self.port + ".pid")
+        with res_context(self.__class__.__name__) :
+            self.port       = value_of(self.port)
+            self.admin_port = value_of(self.admin_port)
+            self.admin_ip   = value_of(self.admin_ip)
+            self.http_ip    = value_of(self.http_ip)
+            self.mem        = value_of(self.mem)
+            self.vcl        = value_of(self.vcl)
+            self.extras     = value_of(self.extras)
+            self.name       = value_of(self.name)
+            self.pid        = value_of("${PRJ_ROOT}/varnishd_${PRJ_KEY}_" + self.port + ".pid")
 
     def _start(self,context):
         cmdtpl = "if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $HTTP_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"

@@ -44,6 +44,18 @@ class tpl_cmd(rg_cmd) :
         utls.tpl.tplworker().execute(self.tpl,self.dst)
 
 class help_cmd(rg_cmd,cmdtag_rg):
+    @staticmethod
+    def cmd_help(cmdname):
+        cmdobj = impl.rg_ioc.ins_cmd(cmdname)
+        cmdobj.useage(rgio.simple_out)
+
+    @staticmethod
+    def res_help(resname):
+        resobj  = impl.rg_ioc.ins_res(resname)
+        if resobj is None :
+            raise  interface.rigger_exception( "instance res fail! resname: %s" %(resname) )
+        resobj.useage(rgio.simple_out)
+
     def _execute(self,rargs):
         conf.version.file=os.path.join(rargs.rg.root ,"version.txt" )
         ver    = conf.version()
@@ -59,15 +71,12 @@ class help_cmd(rg_cmd,cmdtag_rg):
             if subcmd == "res":
                 if cmdlen == 3 :
                     resname = rargs.prj.cmds[2]
-                    resobj  = impl.rg_ioc.ins_res(resname)
-                    if resobj is None :
-                        raise  interface.rigger_exception( "instance res fail! resname: %s" %(resname) )
-
-                    # resobj.useage(output):
-                    resobj.useage(rgio.simple_out)
-
+                    help_cmd.res_help(resname)
                 else:
                     impl.rg_ioc.list_res()
+            else:
+                cmdname = rargs.prj.cmds[1]
+                help_cmd.cmd_help(cmdname)
 
         #TODO :
             # elif subcmd == "remote":

@@ -20,8 +20,9 @@ class copy(interface.resource,res_utls):
     src     = ""
     run     = "conf"
     def _before(self,context):
-        self.dst = utls.rg_var.value_of(self.dst)
-        self.src = utls.rg_var.value_of(self.src)
+        with res_context(self.__class__.__name__) :
+            self.dst = utls.rg_var.value_of(self.dst)
+            self.src = utls.rg_var.value_of(self.src)
 
     def doit(self,context) :
         cmdtpl = ""
@@ -64,8 +65,9 @@ class link(interface.resource,res_utls):
     src     = ""
     run     = "conf"
     def _before(self,context):
-        self.dst = utls.rg_var.value_of(self.dst)
-        self.src = utls.rg_var.value_of(self.src)
+        with res_context(self.__class__.__name__) :
+            self.dst = utls.rg_var.value_of(self.dst)
+            self.src = utls.rg_var.value_of(self.src)
 
     def _config(self,context):
         if self.run == "conf" :
@@ -256,8 +258,9 @@ class intertpl(interface.resource,res_utls):
     dst = ""
     tpl = ""
     def _before(self,context):
-        self.dst  = utls.rg_var.value_of(self.dst)
-        self.tpl  = utls.rg_var.value_of(self.tpl)
+        with res_context(self.__class__.__name__) :
+            self.dst  = utls.rg_var.value_of(self.dst)
+            self.tpl  = utls.rg_var.value_of(self.tpl)
 
     def _config(self,context):
         import utls.tpl

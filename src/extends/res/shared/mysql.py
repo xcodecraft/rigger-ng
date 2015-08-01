@@ -14,11 +14,12 @@ class mysql_base(interface.resource,res_utls):
     def _allow(self,context) :
         return True
     def _before(self,context):
-        self.host     = utls.rg_var.value_of(self.host)
-        self.name     = utls.rg_var.value_of(self.name)
-        self.password = utls.rg_var.value_of(self.password)
-        self.user     = utls.rg_var.value_of(self.user)
-        self.sql      = utls.rg_var.value_of(self.sql)
+        with res_context(self.__class__.__name__) :
+            self.host     = utls.rg_var.value_of(self.host)
+            self.name     = utls.rg_var.value_of(self.name)
+            self.password = utls.rg_var.value_of(self.password)
+            self.user     = utls.rg_var.value_of(self.user)
+            self.sql      = utls.rg_var.value_of(self.sql)
 
     def _data(self,context):
         mysql  = self.bin

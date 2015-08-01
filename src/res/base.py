@@ -21,6 +21,18 @@ class res_utls:
         if not os.path.exists(dst) :
             os.makedirs(dst)
 
+    def must_exists(self,dst) :
+        if not os.path.exists(dst) :
+            raise interface.res_use_error(self.__class__.__name__ ,"%s not exists" %dst)
+
+class res_context:
+    def __init__(self,res):
+        self.res = res 
+    def __enter__(self):
+        pass
+    def __exit__(self, exc_type, exc_value, traceback ):
+        if traceback is not None:
+            raise interface.res_use_error(self.res ,exc_value)
 
 class cmdres(interface.resource,res_utls) :
     config  = None
