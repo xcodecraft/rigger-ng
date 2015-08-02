@@ -26,6 +26,10 @@ class dev_cmd_base :
 
 
 class ci_cmd(dev_cmd_base) :
+    """
+    提交代码
+    rg ci -m "message"
+    """
     def _config(self,argv,rargs):
         self.message = ""
         if argv.has_key('-m') :
@@ -39,6 +43,10 @@ class ci_cmd(dev_cmd_base) :
         conf.git.ins().push()
 
 class rc_cmd(dev_cmd_base) :
+    """
+    提交发布候选(打tag)
+    rg rc -m "message"
+    """
     def _config(self,argv,rargs):
         self.message = ""
         if argv.has_key('-m') :

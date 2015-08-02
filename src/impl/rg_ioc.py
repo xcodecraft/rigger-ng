@@ -16,7 +16,7 @@ def setup() :
 
     interface.regist_cmd("check,clean,info"                           , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,data,reload" , "impl.rg_cmd.rg_cmd_prj")
-    interface.regist_cmd("help,init,tpl"                                  , "impl.rg_cmd.rg_cmd")
+    interface.regist_cmd("help,init,tpl"                              , "impl.rg_cmd.rg_cmd")
     interface.regist_cmd("php,shell"                                  , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("ci,rc"                                      , "impl.rg_cmd.rg_cmd_dev")
     interface.regist_conf("git,project,version"                       , "conf.dev_conf")
@@ -50,7 +50,7 @@ def ins_res(name) :
 
 def list_cmd() :
     import  impl.rg_cmd
-    for name,module in interface.registed_cmd.items() :
+    for name in interface.cmds_index :
         code = "obj = impl.rg_cmd.%s_cmd()" %(name)
         rg_logger.debug("exec code : %s" %code)
         try :

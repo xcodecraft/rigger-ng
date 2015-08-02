@@ -13,6 +13,10 @@ import impl.rg_dev , impl.rg_ioc
 
 
 class init_cmd(rg_cmd) :
+    """
+    对project 进行 rg 支持
+    rg init
+    """
     def _execute(self,rargs):
         dst = os.getcwd() + "/_rg"
         if os.path.exists(dst) :
@@ -23,6 +27,9 @@ class init_cmd(rg_cmd) :
         utls.tpl.tplworker().execute(tpl,dst)
 
 class tpl_cmd(rg_cmd) :
+    """
+rg tpl -t <template> -o <dst>
+    """
     def _config(self,argv,rargs):
         dst = ""
         tpl = ""
@@ -44,6 +51,12 @@ class tpl_cmd(rg_cmd) :
         utls.tpl.tplworker().execute(self.tpl,self.dst)
 
 class help_cmd(rg_cmd,cmdtag_rg):
+    """
+    rg help 
+    rg help <cmd>
+    rg help res
+    rg help res <res>
+    """
     @staticmethod
     def cmd_help(cmdname):
         cmdobj = impl.rg_ioc.ins_cmd(cmdname)
