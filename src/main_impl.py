@@ -40,8 +40,6 @@ def main():
     if setting.debug :
         rargs  = impl.rg_args.run_args.load()
         rargs.parse_update(parser)
-        print(parser.argv)
-        return ;
         impl.rg_run.run_rigger(rargs,parser.argv)
     else:
         try :

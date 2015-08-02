@@ -1,4 +1,33 @@
-abs_path() { odir=`pwd`; cd `dirname $1`; pwd; cd "${odir}"; }
-MYDIR=`abs_path "$0"`
-python $MYDIR/main_centos.py $*
+#!/usr/bin/python2.6
+# /* abs_path() { odir=`pwd`; cd `dirname $1`; pwd; cd "${odir}"; } */
+# /* MYDIR=`abs_path "$0"` */
+# /* python $MYDIR/main_centos.py $* */
+from main_impl import *
+
+def is_dist(distkey):
+    pid    = os.getpid()
+    lsbtxt = "/tmp/lsb-%s.txt" %(pid)
+    os.system("lsb_release -a > %s" %(lsbtxt))
+    with open(lsbtxt) as file :
+        data   = file.readlines()
+    os.system("rm  %s" %(lsbtxt))
+    nowdist =  data[1].split(":")
+    if nowdist[0].strip() == "Distributor ID" :
+        if nowdist[1].strip().upper() ==  distkey.upper() :
+            return True
+    return False 
+
+if __name__ == '__main__':
+    set_modul_path()
+    import interface,impl
+    import pylon
+    impl.setup()
+    pylon.setup()
+    if is_dist('ubuntu') :
+        import ubuntu
+        ubuntu.setup()
+    if is_dist('centos') :
+        import centos
+        centos.setup()
+    main()
 
