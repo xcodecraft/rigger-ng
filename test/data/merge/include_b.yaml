@@ -1,0 +1,8 @@
+
+    -  !R.system
+        _name: "path-B"
+        _res:
+            - !R.path
+                dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"
+            - !R.tpl
+                dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"

@@ -38,4 +38,11 @@ class files_tc(base.tc_tools.rigger_tc):
         """
         self.assertMacroEqual( expect, mock.cmds)
 
+    def test_tpl(self) :
+        impl.rg_run.run_cmd("conf -s merge -e dev,base",self.conf)
+        merge_path= utls.rg_var.value_of("${PRJ_ROOT}/test/data/merge")
+        self.assertMacroFile(merge_path  + "/expect.yaml", merge_path + "/result.yaml")
+        impl.rg_run.run_cmd("clean -s merge -e dev,base",self.conf)
+
+
 

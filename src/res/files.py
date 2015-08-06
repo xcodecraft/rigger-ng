@@ -160,94 +160,67 @@ class path(interface.resource,res_utls):
     def _depend(self,m,context):
         for v in self.paths :
             m._check_writeable(v)
-#
-# class file_merge(resource,restag_file):
-#     """
-#     !R.file_merge
-#         dst : "$${PRJ_ROOT}/conf/used/my.conf
-#         src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
-#         filter: ".*\.conf"
-#
-#     """
-#     _dst        = None
-#     _src        = None
-#     _filter     = ".*\.conf"
-#     _note       = "#"
-#     _mod        = "a+w"
-#     def _before(self,context):
-#         self.dst        = env_exp.value(self.dst)
-#         self.src        = env_exp.value(self.src)
-#         self.note       = env_exp.value(self.note)
-#         self.mod        = env_exp.value(self.mod)
-#         self.filter     = env_exp.value(self.filter)
-#     def _config(self,context):
-#         with open(self.dst, 'w+') as self.dstfile :
-#             srclist = self.src.split(":")
-#             for src in srclist:
-#                 if not os.path.exists(src):
-#                     raise error.rigger_exception("path not exists: %s" %src)
-#                 os.path.walk(src,self.proc_file,None)
-#         if os.getuid() == os.stat(self.dst).st_uid :
-#             # Ã¥ÂÂ¶Ã¥Â®ÂÃ¤ÂºÂºÃ¥ÂÂ¯Ã¤Â»Â¥Ã¨Â¿ÂÃ¨Â¡ÂÃ¤Â¿Â®Ã¦ÂÂ¹Ã¯Â¼Â
-#             self.execmd("chmod %s %s " %(self.mod, self.dst))
-#
-#
-#     def reload(self,context):
-#         self._config(context)
-#
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if  test -e $DST ; then rm -f $DST ;fi"
-#         cmd = Template(cmdtpl).substitute(DST=self.dst)
-#         self.execmd(cmd)
-#
-#     def proc_file(self,arg,dirname,names):
-#         names = sorted(names)
-#         for n in names:
-#             if re.match(self.filter, n):
-#                 src_path = os.path.join(dirname , n )
-#                 self.dstfile.write("\n%s file: %s\n" %(self.note,src_path))
-#                 self.dstfile.write("%s ------------------------------\n" %(self.note))
-#                 if not os.path.exists(src_path) :
-#                     warn_msg = "file_merge %s not exists" %src_path
-#                     print("warning:  %s" %warn_msg)
-#                     rg_logger.warning(warn_msg)
-#                     continue
-#                 with open(src_path,'r') as srcfile :
-#                     for line in srcfile:
-#                         self.dstfile.write(line)
-#
-# class merge(resource,restag_file):
-#     """
-#     !R.file_merge
-#         dst : "$${PRJ_ROOT}/conf/used/my.conf
-#         files:
-#             - "$${PRJ_ROOT}/a.conf"
-#             - "$${PRJ_ROOT}/b.conf"
-#     """
-#     _files = []
-#     _dst = None
-#
-#     def _before(self,context):
-#         self.efiles= []
-#         self.dst = env_exp.value(self.dst)
-#         for v in self.files:
-#             v=  env_exp.value(v)
-#             self.efiles.append( v )
-#     def _config(self,context):
-#         self.execmd(Template("cat /dev/null > $DST; " ).substitute(DST=self.dst))
-#         cmdtpl ="cat $SRC >> $DST ;"
-#         for v in self.efiles:
-#             cmd = Template(cmdtpl).substitute(SRC=v,DST=self.dst)
-#             self.execmd(cmd)
-#     def _check(self,context):
-#         self._check_print(os.path.exists(self.dst),self.dst)
-#     def _clean(self,context):
-#         cmdtpl ="if  test -e $DST ; then rm -f $DST ; fi  "
-#         cmd = Template(cmdtpl).substitute(DST=self.dst)
-#         self.execmd(cmd)
-#
+
+
+class file_merge(interface.resource,res_utls):
+    """
+    !R.file_merge
+        dst : "$${PRJ_ROOT}/conf/used/my.conf
+        src : "$${PRJ_ROOT}/conf/option/a/:$${PRJ_ROOT}/conf/option/b/"
+        filter: ".*\.conf"
+
+    """
+    dst        = None
+    src        = None
+    filter     = ".*\.conf"
+    note       = "#"
+    mod        = "a+w"
+    def _before(self,context):
+        with res_context(self.__class__.__name__) :
+            self.dst    = utls.rg_var.value_of(self.dst)
+            self.src    = utls.rg_var.value_of(self.src)
+            self.note   = utls.rg_var.value_of(self.note)
+            self.mod    = utls.rg_var.value_of(self.mod)
+            self.filter = utls.rg_var.value_of(self.filter)
+
+    def _config(self,context):
+        # import pdb
+        # pdb.set_trace()
+        with open(self.dst, 'w+') as self.dstfile :
+            srclist = self.src.split(":")
+            for src in srclist:
+                if not os.path.exists(src):
+                    raise error.rigger_exception("path not exists: %s" %src)
+                os.path.walk(src,self.proc_file,None)
+        if os.getuid() == os.stat(self.dst).st_uid :
+            self.execmd("chmod %s %s " %(self.mod, self.dst))
+
+
+    def reload(self,context):
+        self._config(context)
+
+    def _check(self,context):
+        self._check_print(os.path.exists(self.dst),self.dst)
+    def _clean(self,context):
+        cmdtpl ="if  test -e $DST ; then rm -f $DST ;fi"
+        cmd = Template(cmdtpl).substitute(DST=self.dst)
+        self.execmd(cmd)
+
+    def proc_file(self,arg,dirname,names):
+        names = sorted(names)
+        for n in names:
+            if re.match(self.filter, n):
+                src_path = os.path.join(dirname , n )
+                self.dstfile.write("\n%s file: %s\n" %(self.note,src_path))
+                self.dstfile.write("%s ------------------------------\n" %(self.note))
+                if not os.path.exists(src_path) :
+                    warn_msg = "file_merge %s not exists" %src_path
+                    print("warning:  %s" %warn_msg)
+                    rg_logger.warning(warn_msg)
+                    continue
+                with open(src_path,'r') as srcfile :
+                    for line in srcfile:
+                        self.dstfile.write(line)
 
 class intertpl(interface.resource,res_utls):
     """

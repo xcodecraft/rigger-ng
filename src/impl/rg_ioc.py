@@ -10,7 +10,7 @@ def setup() :
     interface.regist_res("project,env,system,modul,prj_main,using"    , "res.inner")
     interface.regist_res("echo,vars,assert_eq"                        , "res.inner")
 
-    interface.regist_res("copy,link,path,intertpl,file_tpl"           , "res.files")
+    interface.regist_res("copy,link,path,file_merge,intertpl,file_tpl"           , "res.files")
 
     interface.regist_res("php,shell"                                  , "res.shell")
 

@@ -25,3 +25,11 @@ _sys:
             - !R.file_tpl
                 tpl: "${PRJ_ROOT}/test/data/files/prj_tpl.yaml"
                 dst: "${PRJ_ROOT}/test/data/files/prj_use.yaml"
+
+    -  !R.system
+        _name: "merge"
+        _res:
+            - !R.file_merge
+                dst : "${PRJ_ROOT}/test/data/merge/result.yaml"
+                src : "${PRJ_ROOT}/test/data/merge/"
+                filter : "^include.+yaml$"
