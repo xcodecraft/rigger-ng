@@ -48,11 +48,14 @@ class rigger_tc(unittest.TestCase):
         sec_arr      = self.macro_data(second.split('\n'))
         self.assertListEqual(fst_arr,sec_arr)
     def assertMacroFile(self,first,second):
+        self.maxDiff = 4096
         first_arr  = []
         second_arr = []
         with open(first) as  first_file :
             first_arr = first_file.readlines()
         with open(second) as  second_file :
             second_arr = second_file.readlines()
-        self.assertItemsEqual(self.macro_data(first_arr),self.macro_data(second_arr))
+        first_arr  = self.macro_data(first_arr)
+        second_arr = self.macro_data(second_arr)
+        self.assertItemsEqual(first_arr,second_arr)
 

@@ -10,7 +10,11 @@ from string import *
 from res.base   import *
 import sys
 
+from  pylon.parser import  php_class_parser,php_rest_parser 
+
 _logger = logging.getLogger()
+
+        
 
 class pylon_autoload(interface.resource,res_utls):
     """build autoload data for pylon:
@@ -31,84 +35,56 @@ class pylon_autoload(interface.resource,res_utls):
             os.makedirs(self.dst)
 
     def _config(self,context):
+
         src_paths = self.include.split(':')
-        self.build_php_index(src_paths,self.dst,True,self.relpath);
+        isfirst   = True
+
+        out_clspath = self.dst_path( "_autoload_clspath.idx")
+        out_clsname = self.dst_path( "_autoload_clsname.idx")
+        clspath_tmp = self.dst_path( "_autoload_clspath.tmp")
+        clsname_tmp = self.dst_path( "_autoload_clsname.tmp")
+
+        with   open(clspath_tmp,'w') as clspath_index  :
+            with open(clsname_tmp,'w') as clsname_index :
+                for src in  src_paths :
+                    self.build_php_index(src,clspath_index,clsname_index,self.relpath);
+
+        shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=clspath_tmp,DST=out_clspath))
+        shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=clsname_tmp,DST=out_clsname))
 
     def dst_path(self,filename) :
         abs_path  = res_utls.value(os.path.join(self.dst,  filename))
         return  abs_path
-    # def build_sdk(self):
-    #     root       = utls.rg_var.value_of(self.root)
-    #     sdk_filter = "grep 'require' | grep '%s' " %(self.sdk_base)
-    #     cmd        = "find %s -name '*.php' | xargs cat | %s  > %s" %(root, sdk_filter,self.sdk_file)
-    #     shexec.execmd(cmd,False)
+
     def _clean(self,context):
         pass
 
-    def find_class(self,src,data_file):
+    def find_php(self,src,data_file):
         shexec.execmd(Template('echo "" > $DST').substitute(DST=data_file))
-        cmdtpl = 'find $SRC/ -name "*.php"   |  xargs  grep  -H -i -E "^ *(abstract)? *class "  >> $DST'
-        for  s in src :
-            cmd = Template(cmdtpl).substitute( SRC = s ,DST=data_file)
-            shexec.execmd(cmd,False)
+        cmd = Template('find $SRC/ -name "*.php"  >> $DST').substitute( SRC = src ,DST=data_file)
+        shexec.execmd(cmd,False)
 
-        cmdtpl = 'find $SRC/ -name "*.php"   |  xargs  grep  -H -i -E "^ *interface "  >> $DST'
-        for  s in src :
-            cmd = Template(cmdtpl).substitute( SRC =  s ,DST=data_file)
-            shexec.execmd(cmd,False)
-
-    def build_php_index(self,src_paths,dst_path,isclear = False,replace=""):
+    def build_php_index(self,src_paths,clspath_index,clsname_index,replace=""):
         # import pdb
         # pdb.set_trace()
         cls_tmp     = self.dst_path( "_find_cls.tmp")
-        out_clspath = self.dst_path( "_autoload_clspath.idx")
-        out_clsname = self.dst_path( "_autoload_clsname.idx")
-        self.find_class(src_paths,cls_tmp)
-        clspath_tmp = self.dst_path( "_autoload_clspath.tmp")
-        with   open(clspath_tmp,'w') as autoload :
-            with  open(cls_tmp,'r') as find_cls :
-                for line in find_cls.readlines():
-                    res  =  self.parse_cls(line)
-                    if not res :
-                        continue
-                    file_path=res.group(1)
-                    if len(replace) > 0 :
-                        file_path= file_path.replace(replace,'')
-                    cls =  res.group(3)
-                    autoload.write(Template("$CLS,$PATH\n").substitute(PATH=file_path,CLS=cls))
-        if isclear :
-            shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=clspath_tmp,DST=out_clspath))
-        else :
-            shexec.execmd(Template("sort $SRC >> $DST; rm $SRC ").substitute(SRC=clspath_tmp,DST=out_clspath))
+        self.find_php(src_paths,cls_tmp)
+        with  open(cls_tmp,'r') as find_cls :
+            for line in find_cls.readlines():
+                line = line.strip()
+                if not os.path.exists(line) :
+                    continue 
+                # if len(replace) > 0 :
+                #    line = line.replace(replace,'')
 
-        clsname_tmp = utls.rg_var.value_of(os.path.join(dst_path ,  "_autoload_clsname.tmp"))
-        with   open(clsname_tmp,'w') as autoload :
-            with  open(cls_tmp,'r') as find_cls :
-                for line in find_cls.readlines():
-                    res  =  self.parse_cls(line)
-                    if not res :
-                        continue
-                    cls =  res.group(3)
-                    autoload.write(Template("cls_$LOWCLS,$CLS\n").substitute(CLS=cls,LOWCLS=cls.lower()))
-        if isclear :
-            shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=clsname_tmp,DST=out_clsname))
-        else :
-            shexec.execmd(Template("sort $SRC >> $DST; rm $SRC ").substitute(SRC=clsname_tmp,DST=out_clsname))
+                parser = php_class_parser()
+                parser.parse_file(line,replace,clspath_index,clsname_index)
 
-    def parse_cls(self,line):
-        res  = None
-        res1 =  re.search('(.*\.php):\s*(abstract)?\s*class\s+(\S+)',line,flags=re.IGNORECASE)
-        res2 =  re.search('(.*\.php):\s*(interface)\s+(\S+)',line,flags=re.IGNORECASE)
-        if res1 :
-            res=res1
-        if res2 :
-            res= res2
-        return res;
 
 class pylon_router(interface.resource,res_utls):
     """
     !R.pylon_router
-        include: "$${PRJ_ROOT}/src/apps/api"
+        include: "$${PRJ_ROOT}/src/apps/api:$${PRJ_ROOT}/src/apps/1"
     """
     include = ""
     dst     = "${RUN_PATH}/router/"
@@ -116,13 +92,37 @@ class pylon_router(interface.resource,res_utls):
         self.include = res_utls.value(self.include)
         self.dst     = res_utls.value(self.dst)
         res_utls.ensure_path(self.dst)
-        self.out_idx = os.path.join(self.dst , "_router.idx")
+        self.out_idx = self.dst_path( "_router.idx")
+
+    def find_php(self,src,data_file):
+        shexec.execmd(Template('echo "" > $DST').substitute(DST=data_file))
+        cmd = Template('find $SRC/ -name "*.php"  >> $DST').substitute( SRC = src ,DST=data_file)
+        shexec.execmd(cmd,False)
+
+    def dst_path(self,filename) :
+        abs_path  = res_utls.value(os.path.join(self.dst,  filename))
+        return  abs_path
+
+    def build_rest_index(self,src_paths,dst_fobj):
+        php_files   = self.dst_path( "_php_cls.tmp")
+        self.find_php(src_paths,php_files)
+        with  open(php_files,'r') as phps_fobj:
+            for line in phps_fobj.readlines():
+                line = line.strip()
+                if not os.path.exists(line) :
+                    continue 
+                parser = php_rest_parser()
+                parser.parse_file(line,dst_fobj)
+
+
 
     def _config(self,context):
-        sed     = """sed -r "s/.+:class\s+(\S+)\s+.+\/\/\@REST_RULE:\s+(.+)/\\2 : \\1/g" """
-        cmdtpl  = """grep --include "*.php" -i  -E "class .+ implements XService"  -R $SRC   |  """  + sed + " > $DST "
-        cmd     = Template(cmdtpl).substitute(SRC = self.include,DST = self.out_idx)
-        shexec.execmd(cmd,False)
+        src_paths   = self.include.split(':')
+        router_tmp  = self.dst_path( "_router.tmp")
+        with open(router_tmp,'w') as router_fobj:
+            for src in  src_paths :
+                self.build_rest_index(src,router_fobj);
+        shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=router_tmp,DST=self.out_idx))
 
     def _check(self,context):
         self.check_print(os.path.exists(self.out_idx),self.out_idx)

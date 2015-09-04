@@ -1,0 +1,10 @@
+A,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+B,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+C,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+D,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+DemoA,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+DemoB,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+X\A1,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+X\DemoA1,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+X\Y\A2,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+X\Y\DemoA2,/data/${USER}/devspace/rigger-ng/src/extends/res/pylon/data/example.php
