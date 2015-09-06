@@ -9,11 +9,25 @@ class tplstatus:
     BLOCK_IN = 1
 
 class tplworker:
+    def is_ignore_path(self,dirname) :
+        parent  = dirname 
+        while(True) :
+            curname = os.path.basename(parent)
+            parent  = os.path.dirname(parent)
+            if curname in self.ignore :
+                return  True
+            if parent == "/" or parent == "." :
+                break
+        return False 
     def proc_files(self,arg,dirname,names):
         src_path    = dirname
         relat_path  = src_path.replace(self.src,'').lstrip('/')
         dst_path    = os.path.join(self.dst   , relat_path)
         dst_path    = self.ng.convert_path(dst_path)
+
+        if self.is_ignore_path(dirname) :
+            return 
+            
         if dst_path is None :
             return
 
@@ -23,6 +37,8 @@ class tplworker:
         for n in names:
             src = os.path.join(src_path ,n)
             dst = self.ng.value(os.path.join(dst_path ,n))
+            if n in self.ignore :
+                continue 
             if n != "_tpl.yaml"  and not os.path.isdir(src):
                 rg_logger.info( "proc tpl file: %s -> %s" %(src,dst) )
                 self.ng.file( src  , dst )
@@ -35,9 +51,10 @@ class tplworker:
             rg_logger.debug( "overwriten exsits file: %s" %(dst) )
         self.ng.file( src  , dst )
 
-    def execute(self,src,dst):
-        self.src = src
-        self.dst = dst
+    def execute(self,src,dst,ignore):
+        self.src    = src
+        self.dst    = dst
+        self.ignore = ignore.split(",")
         rg_logger.debug("src: %s dst: %s" %(src,dst))
         if not os.path.exists(src):
             raise interface.rigger_exception("tpl src not found : %s" %src)

@@ -28,15 +28,19 @@ class init_cmd(rg_cmd) :
 
 class tpl_cmd(rg_cmd) :
     """
-rg tpl -t <template> -o <dst>
+rg tpl -t <template> -o <dst> [-i <ignore>]
     """
     def _config(self,argv,rargs):
         dst = ""
         tpl = ""
+        ignore = ""
         if argv.has_key('-t') :
             tpl  = argv['-t']
         if argv.has_key('-o') :
             dst  = argv['-o']
+
+        if argv.has_key('-i') :
+            ignore = argv['-i']
         if len(dst) == 0 :
             print("rg tpl -t <template> -o <dst>")
             raise interface.rigger_exception("dst: %s is empty" %dst)
@@ -44,11 +48,12 @@ rg tpl -t <template> -o <dst>
             raise interface.rigger_exception("dst: %s have exists" %dst)
         if not os.path.exists(tpl) :
             raise interface.rigger_exception("tpl: %s not exists" %tpl)
-        self.dst = dst
-        self.tpl = tpl
+        self.dst    = dst
+        self.tpl    = tpl
+        self.ignore = ignore
     def _execute(self,rargs):
         import utls.tpl
-        utls.tpl.tplworker().execute(self.tpl,self.dst)
+        utls.tpl.tplworker().execute(self.tpl,self.dst,self.ignore)
 
 class help_cmd(rg_cmd,cmdtag_rg):
     """
