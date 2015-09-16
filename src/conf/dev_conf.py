@@ -7,6 +7,8 @@ from string     import Template
 from define     import *
 import  utls.check , utls.dbc , utls.rg_sh
 
+import ConfigParser
+
 
 class project(interface.rg_conf.base,singleton):
     name = ""
@@ -179,7 +181,7 @@ class git (interface.rg_conf.base,singleton) :
         cmd = Template(cmd).substitute(MSG=cimsg)
         self.execmd(cmd,True,[0,256])
     def push(self):
-        cmd="""GIT_POOL=`cat .git/config | grep url | awk '{print $3}' ` ; CUR_BRANCH=`git branch | grep \* | awk '{print $2}'`; git pull $GIT_POOL $CUR_BRANCH ; git push $GIT_POOL $CUR_BRANCH ; """
+        cmd="""GIT_POOL=`git remote -v  | grep push | awk '{print $2}' ` ; CUR_BRANCH=`git branch | grep \* | awk '{print $2}'`; git pull $GIT_POOL $CUR_BRANCH ; git push $GIT_POOL $CUR_BRANCH ; """
         self.execmd(cmd,True)
 
     def tag_release(self,local,prj,ori):
