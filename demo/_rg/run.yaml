@@ -46,8 +46,10 @@ _sys:
                 value         : "${PRJ_ROOT}"
             - !R.shell
                 script : "${PRJ_ROOT}/src/demo.sh"
-            - !R.php
-                script : "${PRJ_ROOT}/src/demo.php"
+            - !R.cmd
+                cmd: "ls"
+            # - !R.php
+            #     script : "${PRJ_ROOT}/src/demo.php"
 
     -  !R.system
         _name : "web"

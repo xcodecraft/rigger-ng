@@ -6,6 +6,20 @@ from res.base   import *
 from string import Template
 
 
+class cmd(interface.resource,res_utls) :
+    """
+    """
+    cmd = "" 
+    def _before(self,context) :
+        self.cmd= res_utls.value(self.cmd)
+        pass
+
+    def _start(self,context) :
+        self.execmd(self.cmd)
+        pass
+    def _stop(self,context) :
+        pass
+
 
 class shell(interface.resource,res_utls):
     """

@@ -90,8 +90,11 @@ class env_exp:
         tpl     = string
         var_exp = re.compile(r'\$\{(\w+)\}')
         ass     = assigner(tpl,tplvars)
-        while var_exp.search(tpl):
-            tpl = var_exp.sub(ass.assign_value,tpl)
+        try :
+            while var_exp.search(tpl):
+                tpl = var_exp.sub(ass.assign_value,tpl)
+        except TypeError as e :
+            raise interface.rigger_exception(tpl + "tpl proc fail!")
         return tpl
 
     @staticmethod

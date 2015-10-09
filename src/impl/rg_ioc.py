@@ -12,7 +12,7 @@ def setup() :
 
     interface.regist_res("copy,link,path,file_merge,intertpl,file_tpl"           , "res.files")
 
-    interface.regist_res("php,shell"                                  , "res.shell")
+    interface.regist_res("cmd,php,shell"                                  , "res.shell")
 
     interface.regist_cmd("check,clean,info"                           , "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,data,reload" , "impl.rg_cmd.rg_cmd_prj")
