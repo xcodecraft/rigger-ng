@@ -24,7 +24,7 @@ class init_cmd(rg_cmd) :
 
         import utls.tpl
         tpl = rargs.rg.root + "/rg_tpl"
-        utls.tpl.tplworker().execute(tpl,dst)
+        utls.tpl.tplworker().execute(tpl,dst,"")
 
 class tpl_cmd(rg_cmd) :
     """
