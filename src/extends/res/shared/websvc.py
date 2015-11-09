@@ -8,6 +8,8 @@ from utls.rg_sh  import shexec
 from impl.rg_utls  import *
 from res.base   import *
 from utls.rg_sh  import shexec
+from shared.shared_utls import * 
+
 
 
 class nginx_conf_base(interface.resource):
@@ -18,6 +20,7 @@ class nginx_conf_base(interface.resource):
             self.name          = res_utls.value(self.name)
             self.dst           = res_utls.value(self.dst) + self.name
             self.src           = res_utls.value(self.src)
+            self.src           = tpldst_path(self.tpl,self.src)
             self.tpl           = res_utls.value(self.tpl)
 
             self.tpl_res       = res.file_tpl()

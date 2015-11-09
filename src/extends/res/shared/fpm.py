@@ -10,6 +10,7 @@ from utls.rg_sh  import shexec
 from impl.rg_utls import *
 from string     import *
 from res.base   import *
+from shared.shared_utls import * 
 import utls.check
 
 
@@ -21,11 +22,12 @@ class fpm_pool_base(interface.control_box,interface.base):
 
     def _before(self,context):
         with res_context(self.__class__.__name__) :
-            self.bin      = res_utls.value(self.bin)
-            self.name     = res_utls.value(self.name)
-            self.dst      = res_utls.value(self.dst)
-            self.src      = res_utls.value(self.src)
-            self.tpl      = res_utls.value(self.tpl)
+            self.bin  = res_utls.value(self.bin)
+            self.name = res_utls.value(self.name)
+            self.dst  = res_utls.value(self.dst)
+            self.src  = res_utls.value(self.src)
+            self.src  = tpldst_path(self.tpl,self.src)
+            self.tpl  = res_utls.value(self.tpl)
 
             tpl_res       = res.file_tpl()
             tpl_res.sudo  = self.sudo
