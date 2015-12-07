@@ -86,4 +86,4 @@ _sys:
                 chmod : "a+w"
                 sudo : True
             - !R.beanstalkd
-                port : 11300
+                port : 11400
