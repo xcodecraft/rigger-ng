@@ -34,8 +34,10 @@ class controlable :
         pass
     def _clean(self,context):
         pass
-    def _info(self,context):
+    def _info(self,context,level=1):
         return ""
+    def _nodoing(self,context):
+        pass
 
 class exception_monitor:
     def __init__(self,res):
@@ -56,6 +58,7 @@ def control_call(res,fun,context,tag) :
                 with exception_monitor(res) :
                     utls.rg_io.run_struct.push( res.__class__.__name__)
                     res._before(context)
+
                     fun(res,context)
                     res._after(context)
                     utls.rg_io.run_struct.pop()
@@ -63,6 +66,7 @@ def control_call(res,fun,context,tag) :
 class control_box(controlable):
 
     def __init__(self):
+        self.level = 0 
         self._res = []
 
     def items_call(self,fun,context,tag):
@@ -98,8 +102,12 @@ class control_box(controlable):
         fun = lambda x,y : x._clean(y)
         self.items_call(fun,context,'_clean')
 
-    def _info(self,context):
-        fun = lambda x,y : x._info(y)
+    def _info(self,context,level):
+        level = level - 1 
+        # if  level  > 0  :
+        fun = lambda x,y :  x._info(y,level)
+        # else :
+        #     fun = lambda x,y :  x._nodoing(y)
         self.items_call(fun,context,'_info')
 
     def _allow(self,context):

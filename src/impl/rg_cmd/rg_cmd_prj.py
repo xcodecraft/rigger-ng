@@ -74,12 +74,18 @@ class prj_cmd_base(rg_cmd) :
 
 class info_cmd(prj_cmd_base,cmdtag_prj):
     """
-    rg info
+    rg info [-l level]
     """
+    def _config(self,argv,rargs):
+        prj_cmd_base._config(self,argv,rargs)
+        self.level = 2 
+        if argv.has_key('-l') :
+            self.level = (int)(argv['-l'] )
+
     def _execute(self,rargs):
         rgio.struct_out("rg %s" %(rargs) )
         rgio.struct_out("")
-        self.runcmd(rargs,lambda x , y : x._info(y))
+        self.runcmd(rargs,lambda x , y : x._info(y,self.level))
 
 class conf_cmd(prj_cmd_base,cmdtag_prj):
     """

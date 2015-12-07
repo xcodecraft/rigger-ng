@@ -63,7 +63,9 @@ class vars(interface.resource):
         pass
 
 
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         items = self.__dict__
         rgio.struct_out("vars:")
         for name , val in   items.items():
@@ -149,9 +151,9 @@ __sys:
         self._check_print(True,"system: %s" %self._name)
         interface.control_box._check(self,context)
 
-    def _info(self,context):
+    def _info(self,context,level):
         rgio.struct_out("system: %s" %(self._name))
-        interface.control_box._info(self,context)
+        interface.control_box._info(self,context,level)
 
 
 class prj_main(interface.control_box, interface.base) :
@@ -160,9 +162,9 @@ class prj_main(interface.control_box, interface.base) :
     _name = "main"
     def _allow(self,context):
         return True
-    def _info(self,context):
+    def _info(self,context,level):
         rgio.struct_out("rg: %s" %(self._name))
-        interface.control_box._info(self,context)
+        interface.control_box._info(self,context,level)
     def _before(self,context):
         rg_logger.info("main: _before")
 
@@ -181,9 +183,11 @@ class modul(interface.control_box,interface.base) :
     def _resname(self):
         tag = self.__class__.__name__
         return tag
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("modul : %s" %(self._name))
-        interface.control_box._info(self,context)
+        interface.control_box._info(self,context,level)
 
     def _before(self,context):
         # run_struct.push("modul %s" %(self._name))
@@ -250,8 +254,10 @@ class using(interface.resource):
     def _clean(self,context):
         self.modul_obj._clean(context)
 
-    def _info(self,context):
-        self.modul_obj._info(context)
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
+        self.modul_obj._info(context,level)
 
 class env(interface.control_box,interface.base):
     """
@@ -260,9 +266,9 @@ class env(interface.control_box,interface.base):
     _mix      = None
     def _resname(self):
         return  "%s(%s)" %(self.__class__.__name__,self._name)
-    def _info(self,context):
+    def _info(self,context,level):
         rgio.struct_out("env: %s" %(self._name))
-        interface.control_box._info(self,context)
+        interface.control_box._info(self,context,level)
 
     def _before(self,context):
         rg_logger.info("env:%s _before" %(self._name))

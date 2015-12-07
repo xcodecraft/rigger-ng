@@ -26,5 +26,7 @@ class mysql_base(interface.resource,res_utls):
         cmdtpl = '$MYSQL -h$HOST $DBNAME -u$USER -p$PASSWD < $SQL'
         shexec.execmd(Template(cmdtpl).substitute(MYSQL=mysql,HOST=self.host ,DBNAME=self.name,USER=self.user,PASSWD=self.password,SQL=self.sql),True)
 
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("mysql: %s" %(self.name))

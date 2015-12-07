@@ -48,7 +48,9 @@ class copy(interface.resource,res_utls):
     def _check(self,context):
         self._check_print(os.path.exists(self.dst),self.dst)
 
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("copy")
         rgio.struct_out("src: " + self.src,1)
         rgio.struct_out("dst: " + self.dst,1)
@@ -93,7 +95,9 @@ class link(interface.resource,res_utls):
     def _check(self,context):
         self._check_print(os.path.exists(self.dst),self.dst)
 
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("link")
         rgio.struct_out("src: " + self.src,1)
         rgio.struct_out("dst: " + self.dst,1)
@@ -152,7 +156,9 @@ class path(interface.resource,res_utls):
             cmd = Template(cmdtpl).substitute(DST=v)
             self.execmd(cmd)
 
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("path :" )
         for path in self.paths:
             rgio.struct_out("%s" %path,1 )
@@ -247,7 +253,9 @@ class intertpl(interface.resource,res_utls):
         cmd = Template(cmdtpl).substitute(DST=self.dst)
         self.execmd(cmd)
 
-    def _info(self):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         return self.dst
     def _depend(self,m,context):
         m._check_writeable(self.dst)
@@ -301,7 +309,9 @@ class file_tpl(interface.resource,res_utls):
         cmdtpl ="if test -e $DST ; then rm -rf  $DST ; fi "
         cmd = Template(cmdtpl).substitute(DST=self.dst)
         self.execmd(cmd)
-    def _info(self,context):
+    def _info(self,context,level):
+        if  level  <= 0  :
+            return 
         rgio.struct_out("file_tpl")
         rgio.struct_out("tpl: %s" %self.tpl ,1)
         rgio.struct_out("dst: %s" %self.dst ,1)
