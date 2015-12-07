@@ -51,7 +51,8 @@ class exception_monitor:
             # print(exc_value)
 
 def control_call(res,fun,context,tag) :
-
+    if res is None :
+        return 
     with utls.rg_io.scope_iotag(res.__class__.__name__ ,tag) :
         if res._allow(context) :
             with utls.rg_sh.scope_sudo(res.sudo) :

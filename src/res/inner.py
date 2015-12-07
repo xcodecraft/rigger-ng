@@ -279,7 +279,10 @@ class env(interface.control_box,interface.base):
         rg_logger.info("env:%s _before" %(self._name))
         if self._mix is not None :
             for key in  self._mix.split(",") :
-                self.append(res.node.env_find(key))
+                obj = res.node.env_find(key)
+                if obj is None :
+                    raise interface.rigger_exception("env [%s] : mix [%s] not found " %(self._name,key))
+                self.append(obj)
 
 
         # vars._before(self,context)
