@@ -31,11 +31,11 @@ class pylon_autoload(interface.resource,res_utls):
         self.include   = res_utls.value( self.include)
         self.relpath   = res_utls.value( self.relpath)
         self.dst       = res_utls.value(self.dst)
-        if not os.path.exists(self.dst) :
-            os.makedirs(self.dst)
 
     def _config(self,context):
 
+        if not os.path.exists(self.dst) :
+            os.makedirs(self.dst)
         src_paths = self.include.split(':')
         isfirst   = True
 

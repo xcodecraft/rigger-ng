@@ -18,10 +18,15 @@ class project(interface.resource,res_utls) :
     root = ""
     name = ""
     env  = 'HOME,USER,PRJ_ROOT'
+
+    def setup4start(self,context):
+        self.root = res_utls.value(self.root)
+        self.name = res_utls.value(self.name)
+        context.prj = self
+
     def _before(self,context):
         self.root = res_utls.value(self.root)
         self.name = res_utls.value(self.name)
-
         context.prj = self
         prjdata = {}
         prjdata['PRJ_ROOT'] = self.root

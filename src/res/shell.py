@@ -34,19 +34,15 @@ class shell(interface.resource,res_utls):
     args   = ""
     run    = "start"
     def _before(self,context) :
-        self.env_keep = None
-        if self.script is not None :
-            self.script = res_utls.value(self.script)
-            if os.path.exists(self.script) :
-                self.env_keep = copy.copy(os.environ)
-                return
+        self.env_keep = copy.copy(os.environ)
+        self.script = res_utls.value(self.script)
 
-
-        raise interface.rigger_exception( "script is bad! %s " %(self.script))
     def _after(self,context) :
         if self.env_keep is not None :
             os.environ = copy.copy(self.env_keep)
     def doit(self,context,pos) :
+        if not os.path.exists(self.script) :
+            raise interface.rigger_exception( "script is bad! %s " %(self.script))
         if self.run == pos :
             cmd = Template( self.script + "  $ARGS").substitute(
                     ARGS = self.args
@@ -85,9 +81,6 @@ class php(interface.resource,res_utls):
             self.args   = res_utls.value(self.args)
             self.script = res_utls.value(self.script)
 
-        self.must_exists(self.ini)
-        self.must_exists(self.bin)
-        self.must_exists(self.script)
         self.env_keep = None
         self.env_keep = copy.copy(os.environ)
         return
@@ -97,6 +90,9 @@ class php(interface.resource,res_utls):
 
 
     def doit(self,context,pos) :
+        self.must_exists(self.ini)
+        self.must_exists(self.bin)
+        self.must_exists(self.script)
         if self.run != pos :
             return
 

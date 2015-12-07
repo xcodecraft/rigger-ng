@@ -293,9 +293,9 @@ class file_tpl(interface.resource,res_utls):
             self.dst        = utls.rg_var.value_of(self.dst)
             self.tpl        = utls.rg_var.value_of(self.tpl)
             self.mod        = utls.rg_var.value_of(self.mod)
-        self.must_exists(self.tpl)
 
     def _config(self,context):
+        self.must_exists(self.tpl)
         tpl_builder.build(self.tpl,self.dst)
         self.execmd("chmod %s %s " %(self.mod, self.dst))
 

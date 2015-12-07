@@ -50,37 +50,40 @@ class prj_cmd_base(rg_cmd) :
             return
         #import pdb
         #pdb.set_trace()
-        for env in self.env :
-            for env_obj  in env_data :
-                res.node.env_regist(env_obj)
-                if env_obj._name == env :
-                    main.append(env_obj)
-        context = interface.run_context()
-        # interface.control_call(main,fun,context)
+
+        for env_obj  in env_data  :
+            res.node.env_regist(env_obj)
+            if self.env == "@all"   or env_obj._name in self.env :
+                main.append(env_obj)
 
         extra_used = False
-        if len(self.sys) > 0 :
-            for sys in self.sys :
-                for sysobj in   sys_data :
-                    res.node.sys_regist(sysobj)
-                    if  sysobj._name ==  sys :
-                        # 传入的外部res
-                        if not extra_used and  extra is not None :
-                            sysobj.append(extra)
-                            extra_used = True
-                        main.append(sysobj)
+        for sys_obj in   sys_data  :
+            res.node.sys_regist(sys_obj)
+            if self.sys == "@all"   or sys_obj._name in self.sys:
+                # 传入的外部res
+                if not extra_used and  extra is not None :
+                    sys_obj.append(extra)
+                    extra_used = True
+                main.append(sys_obj)
 
+        context = interface.run_context()
+        project = res.project()
+        project.setup4start(context)
         interface.control_call(main,fun,context,"unknow")
 
 class info_cmd(prj_cmd_base,cmdtag_prj):
     """
-    rg info [-l level]
+    rg info [-l level] [-a 1 ]
     """
     def _config(self,argv,rargs):
         prj_cmd_base._config(self,argv,rargs)
         self.level = 2 
         if argv.has_key('-l') :
             self.level = (int)(argv['-l'] )
+        print(argv)
+        if argv.has_key('-a') :
+            self.env = "@all"
+            self.sys = "@all"
 
     def _execute(self,rargs):
         rgio.struct_out("rg %s" %(rargs) )

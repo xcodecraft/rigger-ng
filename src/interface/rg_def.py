@@ -104,11 +104,9 @@ class control_box(controlable):
 
     def _info(self,context,level):
         level = level - 1 
-        # if  level  > 0  :
-        fun = lambda x,y :  x._info(y,level)
-        # else :
-        #     fun = lambda x,y :  x._nodoing(y)
-        self.items_call(fun,context,'_info')
+        if  level  > 0  :
+            fun = lambda x,y :  x._info(y,level)
+            self.items_call(fun,context,'_info')
 
     def _allow(self,context):
         return True
