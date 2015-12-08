@@ -29,14 +29,6 @@ class prj_cmd_base(rg_cmd) :
         utls.check.must_true(data.has_key('_sys'),"project no _sys data")
         return True
 
-    def check(self) :
-        for need_env in self.env :
-            if res.node.env_find(need_env) is None :
-                raise interface.rigger_exception("env [%s] not found" %(need_env))
-
-        for need_sys in self.sys :
-            if res.node.sys_find(need_sys) is None :
-                raise interface.rigger_exception("sys [%s] not found" %(need_sys))
 
     def runcmd(self,rargs,fun,extra=None) :
         import utls.rg_yaml,copy
@@ -59,24 +51,40 @@ class prj_cmd_base(rg_cmd) :
             return
         #import pdb
         #pdb.set_trace()
+        
 
         for env_obj  in env_data  :
             res.node.env_regist(env_obj)
-            if self.env == "@all"   or env_obj._name in self.env :
+            if self.env == "@all" :
                 main.append(env_obj)
 
-        extra_used = False
+        if self.env != "@all"  :
+            for  need_env in self.env :
+                obj = res.node.env_find(need_env)
+                if obj is not None :
+                    main.append(obj)
+                else:
+                    raise interface.rigger_exception("env [%s] not found" %(need_env))
+
+
         for sys_obj in   sys_data  :
             res.node.sys_regist(sys_obj)
-            if self.sys == "@all"   or sys_obj._name in self.sys:
-                # 传入的外部res
-                if not extra_used and  extra is not None :
-                    sys_obj.append(extra)
-                    extra_used = True
+            if self.sys == "@all":
                 main.append(sys_obj)
 
+        if len(self.sys) > 1 and extra is not None :
+                raise interface.rigger_exception("extra obj will execute in muti sys" %(len(self.sys)))
 
-        self.check()
+        if self.sys != "@all"  :
+            for need_sys in self.sys :
+                obj = res.node.sys_find(need_sys)
+                if obj is not None :
+                    if extra is not None :
+                        obj.append(extra)
+                    main.append(obj)
+                else :
+                    raise interface.rigger_exception("sys [%s] not found" %(need_sys))
+
         context = interface.run_context()
         project = res.project()
         project.setup4start(context)
