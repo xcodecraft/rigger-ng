@@ -1,3 +1,9 @@
+_useage:
+    - !R.useage
+        _name : "dev"
+        _conf:
+            env: "dev"
+            sys: "beanstalk"
 _env:
     - !R.env
         _name    : "_dev"
@@ -87,3 +93,4 @@ _sys:
                 sudo : True
             - !R.beanstalkd
                 port : 11400
+

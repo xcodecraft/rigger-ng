@@ -32,7 +32,7 @@ class prj_cmd_base(rg_cmd) :
 
     def runcmd(self,rargs,fun,extra=None) :
         import utls.rg_yaml,copy
-        utls.dbc.must_exists(rargs.prj.conf)
+        utls.check.must_exists(rargs.prj.conf)
         rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
         loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
         data   = loader.load_data("!R","res")
