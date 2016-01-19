@@ -5,9 +5,11 @@ def setup_env() :
     root  = os.path.dirname(root)
     root  = os.path.dirname(root)
     root  = os.path.dirname(root)
+    root  = os.path.dirname(root)
+
     sys.path.append(os.path.join(root,"src") )
     sys.path.append(os.path.join(root,"test") )
-    sys.path.append(os.path.join(root,"extends/res") )
+    sys.path.append(os.path.join(root,"src/extends/res") )
     os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
 
@@ -17,12 +19,14 @@ if __name__ == '__main__':
 
     import interface,impl
     impl.setup()
-    import ubuntu
-    ubuntu.setup()
+    import centos
+    centos.setup()
+
+    from centos.tc.crontab_tc  import *
 
 
-    from ubuntu.mysql_tc  import *
+    # from ubuntu.mysql_tc  import *
     # from ubuntu.varnishd_tc  import *
-    from ubuntu.fpm_tc  import *
+    # from ubuntu.fpm_tc  import *
     # from ubuntu.websvc_tc   import *
     unittest.main()

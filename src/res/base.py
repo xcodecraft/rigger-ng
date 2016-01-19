@@ -7,8 +7,8 @@ import  utls.rg_var
 import  os
 
 class res_utls:
-    def execmd(self,cmd) :
-        utls.rg_sh.shexec.execmd(cmd,tag=self.__class__.__name__)
+    def execmd(self,cmd,okcode= [0]) :
+        utls.rg_sh.shexec.execmd(cmd,okcode=okcode,tag=self.__class__.__name__)
 
     @staticmethod
     def value(v) :

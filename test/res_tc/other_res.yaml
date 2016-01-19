@@ -1,0 +1,23 @@
+_env:
+    - !R.env
+        _name: "dev"
+
+    - !R.env
+       _name: "base"
+       _res:
+        - !R.project
+            name: "rigger-tc"
+            root: "${HOME}/devspace/rigger-ng"
+        - !R.vars
+                PRJ_NAME: "RG_UT"
+                PRJ_KEY : "RG_UT"
+
+
+_sys:
+    -  !R.system
+        _name: "crontab"
+        _res:
+            - !R.echo
+                value : "hello"
+            - !R.crontab
+                cron: "${PRJ_ROOT}/test/res_tc/exampl.cron"

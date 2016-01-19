@@ -137,6 +137,7 @@ __sys:
         auto_vars = vars()
         auto_vars.SYS_NAME = self._name
         auto_vars.RUN_PATH = "%s/run/%s" %(context.prj.root,self._name)
+        context.run_path   = auto_vars.RUN_PATH
 
         run_path     = res.files.path()
         run_path.dst = auto_vars.RUN_PATH

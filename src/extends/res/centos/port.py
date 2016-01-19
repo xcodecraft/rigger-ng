@@ -6,6 +6,7 @@ import random
 from shared.fpm import *
 from shared.daemon import *
 from shared.basesvc import *
+from shared.crontab import *
 
 class fpm_pool(fpm_pool_base):
     bin  = "/sbin/service php5-fpm"
@@ -102,3 +103,6 @@ class beanstalkd (beanstalkd_shared):
     zdaemon    = "/usr/local/python/bin/zdaemon"
     confpath   = "${PRJ_ROOT}/conf/used"
 
+class crontab (crontab_base) :
+    key   = "NO1"
+    cron  = None
