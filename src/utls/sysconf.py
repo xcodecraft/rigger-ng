@@ -36,9 +36,9 @@ class sysconf:
         self.beg     = Template(begtpl).substitute(TAG=self.commenttag,KEY=key)
         self.end     = Template(endtpl).substitute(TAG=self.commenttag,KEY=key)
         self.timetag = Template(datetpl).substitute(TAG=self.commenttag,DATE=now)
-        newfileName  = self.conffile + ".new"
+        newcron      = self.conffile + ".new"
         file         = open(self.conffile)
-        nfile        = open(newfileName,"w")
+        nfile        = open(newcron ,"w")
         ispass     = False
         have_write = False
         for  line in file:
@@ -54,13 +54,15 @@ class sysconf:
             self.write_conf(nfile,content,isclean)
         nfile.close()
         file.close()
-        shutil.copy(newfileName ,self.conffile)
+        return newcron
+        # shutil.copy(newfileName ,self.conffile)
 
     def replace_by_file(self,key,contentFile):
         file    = open(contentFile)
         content = file.readlines()
-        self.replace(key,content)
+        newcron = self.replace(key,content)
         file.close()
+        return newcron 
 
 if __name__ == '__main__':
     opts, args = getopt.getopt(sys.argv[1:], "f:n:c:t:p:", ["conf=","name=","content=","tag=","type="])
