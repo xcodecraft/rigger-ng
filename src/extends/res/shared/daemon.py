@@ -124,9 +124,8 @@ class daemon_base(interface.resource,res_utls):
 class daemon_base_php(daemon_base):
     """
     示例:
-    !R.daemon_php :
-        script : "$${PRJ_ROOT}/src/apps/console/work.php"
-        php_ini: "$${PRJ_ROOT}/conf/used/php.ini"
+    !R.daemon_php 
+        script : "${PRJ_ROOT}/src/apps/console/work.php"
     """
     php_ini  = "${PHP_INI}"
     php_bin  = "${PHP_BIN}"

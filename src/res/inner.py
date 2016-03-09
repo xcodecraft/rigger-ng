@@ -14,6 +14,11 @@ import  res.files
 
 class project(interface.resource,res_utls) :
     """
+    项目设定
+    示例:
+    - !R.project
+        root : "${HOME}/devspace/rigger-ng/demo"
+        name : "rg_demo"
     """
     root = ""
     name = ""
@@ -40,6 +45,7 @@ class project(interface.resource,res_utls) :
 
 class vars(interface.resource):
     """
+    定义变量
     !R.vars:
         A: 1
         B: "hello"
@@ -115,14 +121,14 @@ class assert_eq(interface.resource) :
 
 class system (interface.control_box,interface.base):
     """
-__sys:
-    -  !R.system
-        _name: "test"
-        _res:
-            - !R.vars
-                    TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
-            - !R.echo
-                value : "${TEST_CASE}"
+    _sys:
+        - !R.system
+            _name: "test"
+            _res:
+                - !R.vars
+                        TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
+                - !R.echo
+                    value : "${TEST_CASE}"
     """
     _name = ""
 
@@ -268,6 +274,12 @@ class using(interface.resource):
 class env(interface.control_box,interface.base):
     """
 
+    _env:
+        - !R.env
+            _name    : "_dev"
+            _res :
+                - !R.vars
+                        TEST_CASE : "${PRJ_ROOT}/test/main.py"
     """
     _mix      = None
     def _resname(self):

@@ -41,7 +41,7 @@ from shared.mysql import *
 class mysql(mysql_base):
 
     """
-    !R.mysql:
+    !R.mysql
         host: "127.0.0.1"
         sql: "init.sql"
     """
@@ -55,8 +55,8 @@ class mysql(mysql_base):
 class daemon(daemon_base):
     """
     示例:
-    !R.daemon:
-        script : "$${PRJ_ROOT}/src/apps/console/work.sh"
+    !R.daemon
+        script : "${PRJ_ROOT}/src/apps/console/work.sh"
     """
     script   = ""
     daemon   = "True"
@@ -72,9 +72,8 @@ class daemon(daemon_base):
 class daemon_php(daemon_base_php):
     """
     示例:
-    !R.daemon_php :
-        script : "$${PRJ_ROOT}/src/apps/console/work.php"
-        php_ini: "$${PRJ_ROOT}/conf/used/php.ini"
+    !R.daemon_php 
+        script : "${PRJ_ROOT}/src/apps/console/work.php"
     """
     confpath = "${PRJ_ROOT}/conf/used"
     php_ini  = "${PHP_INI}"
@@ -104,5 +103,9 @@ class beanstalkd (beanstalkd_shared):
     confpath   = "${PRJ_ROOT}/conf/used"
 
 class crontab (crontab_base) :
+    """
+    !R.crontab
+        cron : "${PRJ_ROOT}/conf/used/example.cron"
+    """
     key   = "NO1"
     cron  = None

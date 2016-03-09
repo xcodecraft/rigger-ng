@@ -21,4 +21,4 @@ _sys:
                 value : "hello"
             - !R.crontab
                 sudo: True 
-                cron: "${PRJ_ROOT}/src/extends/res/centos/tc/exampl.cron"
+                cron: "${PRJ_ROOT}/src/extends/res/centos/tc/example.cron"
