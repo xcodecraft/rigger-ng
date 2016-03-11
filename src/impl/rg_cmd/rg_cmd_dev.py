@@ -12,6 +12,12 @@ class dev_cmd_base :
         print(argv)
         pass
 
+    def useage(self,output):
+        if hasattr(self,"__doc__") and self.__doc__ is not None:
+            output(str(self.__doc__))
+        else:
+            output("%s has no more info" % self.__class__)
+
     def loadconf(self,rargs) :
         # import  pdb
         # pdb.set_trace()
@@ -60,4 +66,24 @@ class rc_cmd(dev_cmd_base) :
         conf.git.ins().push()
         conf.git.ins().set_tag(ver)
 
+
+class sonar_cmd(dev_cmd_base) :
+    """
+    命令:
+    rg sonar 
+
+    配置(dev.yaml): 
+    - !C.sonar
+        runner   : "/data/x/tools/sonar/bin/sonar-runner"
+        qube     : "http://xxxx"
+        src      : "src"
+        language : "php"
+
+    """
+    def _config(self,argv,rargs):
+        pass
+    def _execute(self,rargs):
+        self.loadconf(rargs)
+        conf.sonar.ins().build_file()
+        conf.sonar.ins().run()
 

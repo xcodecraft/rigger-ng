@@ -7,6 +7,8 @@ from string     import Template
 from define     import *
 import  utls.check , utls.dbc , utls.rg_sh
 
+from utls.pattern  import  fail_exception 
+
 import ConfigParser
 
 
@@ -14,10 +16,13 @@ class project(interface.rg_conf.base,singleton):
     name = ""
     root = ""
     def __init__(self):
+        self.root = utls.rg_var.value_of(self.root)
         pass
     @staticmethod
     def ins():
         return singleton.get_ins(project)
+
+
 
 class version (interface.rg_conf.base,singleton):
     file = None
@@ -190,3 +195,48 @@ class git (interface.rg_conf.base,singleton) :
         cmd = """cd $PRJS_ROOT/$PRJ ;  git tag -a -m "$MSG" r$TAG $TAG ; git push --tags """
         cmd = Template(cmd).substitute(PRJ=prj,PRJS_ROOT=local,TAG=ori,MSG=msg)
         self.execmd(cmd,True)
+
+
+class sonar(interface.rg_conf.base,singleton):
+    """
+    - !C.sonar
+        runner   : "/data/x/tools/sonar/bin/sonar-runner"
+        qube     : "http://xxxx"
+        src      : "src"
+        language : "php"
+    """
+    def __init__(self) :
+        self.prjname  = project.ins().name
+        self.version  = version.ins().info()
+        if len(self.qube) > 0 :
+            self.qube  = "sonar.host.url= " +  self.qube 
+        # self.version  = "1.0.0.0"
+        # self.src      = self.src
+        # self.language = utls.rg_var.value_of(self.language)
+        # self.dstpath  = utls.rg_var.value_of(self.dstpath)
+
+    @staticmethod
+    def ins():
+        with   fail_exception(interface.rigger_exception("bad sonar conf "))  :
+            return singleton.get_ins(sonar)
+
+    def run(self) :
+        # root  = os.path.join(project.ins().root , "sonar-project.properties")
+        cmd = "cd $PRJ_ROOT; $RUNNER "
+        cmd = Template(cmd).substitute(PRJ_ROOT = project.ins().root , RUNNER = self.runner)
+        code = self.execmd(cmd,True)
+    def build_file(self):
+        content="""
+        ${QUBE}
+        sonar.projectKey=${PRJ_NAME}
+        sonar.projectName=${PRJ_NAME}
+        sonar.projectVersion=${PRJ_VER}
+        sonar.sources=${PRJ_SRC}
+        sonar.language=${PRJ_LANG}
+        sonar.sourceEncoding=UTF-8
+        """
+        c = Template(content).substitute(QUBE=self.qube,PRJ_NAME=self.prjname, PRJ_VER=self.version,
+                PRJ_SRC=self.src,PRJ_LANG=self.language)
+        conf = os.path.join(project.ins().root , "sonar-project.properties")
+        with  open(conf ,'w') as f :
+            f.write(c)

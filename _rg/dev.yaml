@@ -6,4 +6,9 @@ _dev:
         file : "src/version.txt"
     - !C.git
         remote : "git@github.com:xcodecraft/rigger-ng.git"
+    - !C.sonar
+        runner   : "/data/x/tools/sonar/bin/sonar-runner"
+        qube     : "http://sonar.ayibang.cn"
+        language : "Python"
+        src      : "src"
 

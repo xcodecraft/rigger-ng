@@ -15,3 +15,13 @@ class end_keeper:
     def __exit__(self,*args,**kwargs):
         if self.endcall != None :
             self.endcall()
+
+class fail_exception:
+    def __init__(self,exception_obj) :
+        self.exception_obj = exception_obj 
+        pass
+    def __enter__(self):
+        pass
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_value is not None :
+            raise self.exception_obj 

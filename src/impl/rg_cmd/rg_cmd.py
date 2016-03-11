@@ -26,6 +26,7 @@ class init_cmd(rg_cmd) :
         tpl = rargs.rg.root + "/rg_tpl"
         utls.tpl.tplworker().execute(tpl,dst,"")
 
+
 class tpl_cmd(rg_cmd) :
     """
 rg tpl -t <template> -o <dst> [-i <ignore>]
