@@ -7,6 +7,7 @@ from shared.fpm import *
 from shared.daemon import *
 from shared.basesvc import *
 from shared.crontab import *
+from shared.varnishd import *
 
 class fpm_pool(fpm_pool_base):
     bin  = "/sbin/service php5-fpm"
@@ -101,6 +102,9 @@ class beanstalkd (beanstalkd_shared):
     beanstalkd = "/usr/local/beanstalkd/bin/beanstalkd"
     zdaemon    = "/usr/local/python/bin/zdaemon"
     confpath   = "${PRJ_ROOT}/conf/used"
+
+class varnishd (varnishd_shared) :
+    pass
 
 class crontab (crontab_base) :
     """

@@ -4,78 +4,62 @@ import interface
 import time
 import random
 
+
 from utls.rg_io  import rgio,rg_logger
 from utls.rg_var import value_of
 from utls.rg_sh  import shexec
-from impl.rg_utls  import *
-#from impl.rg_res  import *
+# from impl.rg_utls  import *
+from res.base   import *
 from string import *
+import impl.rg_utls
 
-def stop_service(name,pidfile,sudo=False):
-    path=os.path.dirname(os.path.realpath(__file__))
-    if sudo :
-        cmdtpl=" sudo %s/stop_proc.sh %s %s " %(path,pidfile,name)
-    else:
-        cmdtpl=" %s/stop_proc.sh %s %s " %(path,pidfile,name)
-    cmd = Template(cmdtpl).substitute(NAME=name,PID_FILE=pidfile)
-    shexec.execmd(cmd)
 
-class varnishd(interface.resource):
-    """
-    !R.varnishd
-        port:       "80"
-        http_ip:    "0.0.0.0"
-        admin_port: "2000"
-        admin_ip:   "127.0.0.1"
-        mem:        "20M"
-        vcl:        "${PRJ_ROOT}/conf/used/local_cache.vcl"
-        name:       "local_proxy_${ENV}"
-        extras:     "-w 100,1000,60"
-    """
+class varnishd_shared(interface.resource,res_utls):
 
-    port       = "80"
-    http_ip    = "0.0.0.0"
+    svc_port   = "80"
+    svc_ip     = "0.0.0.0"
     admin_port = "2000"
     admin_ip   = "127.0.0.1"
     mem        = "20M"
     vcl        = ""
     extras     = ""
-    name       = "rigger"
-
-    varnishd   = "/usr/local/sbin/varnish"
-    varnishadm = "/usr/local/sbin/varnishadm"
+    name       = ""
+    varnishd   = "/usr/local/varnish/sbin/varnishd"
+    varnishadm = "/usr/local/varnish/bin/varnishadm"
 
     def _before(self,context):
         with res_context(self.__class__.__name__) :
-            self.port       = value_of(self.port)
+            self.svc_port   = value_of(self.svc_port)
             self.admin_port = value_of(self.admin_port)
             self.admin_ip   = value_of(self.admin_ip)
-            self.http_ip    = value_of(self.http_ip)
+            self.svc_ip     = value_of(self.svc_ip)
             self.mem        = value_of(self.mem)
             self.vcl        = value_of(self.vcl)
             self.extras     = value_of(self.extras)
             self.name       = value_of(self.name)
-            self.pid        = value_of("${PRJ_ROOT}/varnishd_${PRJ_KEY}_" + self.port + ".pid")
+            self.pid        = value_of("${RUN_PATH}/varnishd_" + self.svc_port + ".pid")
 
     def _start(self,context):
-        cmdtpl = "if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $HTTP_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"
+        cmdtpl = "if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $SVC_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"
         cmd = Template(cmdtpl).substitute(
-                VARNISHD    =   self.varnishd,
-                MEM         =   self.mem,
-                PORT        =   self.port,
-                VCL         =   self.vcl,
-                ADMIN_PORT  =   self.admin_port,
-                ADMIN_IP    =   self.admin_ip,
-                HTTP_IP     =   self.http_ip,
-                PID         =   self.pid,
-                NAME        =   self.name,
-                EXTRAS      =   self.extras
+                VARNISHD   = self.varnishd,
+                MEM        = self.mem,
+                PORT       = self.svc_port,
+                VCL        = self.vcl,
+                ADMIN_PORT = self.admin_port,
+                ADMIN_IP   = self.admin_ip,
+                SVC_IP     = self.svc_ip,
+                PID        = self.pid,
+                NAME       = self.name,
+                EXTRAS     = self.extras
                 )
         shexec.execmd(cmd)
 
     def _stop(self,context):
-        if get_key("Are you sure stop Varnishd? (y/N)", context)  == "y" :
-            stop_service("Varnished",self.pid, True)
+        if impl.rg_utls.get_key("Are you sure stop Varnishd? (y/N)", context)  == "y" :
+            cmdtpl = "cat $PID | xargs kill ; rm $PID  "
+            cmd = Template(cmdtpl).substitute( PID = self.pid)
+            shexec.execmd(cmd)
 
     def _reload(self,context):
         confname = "vcl_%s_%d" %(time.strftime("%H_%M_%S",time.localtime()) , int(random.random() * 100 ) )
@@ -90,12 +74,14 @@ class varnishd(interface.resource):
         shexec.execmd(cmd)
 
     def _check(self,context):
-        cmdtpl = "$VARNISHADM -T localhost:$ADMIN_PORT  status ";
+        # pass
+        cmdtpl = "$VARNISHADM -n $NAME  status ";
         vns_test = Template(cmdtpl).substitute(
                 VARNISHADM  = self.varnishadm,
-                ADMIN_PORT  = self.admin_port ,
+                NAME        = self.name 
                 )
-        cmd = " sudo rm -rf /tmp/varnish_ok  ; if  " +  vns_test + "  ; then  sudo  touch  /tmp/varnish_ok;  fi  "
+        # cmd = " sudo rm -rf /tmp/varnish_ok  ; if  " +  vns_test + "  ; then  sudo  touch  /tmp/varnish_ok;  fi  "
+        cmd = vns_test 
         shexec.execmd(cmd)
-        self._check_print(os.path.exists("/tmp/varnish_ok"),"varnishd")
+        # self._check_print(os.path.exists("/tmp/varnish_ok"),"varnishd")
 
