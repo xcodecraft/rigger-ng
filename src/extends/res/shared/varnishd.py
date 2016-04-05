@@ -16,16 +16,16 @@ import impl.rg_utls
 
 class varnishd_shared(interface.resource,res_utls):
 
-    svc_port   = "80"
-    svc_ip     = "0.0.0.0"
-    admin_port = "2000"
-    admin_ip   = "127.0.0.1"
-    mem        = "20M"
-    vcl        = ""
-    extras     = ""
-    name       = ""
-    varnishd   = "/usr/local/varnish/sbin/varnishd"
-    varnishadm = "/usr/local/varnish/bin/varnishadm"
+    # svc_port   = "80"
+    # svc_ip     = "0.0.0.0"
+    # admin_port = "2000"
+    # admin_ip   = "127.0.0.1"
+    # mem        = "20M"
+    # vcl        = ""
+    # extras     = ""
+    # name       = ""
+    # varnishd   = "/usr/local/varnish/sbin/varnishd"
+    # varnishadm = "/usr/local/varnish/bin/varnishadm"
 
     def _before(self,context):
         with res_context(self.__class__.__name__) :

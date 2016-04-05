@@ -14,16 +14,6 @@ from daemon     import *
 import utls.check
 
 class beanstalkd_shared (daemon_base):
-    # port       = "11300"
-    # ip         = "0.0.0.0"
-    # verbosity  = False
-    # daemon     = "True"
-    # umask      = "022"
-    # forever    = "True"
-    # logpath    = "${RUN_PATH}/"
-    # binlog  = "/data/${PRJ_NAME}"
-    # runpath    = "${RUN_PATH}"
-    # beanstalkd = "/usr/local/beanstalkd/bin/beanstalkd"
     def _before(self,context):
         with res_context(self.__class__.__name__) :
             self.worker     = 1

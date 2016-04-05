@@ -22,7 +22,7 @@ if __name__ == '__main__':
     import centos
     centos.setup()
 
-    from centos.tc.crontab_tc  import *
+    from centos.tc.port_tc  import *
 
 
     # from ubuntu.mysql_tc  import *

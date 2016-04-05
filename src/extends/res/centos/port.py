@@ -104,7 +104,16 @@ class beanstalkd (beanstalkd_shared):
     confpath   = "${PRJ_ROOT}/conf/used"
 
 class varnishd (varnishd_shared) :
-    pass
+    svc_port   = "80"
+    svc_ip     = "0.0.0.0"
+    admin_port = "2000"
+    admin_ip   = "127.0.0.1"
+    mem        = "20M"
+    vcl        = ""
+    extras     = ""
+    name       = ""
+    varnishd   = "/usr/local/varnish/sbin/varnishd"
+    varnishadm = "/usr/local/varnish/bin/varnishadm"
 
 class crontab (crontab_base) :
     """
