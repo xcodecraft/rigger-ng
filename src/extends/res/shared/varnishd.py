@@ -85,3 +85,4 @@ class varnishd_shared(interface.resource,res_utls):
         shexec.execmd(cmd)
         # self._check_print(os.path.exists("/tmp/varnish_ok"),"varnishd")
 
+
