@@ -9,16 +9,28 @@ from string import Template
 class cmd(interface.resource,res_utls) :
     """
     """
-    cmd = "" 
+    cmd = ""
+    run = "start"
     def _before(self,context) :
         self.cmd= res_utls.value(self.cmd)
+        self.run= res_utls.value(self.run)
         pass
 
     def _start(self,context) :
-        self.execmd(self.cmd)
+        self.doit(context,"start")
         pass
+    def _reload(self,context) :
+        self.doit(context,"reload")
+        pass
+
     def _stop(self,context) :
+        self.doit(context,"stop")
         pass
+
+    def doit(self,context,pos) :
+        if  pos in self.run.split(","):
+            self.execmd(self.cmd)
+
 
 
 class shell(interface.resource,res_utls):
@@ -28,7 +40,7 @@ class shell(interface.resource,res_utls):
         args   : ""
         run    : "start"
 
-    run =  conf | start |  stop
+    run =  conf,start,stop
     """
     script = None
     args   = ""
@@ -43,7 +55,7 @@ class shell(interface.resource,res_utls):
     def doit(self,context,pos) :
         if not os.path.exists(self.script) :
             raise interface.rigger_exception( "script is bad! %s " %(self.script))
-        if self.run == pos :
+        if  pos in self.run.split(","):
             cmd = Template( self.script + "  $ARGS").substitute(
                     ARGS = self.args
                     )
