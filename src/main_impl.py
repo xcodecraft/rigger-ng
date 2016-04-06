@@ -2,6 +2,7 @@
 import sys ,  os ,logging,getopt ,setting
 import interface
 import yaml
+import stat
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
@@ -19,6 +20,8 @@ def setting_debug(opts) :
             if int(val) >= 2 :
                 log_level = logging.DEBUG
     logging.basicConfig(level=log_level,filename='run.log')
+    with open('run.log') as f :
+        os.chmod('run.log',stat.S_IWOTH | stat.S_IROTH | stat.S_IWGRP | stat.S_IRGRP | stat.S_IWUSR | stat.S_IRUSR)
     if setting.debug :
         console   = logging.StreamHandler()
         console.setLevel(log_level)
