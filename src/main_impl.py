@@ -22,7 +22,6 @@ def setting_debug() :
             if int(val) >= 2 :
                 log_level = logging.DEBUG
         if opt == '-q' :
-                print("xxxx")
                 log_level = logging.ERROR
                 log_open  = False 
     if log_open :
