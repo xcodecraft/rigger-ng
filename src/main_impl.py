@@ -11,6 +11,7 @@ def set_modul_path() :
 
 def setting_debug(opts) :
     log_level = logging.ERROR
+    log_open  = True 
     for opt,val in opts.items() :
         if opt == '-d' :
             setting.debug       = True
@@ -21,7 +22,9 @@ def setting_debug(opts) :
                 log_level = logging.DEBUG
         if opt == '-q' :
                 log_level = logging.ERROR
-    logging.basicConfig(level=log_level,filename='run.log')
+                log_open  = False 
+    if log_open :
+        logging.basicConfig(level=log_level,filename='run.log')
     if setting.debug :
         console   = logging.StreamHandler()
         console.setLevel(log_level)
