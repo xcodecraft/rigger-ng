@@ -19,9 +19,9 @@ def setting_debug(opts) :
                 log_level = logging.INFO
             if int(val) >= 2 :
                 log_level = logging.DEBUG
+        if opt == '-q' :
+                log_level = logging.ERROR
     logging.basicConfig(level=log_level,filename='run.log')
-    with open('run.log') as f :
-        os.chmod('run.log',stat.S_IWOTH | stat.S_IROTH | stat.S_IWGRP | stat.S_IRGRP | stat.S_IWUSR | stat.S_IRUSR)
     if setting.debug :
         console   = logging.StreamHandler()
         console.setLevel(log_level)
@@ -38,7 +38,7 @@ def main():
     parser.parse(sys.argv[1:] )
     setting_debug(parser.argv)
 
-    opts,args = getopt.getopt(sys.argv[1:],"d:s:e:c:")
+    opts,args = getopt.getopt(sys.argv[1:],"qd:s:e:c:")
     # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
         rargs  = impl.rg_args.run_args.load()
