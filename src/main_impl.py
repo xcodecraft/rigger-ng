@@ -9,10 +9,11 @@ def set_modul_path() :
     sys.path.append(root)
     sys.path.append(os.path.join(root,"extends/res") )
 
-def setting_debug(opts) :
+def setting_debug() :
     log_level = logging.ERROR
     log_open  = True 
-    for opt,val in opts.items() :
+    opts,args = getopt.getopt(sys.argv[1:],"qd:s:e:c:")
+    for opt in args:
         if opt == '-d' :
             setting.debug       = True
             setting.debug_level = int(val)
@@ -21,6 +22,7 @@ def setting_debug(opts) :
             if int(val) >= 2 :
                 log_level = logging.DEBUG
         if opt == '-q' :
+                print("xxxx")
                 log_level = logging.ERROR
                 log_open  = False 
     if log_open :
@@ -39,9 +41,8 @@ def main():
     import impl.rg_ioc
     parser = impl.rg_args.rarg_parser()
     parser.parse(sys.argv[1:] )
-    setting_debug(parser.argv)
 
-    opts,args = getopt.getopt(sys.argv[1:],"qd:s:e:c:")
+    setting_debug()
     # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
         rargs  = impl.rg_args.run_args.load()
