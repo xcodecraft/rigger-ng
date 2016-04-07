@@ -12,8 +12,8 @@ def set_modul_path() :
 def setting_debug() :
     log_level = logging.ERROR
     log_open  = True 
-    opts,args = getopt.getopt(sys.argv[1:],"qd:s:e:c:")
-    for opt in args:
+    opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:")
+    for opt,val in opts:
         if opt == '-d' :
             setting.debug       = True
             setting.debug_level = int(val)
