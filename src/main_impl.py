@@ -12,18 +12,19 @@ def set_modul_path() :
 def setting_debug() :
     log_level = logging.ERROR
     log_open  = True 
-    opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:")
-    for opt,val in opts:
-        if opt == '-d' :
-            setting.debug       = True
-            setting.debug_level = int(val)
-            if int(val) == 1 :
-                log_level = logging.INFO
-            if int(val) >= 2 :
-                log_level = logging.DEBUG
-        if opt == '-q' :
-                log_level = logging.ERROR
-                log_open  = False 
+    if len(sys.argv) >2 :
+        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:")
+        for opt,val in opts:
+            if opt == '-d' :
+                setting.debug       = True
+                setting.debug_level = int(val)
+                if int(val) == 1 :
+                    log_level = logging.INFO
+                if int(val) >= 2 :
+                    log_level = logging.DEBUG
+            if opt == '-q' :
+                    log_level = logging.ERROR
+                    log_open  = False 
     if log_open :
         logging.basicConfig(level=log_level,filename='run.log')
     if setting.debug :
