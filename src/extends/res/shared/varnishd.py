@@ -58,10 +58,10 @@ class varnishd_shared(interface.resource,res_utls):
 
     def _stop(self,context):
         if os.path.exists(self.pid) :
-            if impl.rg_utls.get_key("Are you sure stop Varnishd? (y/N)", context)  == "y" :
-                cmdtpl = "cat $PID | xargs kill ; rm $PID  "
-                cmd = Template(cmdtpl).substitute( PID = self.pid)
-                shexec.execmd(cmd)
+            # if impl.rg_utls.get_key("Are you sure stop Varnishd? (y/N)", context)  == "y" :
+            cmdtpl = "cat $PID | xargs kill ; rm $PID  "
+            cmd = Template(cmdtpl).substitute( PID = self.pid)
+            shexec.execmd(cmd)
 
     def _reload(self,context):
         confname = "vcl_%s_%d" %(time.strftime("%H_%M_%S",time.localtime()) , int(random.random() * 100 ) )
