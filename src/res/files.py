@@ -198,8 +198,8 @@ class file_merge(interface.resource,res_utls):
                 if not os.path.exists(src):
                     raise interface.rigger_exception("path not exists: %s" %src)
                 os.path.walk(src,self.proc_file,None)
-        if os.getuid() == os.stat(self.dst).st_uid :
-            self.execmd("chmod %s %s " %(self.mod, self.dst))
+        # if os.getuid() == os.stat(self.dst).st_uid :
+        #     self.execmd("chmod %s %s " %(self.mod, self.dst))
 
 
     def reload(self,context):
