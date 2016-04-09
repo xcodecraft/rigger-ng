@@ -130,11 +130,11 @@ class fpm_base(interface.control_box,interface.base):
 
             ctrl          = fpm_ctrl()
             ctrl.sudo     = self.sudo
-            ctrl.tag      = self.tag
-            ctrl.ini      = self.ini
-            ctrl.conf     = self.conf
-            ctrl.args     = self.args
-            ctrl.bin      = self.bin
+            ctrl.tag      = res_utls.value(self.tag)
+            ctrl.ini      = res_utls.value(self.ini)
+            ctrl.conf     = res_utls.value(self.conf)
+            ctrl.args     = res_utls.value(self.args)
+            ctrl.bin      = res_utls.value(self.bin)
 
             self.append(ctrl)
             interface.control_box._before(self,context)

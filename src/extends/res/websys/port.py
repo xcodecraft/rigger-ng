@@ -17,7 +17,7 @@ from websys.varnishd import *
 
 class fpm(fpm_base):
     tag      = ""
-    bin      = "${PHP-FPM}"
+    bin      = "${PHP_FPM}"
     ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}_php.ini"
     ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
     conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}_fpm.conf"
