@@ -38,6 +38,9 @@
  rg help
 ```
 ## 团队使用
+
+### 配置[团队的平台环境](doc/rg_env.md)
+### 部署
 ``` shell
 //1 .使用团队发布工具部署到需析机器
 //2. 执行 setup.sh rg_envs<platform>.py
