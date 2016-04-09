@@ -8,7 +8,7 @@ from utls.rg_sh  import shexec
 from impl.rg_utls  import *
 from res.base   import *
 from utls.rg_sh  import shexec
-from shared.shared_utls import * 
+from shared_utls import *
 
 
 

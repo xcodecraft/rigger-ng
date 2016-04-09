@@ -2,23 +2,32 @@
 import sys ,  os ,logging,getopt ,setting
 import interface
 import yaml
+import stat
+import setting
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
     sys.path.append(root)
     sys.path.append(os.path.join(root,"extends/res") )
 
-def setting_debug(opts) :
+def setting_debug() :
     log_level = logging.ERROR
-    for opt,val in opts.items() :
-        if opt == '-d' :
-            setting.debug       = True
-            setting.debug_level = int(val)
-            if int(val) == 1 :
-                log_level = logging.INFO
-            if int(val) >= 2 :
-                log_level = logging.DEBUG
-    logging.basicConfig(level=log_level,filename='run.log')
+    log_open  = True
+    if len(sys.argv) >2 :
+        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:")
+        for opt,val in opts:
+            if opt == '-d' :
+                setting.debug       = True
+                setting.debug_level = int(val)
+                if int(val) == 1 :
+                    log_level = logging.INFO
+                if int(val) >= 2 :
+                    log_level = logging.DEBUG
+            if opt == '-q' :
+                    log_level = logging.ERROR
+                    log_open  = False
+    if log_open :
+        logging.basicConfig(level=log_level,filename='run.log')
     if setting.debug :
         console   = logging.StreamHandler()
         console.setLevel(log_level)
@@ -31,11 +40,12 @@ def main():
     import impl.rg_run , impl.rg_args
     from   utls.rg_io import rgio
     import impl.rg_ioc
+
+
     parser = impl.rg_args.rarg_parser()
     parser.parse(sys.argv[1:] )
-    setting_debug(parser.argv)
 
-    opts,args = getopt.getopt(sys.argv[1:],"d:s:e:c:")
+    setting_debug()
     # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
         rargs  = impl.rg_args.run_args.load()

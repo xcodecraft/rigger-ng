@@ -10,9 +10,12 @@ def setup_env() :
     sys.path.append(os.path.join(root,"src") )
     sys.path.append(os.path.join(root,"test") )
     sys.path.append(os.path.join(root,"src/extends/res") )
-    # sys.path.append(os.path.join(root,"src/extends/res/pylon") )
     os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
+
+    import  setting,rg_env,utls.rg_var
+    rg_env.rgenv_enable()
+    utls.rg_var.import_dict(setting.rgenv)
 
 if __name__ == '__main__':
 

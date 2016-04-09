@@ -5,12 +5,12 @@ import interface
 from utls.rg_io import *
 from tpl.tpl_var import *
 
-def unound_promopt(key,tplstr):
+def unfound_promopt(key,tplstr):
     return "__NOFOUND_[%s]__" %key
-def unound_break(key,tplstr):
+def unfound_break(key,tplstr):
     raise  interface.var_undefine("%s not define in [%s]" %(key,tplstr))
 
-unfound_call= unound_break
+unfound_call= unfound_break
 assign_unique = dict()
 
 class assigner :
