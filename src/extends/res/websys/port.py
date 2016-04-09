@@ -9,15 +9,15 @@ from websys.basesvc import *
 from websys.crontab import *
 from websys.varnishd import *
 
-class fpm_pool(fpm_pool_base):
-    bin  = "/sbin/service php5-fpm"
-    src  = "${PRJ_ROOT}/conf/used/fpm.conf"
-    dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
-    tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
+# class fpm_pool(fpm_pool_base):
+#     bin  = "/sbin/service php5-fpm"
+#     src  = "${PRJ_ROOT}/conf/used/fpm.conf"
+#     dst  = "/etc/php5/fpm/pool.d/${PRJ_NAME}_${SYS_NAME}.conf"
+#     tpl  = "${PRJ_ROOT}/conf/options/fpm.conf"
 
 class fpm(fpm_base):
     tag      = ""
-    bin      = "/usr/local/php/sbin/php-fpm"
+    bin      = "${PHP-FPM}"
     ini      = "${PRJ_ROOT}/conf/used/${SYS_NAME}_php.ini"
     ini_tpl  = "${PRJ_ROOT}/conf/options/fpm.ini"
     conf     = "${PRJ_ROOT}/conf/used/${SYS_NAME}_fpm.conf"
@@ -35,7 +35,7 @@ class nginx_conf(nginx_conf_base):
     name = "${PRJ_NAME}_${SYS_NAME}_${USER}.conf"
     src  = "${PRJ_ROOT}/conf/used/nginx.conf"
     tpl  = "${PRJ_ROOT}/conf/options/nginx.conf"
-    dst  = "/usr/local/nginx/conf/include/"
+    dst  = "${NGINX_CONF}"
     bin  = "/sbin/service nginx"
 
 from websys.mysql import *
@@ -68,7 +68,7 @@ class daemon(daemon_base):
     runpath  = "${RUN_PATH}"
     worker   = 1
     tag      = ""
-    zdaemon  = "/usr/local/python/bin/zdaemon"
+    zdaemon  = "${ZDAEMON}"
 
 class daemon_php(daemon_base_php):
     """
@@ -85,7 +85,7 @@ class daemon_php(daemon_base_php):
     forever  = "True"
     logpath  = "${RUN_PATH}"
     runpath  = "${RUN_PATH}"
-    zdaemon  = "/usr/local/python/bin/zdaemon"
+    zdaemon  = "${ZDAEMON}"
     worker   = 1
     tag      = ""
 
@@ -99,8 +99,8 @@ class beanstalkd (beanstalkd_shared):
     logpath    = "${RUN_PATH}/"
     binlog     = "/data/${PRJ_NAME}"
     runpath    = "${RUN_PATH}"
-    beanstalkd = "/usr/local/beanstalkd/bin/beanstalkd"
-    zdaemon    = "/usr/local/python/bin/zdaemon"
+    beanstalkd = "${BEANSTALKD}"
+    zdaemon  = "${ZDAEMON}"
     confpath   = "${PRJ_ROOT}/conf/used"
 
 class varnishd (varnishd_shared) :

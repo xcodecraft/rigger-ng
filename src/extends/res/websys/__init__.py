@@ -7,6 +7,6 @@ from utls.rg_io import rg_logger
 
 
 def setup() :
-    interface.regist_res("fpm,fpm_pool,nginx_conf,mysql", "websys.port")
+    interface.regist_res("fpm,nginx_conf,mysql", "websys.port")
     interface.regist_res("daemon,daemon_php,crontab",     "websys.port")
     interface.regist_res("beanstalkd,varnishd",           "websys.port")

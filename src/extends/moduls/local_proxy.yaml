@@ -1,11 +1,1 @@
-_mod :
-    - !R.modul
-        _name : "local_proxy"
-        _args : "${L_BEND_SVC},${L_HOST},${L_CHECK_URL}"
-        _res  :
-            # - !R.vars
-            #     tpl_root : "${PRJ_ROOT}/conf/options/"
-            #     use_root : "${PRJ_ROOT}/conf/used/"
-            - !R.file_tpl
-                tpl : "${HOME}/etc/local_proxy/sdk.vcl"
-                dst : "${HOME}/etc/local_proxy/app/abc.vcl"
+
