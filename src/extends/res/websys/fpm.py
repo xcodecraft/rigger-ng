@@ -10,7 +10,7 @@ from utls.rg_sh  import shexec
 from impl.rg_utls import *
 from string     import *
 from res.base   import *
-from shared.shared_utls import * 
+from websys.shared_utls import *
 import utls.check
 
 

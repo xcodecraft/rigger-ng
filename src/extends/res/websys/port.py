@@ -3,11 +3,11 @@ import logging
 import interface
 import time
 import random
-from shared.fpm import *
-from shared.daemon import *
-from shared.basesvc import *
-from shared.crontab import *
-from shared.varnishd import *
+from websys.fpm import *
+from websys.daemon import *
+from websys.basesvc import *
+from websys.crontab import *
+from websys.varnishd import *
 
 class fpm_pool(fpm_pool_base):
     bin  = "/sbin/service php5-fpm"
@@ -24,7 +24,7 @@ class fpm(fpm_base):
     conf_tpl = "${PRJ_ROOT}/conf/options/fpm.conf"
     args     = ""
 
-from shared.websvc import *
+from websys.websvc import *
 
 class nginx_conf(nginx_conf_base):
     """
@@ -38,7 +38,7 @@ class nginx_conf(nginx_conf_base):
     dst  = "/usr/local/nginx/conf/include/"
     bin  = "/sbin/service nginx"
 
-from shared.mysql import *
+from websys.mysql import *
 class mysql(mysql_base):
 
     """
@@ -73,7 +73,7 @@ class daemon(daemon_base):
 class daemon_php(daemon_base_php):
     """
     示例:
-    !R.daemon_php 
+    !R.daemon_php
         script : "${PRJ_ROOT}/src/apps/console/work.php"
     """
     confpath = "${PRJ_ROOT}/conf/used"
@@ -112,8 +112,8 @@ class varnishd (varnishd_shared) :
     vcl        = ""
     extras     = ""
     name       = ""
-    varnishd   = "/usr/local/varnish/sbin/varnishd"
-    varnishadm = "/usr/local/varnish/bin/varnishadm"
+    varnishd   = "${VARNISHD}"
+    varnishadm = "${VARNISHADM}"
 
 class crontab (crontab_base) :
     """

@@ -1,18 +1,6 @@
-#!/usr/bin/python2.6
-from main_impl import *
+#!/usr/bin/python2.7
 
-def is_dist(distkey):
-    pid    = os.getpid()
-    lsbtxt = "/tmp/lsb-%s.txt" %(pid)
-    os.system("lsb_release -a > %s" %(lsbtxt))
-    with open(lsbtxt) as file :
-        data   = file.readlines()
-    os.system("rm  %s" %(lsbtxt))
-    nowdist =  data[1].split(":")
-    if nowdist[0].strip() == "Distributor ID" :
-        if nowdist[1].strip().upper() ==  distkey.upper() :
-            return True
-    return False 
+from main_impl import *
 
 if __name__ == '__main__':
     set_modul_path()
@@ -20,11 +8,7 @@ if __name__ == '__main__':
     import pylon
     impl.setup()
     pylon.setup()
-    if is_dist('ubuntu') :
-        import ubuntu
-        ubuntu.setup()
-    if is_dist('centos') :
-        import centos
-        centos.setup()
+    import websys
+    websys.setup()
     main()
 

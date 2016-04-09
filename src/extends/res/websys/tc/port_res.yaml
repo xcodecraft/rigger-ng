@@ -20,8 +20,8 @@ _sys:
             - !R.echo
                 value : "hello"
             - !R.crontab
-                sudo: True 
-                cron: "${PRJ_ROOT}/src/extends/res/centos/tc/example.cron"
+                sudo: True
+                cron: "${PRJ_ROOT}/src/extends/res/websys/tc/example.cron"
 
     -  !R.system
         _name: "varnishd"
@@ -33,8 +33,8 @@ _sys:
                 admin_port : "2000"
                 admin_ip   : "127.0.0.1"
                 mem        : "20M"
-                vcl        : "${PRJ_ROOT}/src/extends/res/centos/tc/varnishd.vcl"
+                vcl        : "${PRJ_ROOT}/src/extends/res/websys/tc/varnishd.vcl"
                 extras     : ""
                 name       : "rigger"
-                varnishd   : "/usr/local/varnish-4.1.2/sbin/varnishd"
-                varnishadm : "/usr/local/varnish-4.1.2/bin/varnishadm"
+                # varnishd   : "/usr/local/varnish-4.1.2/sbin/varnishd"
+                # varnishadm : "/usr/local/varnish-4.1.2/bin/varnishadm"

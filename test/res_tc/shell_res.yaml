@@ -30,7 +30,7 @@ _sys:
 
     -  !R.system
         _name: "php"
-        _res:
-            - !R.vars
-                    PHP_INI : "/usr/local/php/lib/php.ini"
-                    PHP_BIN : "/usr/local/php/bin/php"
+        # _res:
+            # - !R.vars
+                    # PHP_INI : "/usr/local/php/lib/php.ini"
+        #             PHP_BIN : "/usr/local/php/bin/php"

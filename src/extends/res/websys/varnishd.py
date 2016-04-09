@@ -38,6 +38,8 @@ class varnishd_shared(interface.resource,res_utls):
             self.extras     = value_of(self.extras)
             self.name       = value_of(self.name)
             self.pid        = value_of("${RUN_PATH}/varnishd_" + self.svc_port + ".pid")
+            self.varnishd   = value_of(self.varnishd)
+            self.varnishadm = value_of(self.varnishadm)
 
     def _start(self,context):
         cmdtpl = "if ! test -s $PID ; then sudo $VARNISHD -f $VCL -s malloc,$MEM -T $ADMIN_IP:$ADMIN_PORT -a $SVC_IP:$PORT -P$PID -n $NAME $EXTRAS ; fi"
@@ -80,10 +82,10 @@ class varnishd_shared(interface.resource,res_utls):
         cmdtpl = "$VARNISHADM -n $NAME  status ";
         vns_test = Template(cmdtpl).substitute(
                 VARNISHADM  = self.varnishadm,
-                NAME        = self.name 
+                NAME        = self.name
                 )
         # cmd = " sudo rm -rf /tmp/varnish_ok  ; if  " +  vns_test + "  ; then  sudo  touch  /tmp/varnish_ok;  fi  "
-        cmd = vns_test 
+        cmd = vns_test
         shexec.execmd(cmd)
         # self._check_print(os.path.exists("/tmp/varnish_ok"),"varnishd")
 

@@ -3,6 +3,7 @@ import sys ,  os ,logging,getopt ,setting
 import interface
 import yaml
 import stat
+import setting
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
@@ -11,7 +12,7 @@ def set_modul_path() :
 
 def setting_debug() :
     log_level = logging.ERROR
-    log_open  = True 
+    log_open  = True
     if len(sys.argv) >2 :
         opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:")
         for opt,val in opts:
@@ -24,7 +25,7 @@ def setting_debug() :
                     log_level = logging.DEBUG
             if opt == '-q' :
                     log_level = logging.ERROR
-                    log_open  = False 
+                    log_open  = False
     if log_open :
         logging.basicConfig(level=log_level,filename='run.log')
     if setting.debug :
@@ -39,6 +40,8 @@ def main():
     import impl.rg_run , impl.rg_args
     from   utls.rg_io import rgio
     import impl.rg_ioc
+
+
     parser = impl.rg_args.rarg_parser()
     parser.parse(sys.argv[1:] )
 

@@ -2,6 +2,7 @@
 import  logging
 import  utls.tpl ,interface ,base.tc_tools
 import  impl.rg_args
+from setting import *
 
 _logger = logging.getLogger()
 
@@ -28,6 +29,6 @@ class shell_tc(base.tc_tools.rigger_tc):
         shfile = utls.rg_var.value_of("${PRJ_ROOT}/test/res_tc/demo.php")
         with   mock :
             impl.rg_run.run_cmd("php -s php -e dev,base -f %s " %(shfile),self.conf)
-        expect = """/usr/local/php/bin/php   -c /usr/local/php/lib/php.ini ${PRJ_ROOT}/test/res_tc/demo.php """
+        expect = """%s   -c %s ${PRJ_ROOT}/test/res_tc/demo.php """ %(rgenv['PHP_BIN'], rgenv['PHP_INI'])
         # print mock.cmds
         self.assertMacroEqual( expect, mock.cmds)
