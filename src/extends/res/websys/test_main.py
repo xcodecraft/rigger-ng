@@ -8,6 +8,7 @@ def setup_env() :
     root  = os.path.dirname(root)
 
     sys.path.append(os.path.join(root,"src") )
+    sys.path.append(os.path.join(root,"src/core") )
     sys.path.append(os.path.join(root,"test") )
     sys.path.append(os.path.join(root,"src/extends/res") )
     os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"

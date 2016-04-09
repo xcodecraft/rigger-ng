@@ -14,6 +14,7 @@ class rg_args :
         self.user          = None
         self.root          = os.path.dirname(os.path.realpath(__file__))
         self.root          = os.path.dirname(self.root)
+        self.root          = os.path.dirname(self.root)
         self.save          = True
         self.save_path     = os.getcwd() + "/_rg/.rigger-ng-v2.data"
 

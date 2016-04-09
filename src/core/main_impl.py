@@ -7,8 +7,10 @@ import setting
 
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
+    root  = os.path.dirname(root)
     sys.path.append(root)
     sys.path.append(os.path.join(root,"extends/res") )
+    sys.path.append(os.path.join(root,"core") )
 
 def setting_debug() :
     log_level = logging.ERROR
@@ -88,11 +90,3 @@ def main():
              rgio.error(e)
 
 
-# if __name__ == '__main__':
-#     set_modul_path()
-#     import interface,impl
-#     import ubuntu
-#     impl.setup()
-#     ubuntu.setup()
-#     main()
-#

@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from main_impl import *
+from core.main_impl import *
 
 if __name__ == '__main__':
     set_modul_path()
-    import interface,impl
+    import interface,core.impl
     import pylon
-    impl.setup()
+    core.impl.setup()
     pylon.setup()
     import websys
     websys.setup()
