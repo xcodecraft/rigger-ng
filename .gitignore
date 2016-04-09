@@ -2,7 +2,7 @@
 *.swp
 *.pyc
 _rg/*.data
-cscope.out
+cscope.*
 *.log
 tags
 rigger.data
@@ -11,3 +11,6 @@ test/data/_router.idx
 test/data/files/prj_use.yaml
 tmp/_rg/
 demo/conf/used
+src/rg_env.py
+*.out
+sonar-project.properties
