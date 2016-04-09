@@ -13,6 +13,10 @@ def setup_env() :
     os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
 
+    import  setting,rg_env,utls.rg_var
+    rg_env.rgenv_enable()
+    utls.rg_var.import_dict(setting.rgenv)
+
 if __name__ == '__main__':
 
     setup_env()

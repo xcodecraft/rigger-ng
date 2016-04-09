@@ -1,12 +1,9 @@
-prj_path    = "/User/pylon/rigger-ng"
-debug       = False
-debug_level = 1
-stdout      = True
+from setting import rgenv
 
-rgenv =  {}
-rgenv['PHP_BIN']  =  "/usr/bin/php"
-rgenv['PHP_INI']  =  "/etc/php5/cli/php.ini"
+def rgenv_enable() :
+    rgenv['PHP_BIN']    = "/usr/local/php-5.6/bin/php"
+    rgenv['PHP_INI']    = "/usr/local/php-5.6/lib/php.ini"
+    rgenv['VARNISHD']   = "/usr/local/varnish-4.1.2/sbin/varnishd"
+    rgenv['VARNISHADM'] = "/usr/local/lvarnish-4.1.2/bin/varnishadm"
+    rgenv['RG_DEVPATH'] = "/data/${USER}/devspace/rigger-ng"
 
-
-    varnishd   = "/usr/local/varnish/sbin/varnishd"
-    varnishadm = "/usr/local/varnish/bin/varnishadm"
