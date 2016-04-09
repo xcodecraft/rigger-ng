@@ -3,7 +3,7 @@ rg_env.py 是rigger-ng 依赖各系统服务的路径设置文件
 
 ## 如何支持自己系统环境。
 
-根据 rg_envs/plat_tpl.py 编写你的 you_plat.py
+根据 [plat_tpl.py](../src/rg_envs/plat_tpl.py) 编写你的 you_plat.py
 
 例如： centos_ayb.py
 ```pyhton 
