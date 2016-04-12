@@ -1,14 +1,17 @@
 #!/usr/bin/python
 
-from core.impl.rg_run import *
+# from import module
+# from core.impl.rg_run import *
 
 if __name__ == '__main__':
-    set_modul_path()
-    import interface,core.impl
-    import pylon
+    import  core.run_env 
+    core.run_env.set_modul_path()
+    import interface
+    import pylon, core.impl
     core.impl.setup()
     pylon.setup()
     import websys
     websys.setup()
-    main()
+    import core.impl.rg_run
+    core.impl.rg_run.main()
 

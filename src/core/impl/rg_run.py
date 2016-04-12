@@ -3,12 +3,10 @@ import string , logging, sys,os
 import interface, rg_args, rg_ioc
 import utls.rg_var
 import setting
+import yaml,getopt
+import run_env 
 from utls.rg_io import rg_logger
 
-def load_rgenv():
-    import  setting,rg_env,utls.rg_var
-    rg_env.rgenv_enable()
-    utls.rg_var.import_dict(setting.rgenv)
 
 def run_cmd(cmdstr,yaml_conf=None) :
     # import pdb
@@ -27,7 +25,7 @@ def run_rigger(rargs, argv) :
     if len(rargs.prj.cmds) == 0 :
         raise interface.rigger_exception("No Cmd!")
     cmds = rargs.prj.cmds[0]
-    load_rgenv()
+    run_env.load_rgenv()
     for  cmd in cmds.split(',') :
         obj = rg_ioc.ins_cmd(cmd)
         if obj is None :
@@ -37,15 +35,6 @@ def run_rigger(rargs, argv) :
         obj._execute(rargs)
 
 
-def set_modul_path() :
-    root  = os.path.dirname(os.path.realpath(__file__))
-    root  = os.path.dirname(root)
-    root  = os.path.dirname(root)
-    print(root)
-    sys.path.append(root)
-    sys.path.append(os.path.join(root,"extends/res") )
-    sys.path.append(os.path.join(root,"core") )
-    sys.path.append(os.path.join(root,"etc") )
 
 def setting_debug() :
     log_level = logging.ERROR
