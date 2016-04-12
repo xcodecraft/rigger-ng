@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from core.main_impl import *
+from core.impl.rg_run import *
 
 if __name__ == '__main__':
     set_modul_path()
