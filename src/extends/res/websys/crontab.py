@@ -34,13 +34,13 @@ class crontab_base(interface.resource,res_utls):
         # import pdb
         # pdb.set_trace() ;
         
-        self.execmd("crontab -l > %s " %(self.tmp_cron) ,okcode=[0,256])
-        conf = sysconf(self.tmp_cron,"#")
-        newcron  = conf.replace_by_file(self.tag,self.cron)
+        self.execmd("/usr/bin/crontab -l > %s " %(self.tmp_cron) ,okcode=[0,256])
+        conf    = sysconf(self.tmp_cron,"#")
+        newcron = conf.replace_by_file(self.tag,self.cron)
         self.execmd("crontab  %s " %(newcron))
 
     def clean_conf(self,context):
-        self.execmd("crontab -l > %s " %(self.tmp_cron) ,okcode=[0,256])
-        conf = sysconf(self.tmp_cron,"#")
-        conf.clean(self.tag)
-        self.execmd("crontab  %s " %(self.tmp_cron))
+        self.execmd("/usr/bin/crontab -l > %s " %(self.tmp_cron) ,okcode=[0,256])
+        conf    = sysconf(self.tmp_cron,"#")
+        newcron = conf.clean(self.tag)
+        self.execmd("/usr/bin/crontab  %s " %(newcron))
