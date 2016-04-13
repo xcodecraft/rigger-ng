@@ -14,33 +14,38 @@
 ```
 ## 理解思想 [PPT](https://github.com/xcodecraft/rigger-ng/blob/doc/ppt/rigger2.pdf)
 
-## [使用指南] (doc/use_guide.md)
-## [扩展指南] (doc/dev_guide.md)
-### [res](src/extends/res/readme.md)
-### [module](src/extends/moduls/readme.md)
 
 
 
-## 个人使用
+## 使用
+
+####  下载源码
 ``` shell
-
  mkdir ~/devspace ; cd ~/devspace/
  git clone git@github.com:xcodecraft/rigger-ng.git
- cd rigger-ng ;
- setup.sh etc/<platform>.py
- source  ./rigger-ng/myrg.bashrc
-
- rg help
 ```
-## 团队使用
+#### 配置[平台环境](doc/rg_env.md)
 
-### 配置[团队的平台环境](doc/rg_env.md)
+#### 设定alias 方便使用
+```
+RG_ROOT=$HOME/devspace/rigger-ng/src
+alias rg='$RG_ROOT/rg'
+alias srg='sudo $RG_ROOT/rg''
+```
+
+
+
+
+
+### 团队使用
+
 ### 部署
 ``` shell
 //1 .使用团队发布工具部署到需析机器
-//2. 执行 setup.sh rg_envs<platform>.py
+//2. 执行 setup.sh ./etc/<platform>.py
 ```
 
 ## [使用指南] (doc/use_guide.md)
+## [扩展指南] (doc/dev_guide.md)
 ### [res](src/extends/res/readme.md)
 ### [module](src/extends/moduls/readme.md)
