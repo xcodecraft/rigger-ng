@@ -14,8 +14,11 @@ import impl.rg_dev , impl.rg_ioc
 
 class init_cmd(rg_cmd) :
     """
-    对project 进行 rg 支持
+## 对project 进行 rg 支持
+    rg init -t <tpl>
+    示例:
     rg init
+    rg init -t xcc
     """
     def _config(self,argv,rargs):
         tpl = rargs.rg.root + "/tpl"

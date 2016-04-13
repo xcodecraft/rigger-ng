@@ -11,7 +11,9 @@ rg help
 ``` shell
 cd <you-project>
 rg init
+
 ```
+
 
 
 ## 运行控制
