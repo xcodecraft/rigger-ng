@@ -14,6 +14,7 @@ rg init
 
 ```
 
+## 编辑 [_rg/run.yaml](prj_conf.md)
 
 
 ## 运行控制

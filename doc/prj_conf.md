@@ -1,4 +1,4 @@
-# prj.yaml
+# run.yaml
 
 ## 示例
 ``` yaml
@@ -36,7 +36,6 @@
   rg start -s X -e A
   env: A    -> system: X
   ```
-
   系统 X 在 A+debug 环境运行:
   ```
   rg start -s X -e A,debug
