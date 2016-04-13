@@ -5,7 +5,6 @@ import node
 import utls.dbc , utls.check
 import res.node
 import copy
-# from utls.dbc import *
 from utls.rg_io import  rgio , run_struct,rg_logger
 from base import *
 from utls.tpl.tpl_var import safe_env_porp
@@ -101,7 +100,7 @@ class echo(interface.resource) :
 
 class assert_eq(interface.resource) :
     """
-    !R.assert
+    !R.assert_eq
         value  : "${APP_SYS}"
         expect : "test"
     """
