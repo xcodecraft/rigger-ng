@@ -1,3 +1,4 @@
+# from XCodeCraft Template
 _dev:
     - !C.project
         name : "%{PRJ_NAME}"
@@ -5,5 +6,5 @@ _dev:
     - !C.version
         file : "src/version.txt"
     - !C.git
-        remote : "git@github.com:xcodecraft/xxxx.git"
+        remote : "git@github.com:%{PRJ_GIT}.git"
 

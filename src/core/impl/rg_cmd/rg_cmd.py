@@ -17,14 +17,22 @@ class init_cmd(rg_cmd) :
     对project 进行 rg 支持
     rg init
     """
+    def _config(self,argv,rargs):
+        tpl = rargs.rg.root + "/tpl"
+        ignore = ""
+        if argv.has_key('-t') :
+            tpl  = os.path.join(tpl , argv['-t'])
+        else :
+            tpl  = os.path.join(tpl , "default")
+        self.tpl    = tpl
+
     def _execute(self,rargs):
         dst = os.getcwd() + "/_rg"
         if os.path.exists(dst) :
             raise interface.rigger_exception("have _rg dir. maybe inited!")
 
         import utls.tpl
-        tpl = rargs.rg.root + "/rg_tpl"
-        utls.tpl.tplworker().execute(tpl,dst,"")
+        utls.tpl.tplworker().execute(self.tpl,dst,"")
 
 
 class tpl_cmd(rg_cmd) :

@@ -5,6 +5,15 @@
 rg help
 ```
 
+
+## 项目初始化
+
+``` shell
+cd <you-project>
+rg init
+```
+
+
 ## 运行控制
 示例:
 ```
@@ -19,14 +28,6 @@ rg clean
 ##[项目配置示例](example.md)
 
 
-
-
-### 项目初始化
-
-``` shell
-cd <you-project>
-rg init
-```
 
 ### 编辑 run.yaml
 
