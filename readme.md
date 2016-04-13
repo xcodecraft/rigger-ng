@@ -1,8 +1,4 @@
-# rigger-ng
-
-## 状态
-
-0.7.0  beta
+# rigger-ng 0.7.0  beta
 
 ## 主要目标:
 #### 对项目(系统) 进行运行管理
@@ -46,6 +42,8 @@ alias srg='sudo $RG_ROOT/rg''
 ```
 
 ## [使用指南] (doc/use_guide.md)
-## [扩展指南] (doc/dev_guide.md)
-### [res](src/extends/res/readme.md)
-### [module](src/extends/moduls/readme.md)
+### [内建res](doc/res.md)
+### [扩展res](src/extends/res/readme.md)
+### [扩展module](src/extends/moduls/readme.md)
+
+## [开发指南] (doc/dev_guide.md)
