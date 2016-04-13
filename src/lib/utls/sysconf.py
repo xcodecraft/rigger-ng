@@ -22,7 +22,7 @@ class sysconf:
             nfile.write(content + "\n")
         nfile.write(self.end )
     def clean(self,key):
-        self.replace(key,"",isclean=True)
+        return self.replace(key,"",isclean=True)
 
     def replace(self,key,content,isclean=False):
         begtpl="$TAG $KEY,POWER BY RIGGER-NG---BEGIN\n"

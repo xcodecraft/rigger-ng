@@ -20,7 +20,6 @@ _sys:
             - !R.echo
                 value : "hello"
             - !R.crontab
-                sudo: True
                 cron: "${PRJ_ROOT}/src/extends/res/websys/tc/example.cron"
 
     -  !R.system

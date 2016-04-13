@@ -1,0 +1,1 @@
+30 01 * * *     (ls /usr/local  >> /tmp/crontab_tc.log 2>&1)

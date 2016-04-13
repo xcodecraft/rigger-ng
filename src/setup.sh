@@ -10,12 +10,13 @@ if ! test -e "/usr/bin/python" ; then
     echo "rigger-ng need python"
     exit 0
 fi
-RGENV=$1
+RGENV=`basename "$1"`
+cd $SHELL_DIR/etc
 if test -e $RGENV   ; then 
-    if test -L $SHELL_DIR/rg_env.py ; then 
-        rm $SHELL_DIR/rg_env.py
+    if test -L rg_env.py ; then 
+        rm rg_env.py
     fi
-    ln -s $RGENV   $SHELL_DIR/rg_env.py
+    ln -s $RGENV   rg_env.py
     echo "rigger-ng setup success!"
 else 
     echo $RGENV not exists;

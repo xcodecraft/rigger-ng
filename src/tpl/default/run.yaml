@@ -1,9 +1,10 @@
+# from default Template
 _env:
     - !R.env
         _name    : "_dev"
         _res :
             - !R.project
-                root : "${HOME}/devspace/rigger-ng/%{PRJ_NAME}"
+                root : "${HOME}/devspace/%{PRJ_NAME}"
                 name : "%{PRJ_NAME}"
 
     - !R.env
@@ -17,11 +18,6 @@ _env:
         _res :
             - !R.path
                 dst  : "${PRJ_ROOT}/conf/used"
-            - !R.php_def
-                bin: "/usr/bin/php"
-                fpm: "/usr/sbin/service php5-fpm"
-            - !R.nginx_def
-                none : ""
 
 
     - !R.env

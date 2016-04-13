@@ -1,0 +1,142 @@
+# from XCodeCraft Template
+_env:
+    - !R.env
+        _name    : "_local_deploy"
+        _res :
+            - !R.project
+                root        : "${HOME}/devspace/%{PRJ_NAME}"
+                name        : "%{PRJ_NAME}"
+            - !R.vars
+                PHP_ERROR   : "E_ALL & ~E_NOTICE"
+                FPM_USER    : "${USER}"
+
+                # 数据库
+                # DB_HOST     : "127.0.0.1"
+                # DB_NAME     : "db_name"
+                # DB_USER     : "db_user"
+                # DB_PWD      : ""
+
+    - !R.env
+        _name    : "_safe_deploy"
+        _res :
+            - !R.project
+                root        : "/data/x/projects/%{PRJ_NAME}"
+                name        : "%{PRJ_NAME}"
+            - !R.vars
+                PHP_ERROR   : "E_ALL & ~E_NOTICE"
+                FPM_USER    : "%{FPM_USER}"
+    - !R.env
+        _name    : "_dev"
+        _res :
+            - !R.vars
+                BASE_DOMAIN : "${USER}.%{MAIN_DOMAIN}"
+
+    - !R.env
+        _name    : "_demo"
+        _res :
+            - !R.vars
+                BASE_DOMAIN : "demo.%{MAIN_DOMAIN}"
+
+    - !R.env
+        _name : "base"
+        _res :
+            - !R.vars
+                PYLON   : "/data/x/framework/pylon-ng/"
+                RIGGER  : "/data/x/tools/rigger-ng/"
+                BASE_INCLUDE : "${PRJ_ROOT}/src/bizlogic:${PRJ_ROOT}/src/foundation"
+            - !R.path
+                dst  : "${PRJ_ROOT}/conf/used "
+
+    - !R.env
+        _name    : "speed_max"
+        _res :
+            - !R.vars
+                MAX_CHILDREN      : "20"
+                START_SERVERS     : "5"
+                MIN_SPARE_SERVERS : "5"
+                MAX_SPARE_SERVERS : "10"
+    - !R.env
+        _name    : "speed_min"
+        _res :
+            - !R.vars
+                MAX_CHILDREN      : "5"
+                START_SERVERS     : "2"
+                MIN_SPARE_SERVERS : "1"
+                MAX_SPARE_SERVERS : "3"
+
+    - !R.env
+        _name    : "debug"
+        _res :
+            - !R.vars
+                PHP_ERROR : "E_ALL & ~E_NOTICE"
+                DEBUG     : "ON"
+                LOG_MODE  : "DEBUG"
+    - !R.env
+        _name    : "release"
+        _res :
+            - !R.vars
+                PHP_ERROR : "E_ERROR"
+                DEBUG     : "XOFF"
+                LOG_MODE  : "ONLINE"
+
+
+    - !R.env
+        _name    : "dev"
+        _mix     : "_local_deploy,_dev,base,speed_min,debug"
+
+    - !R.env
+        _name    : "demo"
+        _mix     : "_safe_deploy,_demo,base,speed_min,debug"
+
+    - !R.env
+        _name    : "test"
+        _mix     : "_safe_deploy,_test,base,speed_max,release"
+
+_sys:
+    -  !R.system
+        _name : "init"
+        _res  :
+            # - !R.vars
+            #     YOU_X    : "x"
+            # - !R.mysql
+            #     host:     "${DB_HOST}"
+            #     name:     "${DB_NAME}"
+            #     user:     "${DB_USER}"
+            #     password: "${DB_PWD}"
+            #     sql:      "${PRJ_ROOT}/src/init/create_db.sql"
+            - !R.using
+                path  : "${RIGGER}/extends/moduls/pylon.yaml"
+                modul : "pylon_php"
+                args  : !R.vars
+                    MOD_TAG     : "init"
+                    MOD_INCLUDE : "${PRJ_ROOT}/src/init:${BASE_INCLUDE}"
+            # - !R.php
+            #     ini :    "${PRJ_ROOT}/conf/used/init_php.ini"
+            #     script : "${PRJ_ROOT}/src/init/sys_init.php"
+
+    -  !R.system
+        _name : "api"
+        _res  :
+            - !R.vars
+                DOMAIN      : "api.${BASE_DOMAIN}"
+                SOCK_FILE   : "${RUN_PATH}/api_fpm.sock"
+            - !R.using
+                path  : "${RIGGER}/extends/moduls/pylon.yaml"
+                modul : "pylon_web"
+                args  : !R.vars
+                    MOD_TAG     : "api"
+                    MOD_ENTRY   : "${PRJ_ROOT}/src/sys_${SYS_NAME}"
+                    MOD_INCLUDE : "${PRJ_ROOT}/src/sys_${SYS_NAME}:${BASE_INCLUDE}"
+
+    -  !R.system
+        _name : "test"
+        _res  :
+            - !R.using
+                path  : "${RIGGER}/extends/moduls/pylon.yaml"
+                modul : "pylon_php"
+                args  : !R.vars
+                    MOD_TAG     : "test"
+                    MOD_INCLUDE : "${PRJ_ROOT}/test:${PRJ_ROOT}/src"
+            - !R.shell
+                script : "${PRJ_ROOT}/test/phpunit.sh"
+

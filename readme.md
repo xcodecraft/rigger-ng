@@ -12,27 +12,22 @@
 程序  =  数据结构 + 算法
 系统  =  程序     + 资源
 ```
+## 理解思想 [PPT](https://github.com/xcodecraft/rigger-ng/blob/doc/ppt/rigger2.pdf)
 
-演示:
-``` shell
-./rgdemo conf  -s test -e dev
-./rgdemo start -s test -e dev
+## [使用指南] (doc/use_guide.md)
+## [扩展指南] (doc/dev_guide.md)
+### [res](src/extends/res/readme.md)
+### [module](src/extends/moduls/readme.md)
 
-./rgdemo info  -s test -e dev
-./rgdemo check -s test -e dev
-```
 
-# [依赖](doc/depends.md)
 
-#使用:
-
-## 个人开发
+## 个人使用
 ``` shell
 
  mkdir ~/devspace ; cd ~/devspace/
  git clone git@github.com:xcodecraft/rigger-ng.git
  cd rigger-ng ;
- setup.sh rg_envs/<platform>.py
+ setup.sh etc/<platform>.py
  source  ./rigger-ng/myrg.bashrc
 
  rg help
@@ -47,7 +42,5 @@
 ```
 
 ## [使用指南] (doc/use_guide.md)
-## extends
-
 ### [res](src/extends/res/readme.md)
 ### [module](src/extends/moduls/readme.md)
