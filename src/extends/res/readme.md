@@ -4,7 +4,6 @@
 
 ## pylon
 
-## websys
 
 ``` yaml
 _sys:
@@ -25,3 +24,23 @@ _sys:
 #### pylon_autoload
 
 #### pylon_router
+
+
+## websys
+
+#### fpm(fpm_base):
+
+#### nginx_conf(nginx_conf_base):
+
+#### mysql(mysql_base):
+
+
+#### daemon:
+
+#### daemon_php:
+
+#### beanstalkd :
+
+#### varnishd  :
+
+#### crontab  :

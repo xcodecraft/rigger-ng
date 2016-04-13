@@ -4,7 +4,7 @@
 
 ## 如何支持自己系统环境。
 
-根据 [plat_tpl.py](../src/rg_envs/rgenv_tpl.py) 编写你的 you_plat.py
+根据 [rgenv_tpl.py](../src/rg_envs/rgenv_tpl.py) 编写你的 you_plat.py
 
 例如： centos_ayb.py
 ```pyhton 
