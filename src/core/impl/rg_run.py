@@ -40,7 +40,7 @@ def setting_debug() :
     log_level = logging.ERROR
     log_open  = True
     if len(sys.argv) >2 :
-        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:")
+        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:o:")
         for opt,val in opts:
             if opt == '-d' :
                 setting.debug       = True
