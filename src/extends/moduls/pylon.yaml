@@ -32,3 +32,18 @@ _mod :
                 dst      : "${USE_ROOT}/${MOD_TAG}_php.ini"
             - !R.pylon_autoload
                 include  : "${MOD_INCLUDE}"
+
+    - !R.modul
+        _name : "phpunit"
+        _args : "${TEST_INCLUDE}"
+        _res  :
+            - !R.pylon_autoload
+                include  : "${TEST_INCLUDE}"
+            - !R.file_tpl
+                 tpl : "${PRJ_ROOT}/conf/options/test_php.ini"
+                 dst : "${PRJ_ROOT}/conf/used/test_php.ini"
+            - !R.php
+                bin    : "/usr/local/php-5.6/bin/php"
+                ini    : "${PRJ_ROOT}/conf/used/test_php.ini"
+                script : "/usr/local/php/bin/phpunit"
+                args   : "--configuration ${PRJ_ROOT}/test/phpunit.xml --coverage-clover test/reports/phpunit.coverage.xml --log-junit test/reports/phpunit.report.xml"
