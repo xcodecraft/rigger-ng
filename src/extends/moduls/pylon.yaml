@@ -1,7 +1,10 @@
 _mod :
     - !R.modul
         _name : "pylon_web"
-        _args : "${MOD_TAG},${MOD_ENTRY},${MOD_INCLUDE}"
+        _args : 
+            MOD_TAG:     None
+            MOD_ENTRY:   None
+            MOD_INCLUDE: None
         _res  :
             - !R.vars
                 tpl_root : "${PRJ_ROOT}/conf/options/"
@@ -21,7 +24,9 @@ _mod :
 
     - !R.modul
         _name : "pylon_php"
-        _args : "${MOD_TAG},${MOD_INCLUDE}"
+        _args : 
+            MOD_TAG:     None
+            MOD_INCLUDE: None
         _res  :
             - !R.vars
                 tpl_root : "${PRJ_ROOT}/conf/options/"
@@ -35,7 +40,11 @@ _mod :
 
     - !R.modul
         _name : "phpunit"
-        _args : "${TEST_INCLUDE}"
+        _args : 
+             TEST_INCLUDE : None
+             TEST_PATH    : "test"
+             PHP_BIN      : "/usr/local/php-5.6/bin/php" 
+             
         _res  :
             - !R.pylon_autoload
                 include  : "${TEST_INCLUDE}"
@@ -43,7 +52,7 @@ _mod :
                  tpl : "${PRJ_ROOT}/conf/options/test_php.ini"
                  dst : "${PRJ_ROOT}/conf/used/test_php.ini"
             - !R.php
-                bin    : "/usr/local/php-5.6/bin/php"
+                bin    : "${PHP_BIN}"
                 ini    : "${PRJ_ROOT}/conf/used/test_php.ini"
                 script : "/usr/local/php/bin/phpunit"
-                args   : "--configuration ${PRJ_ROOT}/test/phpunit.xml --coverage-clover test/reports/phpunit.coverage.xml --log-junit test/reports/phpunit.report.xml"
+                args   : "--configuration ${PRJ_ROOT}/${TEST_PATH}/phpunit.xml --coverage-clover ${TEST_PATH}/reports/phpunit.coverage.xml --log-junit ${TEST_PATH}/reports/phpunit.report.xml"
