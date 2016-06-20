@@ -84,6 +84,7 @@ def main():
             rargs  = impl.rg_args.run_args.load()
             rargs.parse_update(parser)
             impl.rg_run.run_rigger(rargs,parser.argv)
+            return 0 
 
         except yaml.constructor.ConstructorError as e :
             rgio.error(e)
@@ -112,6 +113,7 @@ def main():
 
         except interface.rigger_exception as e:
              rgio.error(e)
+        return -1 
 
 
 
