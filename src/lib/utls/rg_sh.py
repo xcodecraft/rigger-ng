@@ -65,7 +65,8 @@ class shexec:
             shexec.out2txt(cmd,cmd_txt)
             with end_keeper(lambda : os.system( " rm %s " %cmd_txt ) )   as keeper :
                 os.system("chmod +x " +  cmd_txt)
-                if shexec.SUDO  :
+                uid = os.getuid()
+                if shexec.SUDO  and uid != 0 :
                     sudo_cmd    = "sudo " + cmd_txt
                     rcode       = os.system(sudo_cmd)
                     if setting.debug  :
