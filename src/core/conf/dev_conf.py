@@ -204,6 +204,8 @@ class sonar(interface.rg_conf.base,singleton):
         qube     : "http://xxxx"
         src      : "src"
         language : "php"
+        config   : 
+            - ""
     """
     def __init__(self) :
         self.prjname  = project.ins().name
@@ -235,8 +237,12 @@ class sonar(interface.rg_conf.base,singleton):
         sonar.language=${PRJ_LANG}
         sonar.sourceEncoding=UTF-8
         """
+
         c = Template(content).substitute(QUBE=self.qube,PRJ_NAME=self.prjname, PRJ_VER=self.version,
                 PRJ_SRC=self.src,PRJ_LANG=self.language)
         conf = os.path.join(project.ins().root , "sonar-project.properties")
         with  open(conf ,'w') as f :
             f.write(c)
+            if hasattr(self,"config") :
+                for line in self.config:
+                    f.write(line + "\n")

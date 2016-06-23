@@ -40,7 +40,7 @@ def setting_debug() :
     log_level = logging.ERROR
     log_open  = True
     if len(sys.argv) >2 :
-        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:")
+        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:o:m:")
         for opt,val in opts:
             if opt == '-d' :
                 setting.debug       = True
@@ -84,6 +84,7 @@ def main():
             rargs  = impl.rg_args.run_args.load()
             rargs.parse_update(parser)
             impl.rg_run.run_rigger(rargs,parser.argv)
+            return 0 
 
         except yaml.constructor.ConstructorError as e :
             rgio.error(e)
@@ -112,6 +113,7 @@ def main():
 
         except interface.rigger_exception as e:
              rgio.error(e)
+        return -1 
 
 
 

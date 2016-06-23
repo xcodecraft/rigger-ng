@@ -60,14 +60,17 @@ class vars(interface.resource):
         # import pdb
         # pdb.set_trace()
         items = self.__dict__
-        # run_struct.push("res.var")
 
         for name , val in   items.items():
             if re.match(r'__.+__',name):
                 continue
             name= name.upper()
+            rg_logger.debug("%s =%s" %(name,val))
             setattr(context,name,val)
         utls.rg_var.import_dict(items)
+
+    def add(self,key,value):
+        self.__dict__[key] = value 
 
     def _after(self,context):
         pass
@@ -187,6 +190,8 @@ class modul(interface.control_box,interface.base) :
     !R.modul
         _name : "php-web"
         _res  :
+        _args :
+            X : "ABC"
             ...
     """
     _name = ""
@@ -200,12 +205,18 @@ class modul(interface.control_box,interface.base) :
         rgio.struct_out("modul : %s" %(self._name))
         interface.control_box._info(self,context,level)
 
+    def load_default_args(self):
+        if hasattr(self,"_args") and isinstance(self._args,dict):
+            args_vars = vars()
+            for key,value in self._args.items() :
+                args_vars.add(key,value)
+            self.push(args_vars)
     def _before(self,context):
-        # run_struct.push("modul %s" %(self._name))
         rg_logger.info("modul:%s _before" %(self._name))
         if self._sandbox:
             utls.rg_var.keep()
             context.keep()
+        self.load_default_args()
 
     def _after(self,context):
         if self._sandbox:
@@ -228,7 +239,6 @@ class using(interface.resource):
     def _allow(self,context):
         return True
     def _before(self,context):
-        # run_struct.push("using.module.%s" %self.modul)
         self.path       = res_utls.value(self.path)
         if len(self.path) > 0 :
             node.module_load(self.path)
@@ -237,6 +247,7 @@ class using(interface.resource):
         module         = utls.check.not_none(node.module_find(key), msg)
         #需要deepcopy , 避免对module 的使用污染!
         self.modul_obj = copy.deepcopy(module)
+        #压入传入数据
         if self.args is not None :
             self.modul_obj.push(self.args)
         self.modul_obj._before(context)
