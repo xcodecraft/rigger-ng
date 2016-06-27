@@ -21,6 +21,9 @@ class mysql_base(interface.resource,res_utls):
             self.user     = utls.rg_var.value_of(self.user)
             self.sql      = utls.rg_var.value_of(self.sql)
 
+    def _start(self,context):
+        self._data(context)
+
     def _data(self,context):
         mysql  = self.bin
         cmdtpl = '$MYSQL -h$HOST $DBNAME -u$USER -p$PASSWD < $SQL'
