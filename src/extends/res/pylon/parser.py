@@ -83,7 +83,6 @@ class php_class_parser:
         match = re.match('^\s*namespace\s+([\w\\\]+)\s*;',line, re.IGNORECASE)
         if match :
             self.namespace = match.group(1)
-            print(line)
 
         clsname = None
         match = re.match('^\s*class\s+(\w+).*$',line, re.IGNORECASE)
