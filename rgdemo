@@ -1,6 +1,5 @@
 abs_path() { odir=`pwd`; cd `dirname $1`; pwd; cd "${odir}"; }
 MYDIR=`abs_path "$0"`
-#python $MYDIR/src/main_ubuntu.py $* -c $MYDIR/demo/_rg/run.yaml
 python $MYDIR/src/rg $* -c $MYDIR/demo/_rg/run.yaml
 
 

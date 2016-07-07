@@ -126,15 +126,24 @@ class system (interface.control_box,interface.base):
     _sys:
         - !R.system
             _name: "test"
+            _limit : 
+                "envs"   : "demo,online"
+                "passwd" : "xyz"
             _res:
                 - !R.vars
                         TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
                 - !R.echo
                     value : "${TEST_CASE}"
     """
-    _name = ""
+    _name   = ""
+    _limit  = None
 
     def _allow(self,context):
+        if self._limit is not None :
+            for env in self._limit['envs'].split(","):
+                if context.have_env(env)  and context.passwd != self._limit['passwd']:
+                    rgio.struct_out("[ignore system] %s" %(self._name))
+                    return False 
         return True
     def _before(self,context):
         rg_logger.info("system:%s _before " %(self._name))
@@ -299,6 +308,7 @@ class env(interface.control_box,interface.base):
         interface.control_box._info(self,context,level)
 
     def _before(self,context):
+        context.use_env(self._name)
         rg_logger.info("env:%s _before" %(self._name))
         if self._mix is not None :
             for key in  self._mix.split(",") :

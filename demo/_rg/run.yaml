@@ -94,3 +94,11 @@ _sys:
             - !R.beanstalkd
                 port : 11400
 
+    - !R.system
+        _name   : "init"
+        _limit : 
+            "envs"   : "online"
+            "passwd" : "xyz"
+        _res    :
+            - !R.echo
+                value         : "limit is pass!"

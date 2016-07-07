@@ -6,7 +6,14 @@ from utls.rg_io import rg_logger
 
 class run_context :
     def __init__(self):
+        self.envs     = {} 
         self.restores = []
+
+    def use_env(self,env) :
+        self.envs[env] = 1 
+
+    def have_env(self,env) :
+        return self.envs.has_key(env) 
     def keep(self) :
         self.restores.append(  copy.copy(self.__dict__))
     def rollback(self):

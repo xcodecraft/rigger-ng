@@ -122,10 +122,7 @@ class run_args :
         return  info
     @staticmethod
     def help():
-        # rgio.prompt("rg  <dev cmd>   [-m <message>] ")
         rgio.prompt("rg  <svc cmd> [-e <env>] [-s <system>] [-c <run.yaml>] ")
-        # rgio.prompt("rg  <svc cmd>   [-e <env>]     [-s <system>]   [-x <resource>]  [-f <script>]    [-v <vardef>]")
-        # rgio.prompt("rg  <batch cmd> [-p <project>] [-l <publish plan> ]  [-h [@|%]<host>] [-t [@]<tag>] [-z <rguser> ]")
         rgio.prompt("\ncommon args : [-d <level> ]\n")
 
 

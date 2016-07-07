@@ -9,6 +9,7 @@ import os
 
 class prj_cmd_base(rg_cmd) :
     def _config(self,argv,rargs):
+        self.passwd = None 
         self.env = []
         if argv.has_key('-e') :
             self.env = argv['-e'].split(',')
@@ -18,6 +19,9 @@ class prj_cmd_base(rg_cmd) :
         self.sys = []
         if argv.has_key('-s') :
             self.sys = argv['-s'].split(',')
+
+        if argv.has_key('-p') :
+            self.passwd= argv['-p']
         if rargs.prj.sys:
             self.sys = rargs.prj.sys.split(',')
 
@@ -85,8 +89,9 @@ class prj_cmd_base(rg_cmd) :
                 else :
                     raise interface.rigger_exception("sys [%s] not found" %(need_sys))
 
-        context = interface.run_context()
-        project = res.project()
+        context        = interface.run_context()
+        context.passwd = self.passwd
+        project        = res.project()
         project.setup4start(context)
         interface.control_call(main,fun,context,"unknow")
 
