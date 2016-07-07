@@ -6,6 +6,12 @@ _env:
                 name : "rigger-ng"
                 root : "${HOME}/devspace/rigger-ng"
 
+    - !R.env
+        _name: "online"
+        _res:
+            - !R.project
+                name : "rigger-ng"
+                root : "${HOME}/devspace/rigger-ng"
 
 _sys:
     -  !R.system
@@ -15,3 +21,12 @@ _sys:
                     TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
             - !R.echo
                 value : "${TEST_CASE}"
+
+    - !R.system
+        _name   : "init"
+        _limit : 
+            "envs"   : "online"
+            "passwd" : "xyz"
+        _res    :
+            - !R.echo
+                value         : "limit is pass!"
