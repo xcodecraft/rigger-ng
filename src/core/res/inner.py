@@ -127,8 +127,8 @@ class system (interface.control_box,interface.base):
         - !R.system
             _name: "test"
             _limit : 
-                "envs"   : "demo,online"
-                "passwd" : "xyz"
+                envs   : "demo,online"
+                passwd : "xyz"
             _res:
                 - !R.vars
                         TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"

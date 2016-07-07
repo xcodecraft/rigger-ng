@@ -25,8 +25,8 @@ _sys:
     - !R.system
         _name   : "init"
         _limit : 
-            "envs"   : "online"
-            "passwd" : "xyz"
+            envs   : "online"
+            passwd : "xyz"
         _res    :
             - !R.echo
                 value         : "limit is pass!"
