@@ -1,10 +1,15 @@
 _env:
     - !R.env
-        _name: "dev"
+        _name: "_dev"
         _res:
             - !R.project
                 name : "rigger-ng"
                 root : "${HOME}/devspace/rigger-ng"
+
+            - !R.include
+                _path:
+                    - "${PRJ_ROOT}/_rg/modul.yaml"
+                    - "${PRJ_ROOT}/_rg/utls.yaml"
 
     - !R.env
         _name: "online"
@@ -12,6 +17,10 @@ _env:
             - !R.project
                 name : "rigger-ng"
                 root : "${HOME}/devspace/rigger-ng"
+
+    - !R.env
+        _name: "dev"
+        _mix : "_dev,ENV_A,ENV_B"
 
 _sys:
     -  !R.system

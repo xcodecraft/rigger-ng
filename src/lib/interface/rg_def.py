@@ -3,6 +3,8 @@ import logging,copy
 import rg_conf
 import utls.rg_sh ,utls.rg_io
 from utls.rg_io import rg_logger
+from rg_err   import  rigger_exception 
+from collections import deque
 
 class run_context :
     def __init__(self):
@@ -46,6 +48,55 @@ class controlable :
     def _nodoing(self,context):
         pass
 
+
+class res_proxy(controlable) :
+    def __init__(self,finder,key,type="obj") :
+        self.finder    = finder
+        self.dest_key  = key
+        self.dest_obj  = None
+        self.dest_type = type
+
+    def load_dest(self) :
+        if self.dest_obj is None :
+            self.dest_obj = self.finder(self.dest_key)
+            if self.dest_obj is None :
+                raise rigger_exception("%s[%s] not found " %(self.dest_type,self.dest_key))
+    def _before(self,context):
+        self.load_dest()
+        self.dest_obj._before(context)  
+
+    def _after(self,context):
+        self.dest_obj._after(context)  
+
+    def _start(self,context):
+        self.dest_obj._start(context)  
+
+    def _allow(self,context):
+        return True ;
+    def _stop(self,context):
+        self.dest_obj._stop(context)  
+        pass
+    def _reload(self,context):
+        self.dest_obj._reload(context)  
+        pass
+    def _config(self,context):
+        self.dest_obj._config(context)  
+        pass
+    def _check(self,context):
+        self.dest_obj._check(context)  
+        pass
+    def _clean(self,context):
+        self.dest_obj._clean(context)  
+        pass
+    def _info(self,context,level=1):
+        self.dest_obj._info(context)  
+    def _nodoing(self,context):
+        self.dest_obj._nodoing(context)  
+
+    def echo(self,output):
+        self.load_dest()
+        self.dest_obj.echo(output)  
+
 class exception_monitor:
     def __init__(self,res):
         self.res = res
@@ -75,7 +126,7 @@ class control_box(controlable):
 
     def __init__(self):
         self.level = 0 
-        self._res = []
+        self._res =  []
 
     def items_call(self,fun,context,tag):
         if hasattr(self,"_res") :
@@ -122,6 +173,12 @@ class control_box(controlable):
         if not hasattr(self,'_res') :
             self._res = []
         self._res.append(item)
+    def extend_left(self,objs):
+        if not hasattr(self,'_res') :
+            self._res = []
+        new_res = objs + self._res 
+        self._res = new_res 
+
     def push(self,item):
         if not hasattr(self,'_res') :
             self._res = []
