@@ -123,13 +123,6 @@ class clean_cmd(prj_cmd_base,cmdtag_prj):
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x,y : x._clean(y))
 
-class data_cmd(prj_cmd_base,cmdtag_prj):
-    """
-    rg data -e <env> -s <sys> [-o <os>] "
-    rg data -e debug,demo -s front,admin
-    """
-    def _execute(self,rargs):
-        self.runcmd(rargs,lambda x,y : x._data(y))
 
 class check_cmd(prj_cmd_base,cmdtag_prj):
     """

@@ -16,7 +16,7 @@ def setup() :
     interface.regist_res("cmd,php,shell",                               "res.shell")
 
     interface.regist_cmd("check,clean,info",                            "impl.rg_cmd.rg_cmd_prj")
-    interface.regist_cmd("conf,reconf,start,stop,restart,data,reload",  "impl.rg_cmd.rg_cmd_prj")
+    interface.regist_cmd("conf,reconf,start,stop,restart,reload",  "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("help,init,tpl",                               "impl.rg_cmd.rg_cmd")
     interface.regist_cmd("php,shell",                                   "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("ci,rc,sonar",                                 "impl.rg_cmd.rg_cmd_dev")
@@ -74,4 +74,5 @@ def ins_cmd(name) :
                 return obj
             except  Exception as e :
                 raise interface.rigger_exception("@ins_cmd() code error: %s \n %s" %(code,e) )
-    return None
+    # return None
+    raise interface.rigger_exception(" '%s' cmd not support!" %(name) )
