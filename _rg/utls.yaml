@@ -1,0 +1,35 @@
+_env:
+    - !R.env
+        _name    : "ENV_A"
+        _res  :
+            - !R.vars
+                    ENV_NAME : "ENV_A"
+            - !R.echo
+                value         : "${ENV_NAME}"
+
+    - !R.env
+        _name    : "ENV_B"
+        _res  :
+            - !R.vars
+                    ENV_NAME : "ENV_B"
+            - !R.echo
+                value         : "${ENV_NAME}"
+
+
+_sys:
+    -  !R.system
+        _name : "test_a"
+        _res  :
+            - !R.vars
+                SYS_NAME : "test_a"
+            - !R.echo
+                value         : "${SYS_NAME}"
+
+    -  !R.system
+        _name : "test_b"
+        _res  :
+            - !R.vars
+                SYS_NAME : "test_b"
+            - !R.echo
+                value         : "${SYS_NAME}"
+

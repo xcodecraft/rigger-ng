@@ -6,6 +6,7 @@ import utls.rg_var , utls.dbc , utls.check
 import res
 import res.node
 import os
+import conf.run_conf 
 
 class prj_cmd_base(rg_cmd) :
     def _config(self,argv,rargs):
@@ -26,28 +27,11 @@ class prj_cmd_base(rg_cmd) :
             self.sys = rargs.prj.sys.split(',')
 
 
-    @staticmethod
-    def check_data(data):
-        utls.check.not_none(data ,"project no yaml data")
-        utls.check.must_true(data.has_key('_env'),"project no _env data")
-        utls.check.must_true(data.has_key('_sys'),"project no _sys data")
-        return True
 
 
     def runcmd(self,rargs,fun,extra=None) :
-        import utls.rg_yaml,copy
         utls.check.must_exists(rargs.prj.conf)
-        rg_logger.info("load prj conf: %s" %(rargs.prj.conf))
-        loader = utls.rg_yaml.conf_loader(rargs.prj.conf)
-        data   = loader.load_data("!R","res")
-        prj_cmd_base.check_data(data)
-
-        env_data    = data['_env']
-        sys_data    = data['_sys']
-
-        if data.has_key('_mod') :
-            for m  in  data['_mod'] :
-                res.node.regist_mod(m)
+        conf.run_conf.load(rargs.prj.conf)
 
 
         main  = res.prj_main()
@@ -57,37 +41,23 @@ class prj_cmd_base(rg_cmd) :
         #pdb.set_trace()
         
 
-        for env_obj  in env_data  :
-            res.node.env_regist(env_obj)
-            if self.env == "@all" :
-                main.append(env_obj)
 
-        if self.env != "@all"  :
-            for  need_env in self.env :
-                obj = res.node.env_find(need_env)
-                if obj is not None :
-                    main.append(obj)
-                else:
-                    raise interface.rigger_exception("env [%s] not found" %(need_env))
-
-
-        for sys_obj in   sys_data  :
-            res.node.sys_regist(sys_obj)
-            if self.sys == "@all":
-                main.append(sys_obj)
+        for  need_env in self.env :
+            obj = res.node.env_find(need_env)
+            if obj is None :
+                obj = interface.res_proxy(res.node.env_find,need_env,"env")
+            main.append(obj)
 
         if len(self.sys) > 1 and extra is not None :
                 raise interface.rigger_exception("extra obj will execute in muti sys" %(len(self.sys)))
 
-        if self.sys != "@all"  :
-            for need_sys in self.sys :
-                obj = res.node.sys_find(need_sys)
-                if obj is not None :
-                    if extra is not None :
-                        obj.append(extra)
-                    main.append(obj)
-                else :
-                    raise interface.rigger_exception("sys [%s] not found" %(need_sys))
+        for need_sys in self.sys :
+            obj = res.node.sys_find(need_sys)
+            if obj is None :
+                obj = interface.res_proxy(res.node.sys_find,need_sys,"sys")
+            main.append(obj)
+            if extra is not None :
+                obj.append(extra)
 
         context        = interface.run_context()
         context.passwd = self.passwd
@@ -153,13 +123,6 @@ class clean_cmd(prj_cmd_base,cmdtag_prj):
     def _execute(self,rargs):
         self.runcmd(rargs,lambda x,y : x._clean(y))
 
-class data_cmd(prj_cmd_base,cmdtag_prj):
-    """
-    rg data -e <env> -s <sys> [-o <os>] "
-    rg data -e debug,demo -s front,admin
-    """
-    def _execute(self,rargs):
-        self.runcmd(rargs,lambda x,y : x._data(y))
 
 class check_cmd(prj_cmd_base,cmdtag_prj):
     """

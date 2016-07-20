@@ -1,5 +1,5 @@
 from  rg_conf import base
-from  rg_def  import resource , run_context , controlable , control_box ,control_call
+from  rg_def  import resource , run_context , controlable , control_box ,control_call, res_proxy
 from  rg_err  import *
 
 registed_resource = {}

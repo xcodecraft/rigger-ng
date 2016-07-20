@@ -127,8 +127,8 @@ class system (interface.control_box,interface.base):
         - !R.system
             _name: "test"
             _limit : 
-                "envs"   : "demo,online"
-                "passwd" : "xyz"
+                envs   : "demo,online"
+                passwd : "xyz"
             _res:
                 - !R.vars
                         TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
@@ -193,6 +193,24 @@ class prj_main(interface.control_box, interface.base) :
 
     def _after(self,context):
         rg_logger.info("main: _after")
+
+
+class include(interface.resource):
+    """
+    !R.include  
+        - "a.yaml"
+        - "b.yaml"
+    """
+    _name = ""
+    _path = None
+    def _allow(self,context):
+        return True
+    def _before(self,context):
+        import conf.run_conf 
+        for path in self._path  :
+            path = res_utls.value(path)
+            conf.run_conf.load(path)
+
 
 class modul(interface.control_box,interface.base) :
     """
@@ -290,6 +308,8 @@ class using(interface.resource):
             return 
         self.modul_obj._info(context,level)
 
+
+
 class env(interface.control_box,interface.base):
     """
 
@@ -310,12 +330,17 @@ class env(interface.control_box,interface.base):
     def _before(self,context):
         context.use_env(self._name)
         rg_logger.info("env:%s _before" %(self._name))
+        mix_obj = []  
         if self._mix is not None :
             for key in  self._mix.split(",") :
-                obj = res.node.env_find(key)
-                if obj is None :
-                    raise interface.rigger_exception("env [%s] : mix [%s] not found " %(self._name,key))
-                self.append(obj)
+                obj =  interface.res_proxy(res.node.env_find,key,"env")
+                mix_obj.append(obj)
+                # obj = res.node.env_find(key)
+                # if obj is None :
+                #     raise interface.rigger_exception("env [%s] : mix [%s] not found " %(self._name,key))
+                # self.append(obj)
+        self.extend_left(mix_obj)
+
 
 
         # vars._before(self,context)
