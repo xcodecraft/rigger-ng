@@ -1,0 +1,256 @@
+_env:
+    - !R.env
+        _name    : "_local_deploy"
+        _res :
+            - !R.project
+                root      : "${HOME}/devspace/${PRJ_NAME}"
+                name      : "${PRJ_NAME}"
+            - !R.vars
+                AYI_SDKS     : "/data/x/sdks/ayi_sdks"
+                SVC_UTLS     : "/data/x/libs/svc_utls"
+                PLATFORM_SDK : "/data/x/sdks/platform_sdks"
+                PHP_ERROR    : "E_ALL & ~E_NOTICE"
+                RUN_USER     : "${USER}"
+
+
+    - !R.env
+        _name    : "_ci_deploy"
+        _res :
+            - !R.project
+                root      : "/data/ci_space/${PRJ_NAME}"
+                name      : "${PRJ_NAME}"
+            - !R.vars
+                AYI_SDKS     : "/data/x/sdks/ayi_sdks"
+                SVC_UTLS     : "/data/x/libs/svc_utls"
+                PLATFORM_SDK : "/data/x/sdks/platform_sdks"
+                PHP_ERROR    : "E_ALL & ~E_NOTICE"
+                RUN_USER     : "xcc"
+
+
+    - !R.env
+        _name    : "_safe_deploy"
+        _res :
+            - !R.project
+                root      : "/data/x/projects/${PRJ_NAME}"
+                name      : "${PRJ_NAME}"
+            - !R.vars
+                AYI_SDKS     : "/data/x/sdks/ayi_sdks"
+                SVC_UTLS     : "/data/x/libs/svc_utls"
+                PLATFORM_SDK : "/data/x/sdks/platform_sdks"
+                PHP_ERROR    : "E_ALL & ~E_NOTICE"
+                RUN_USER     : "xcc"
+    - !R.env
+        _name    : "_safe2_deploy"
+        _res :
+            - !R.project
+                root      : "/data/x/projects2/${PRJ_NAME}"
+                name      : "${PRJ_NAME}"
+            - !R.vars
+                AYI_SDKS     : "/data/x/sdks/ayi_sdks"
+                SVC_UTLS     : "/data/x/libs/svc_utls"
+                PLATFORM_SDK : "/data/x/sdks/platform_sdks"
+                PHP_ERROR    : "E_ALL & ~E_NOTICE"
+                RUN_USER     : "xcc"
+
+    - !R.env
+        _name    : "_dev"
+        _res :
+            - !R.vars
+                POSTFIX_DOMAIN  : "${USER}.dev.xcodecraft.cn"
+                DB_HOST         : "ayidev02.mysql.rds.aliyuncs.com"
+                DB_NAME         : "${PRJ_NAME}_${USER}"
+                DB_USER         : "ayi_dev"
+                DB_PWD          : "xcodecraft"
+
+    - !R.env
+        _name    : "_demo"
+        _res :
+            - !R.vars
+                POSTFIX_DOMAIN  : "demo.xcodecraft.cn"
+                DB_HOST         : "ayidev02.mysql.rds.aliyuncs.com"
+                DB_NAME         : "${PRJ_NAME}_demo"
+                DB_USER         : "ayi_dev"
+                DB_PWD          : "xcodecraft"
+
+    - !R.env
+        _name    : "_ci"
+        _res :
+            - !R.vars
+                POSTFIX_DOMAIN  : "ci.xcodecraft.cn"
+                DB_HOST : "ayidev02.mysql.rds.aliyuncs.com"
+                DB_NAME : "${PRJ_NAME}_ci"
+                DB_USER : "ayi_dev"
+                DB_PWD  : "xcodecraft"
+
+
+    - !R.env
+        _name    : "_lab"
+        _res :
+            - !R.vars
+                POSTFIX_DOMAIN  : "lab.xcodecraft.cn"
+                DB_HOST : "ayidev02.mysql.rds.aliyuncs.com"
+                DB_NAME : "${PRJ_NAME}_lab"
+                DB_USER : "ayi_dev"
+                DB_PWD  : "xcodecraft"
+
+
+    - !R.env
+        _name    : "_online"
+        _res :
+            - !R.vars
+                POSTFIX_DOMAIN  : "xcodecraft.cn"
+
+    - !R.env
+        _name : "_base"
+        _res :
+            - !R.vars
+                PYLON  : "/data/x/framework/pylon-ng/"
+                RIGGER : "/data/x/tools/rigger-ng/"
+            - !R.path
+                dst  : "${PRJ_ROOT}/conf/used "
+
+    - !R.env
+        _name    : "speed_max"
+        _res :
+            - !R.vars
+                MAX_CHILDREN      : "20"
+                START_SERVERS     : "5"
+                MIN_SPARE_SERVERS : "5"
+                MAX_SPARE_SERVERS : "10"
+    - !R.env
+        _name    : "speed_min"
+        _res :
+            - !R.vars
+                MAX_CHILDREN      : "5"
+                START_SERVERS     : "2"
+                MIN_SPARE_SERVERS : "1"
+                MAX_SPARE_SERVERS : "3"
+
+    - !R.env
+        _name    : "debug"
+        _res :
+            - !R.vars
+                PHP_ERROR : "E_ALL & ~E_NOTICE"
+                DEBUG     : "ON"
+                LOG_MODE  : "DEBUG"
+    - !R.env
+        _name    : "release"
+        _res :
+            - !R.vars
+                PHP_ERROR : "E_ERROR"
+                DEBUG     : "XOFF"
+                LOG_MODE  : "ONLINE"
+_mod :
+    - !R.modul 
+        _name : "xcc_init"
+        _args : 
+            PHP_INI  : "${PRJ_ROOT}/conf/used/init_php.ini"
+            INIT_SQL : "${PRJ_ROOT}/src/sys_init/create_db.sql"
+            INIT_PHP : "${PRJ_ROOT}/src/sys_init/sys_init.php"
+            TPL_ROOT : "/data/x/tools/env_setting/tpl/v1/"
+            USE_ROOT : "${PRJ_ROOT}/conf/used/"
+        _res  : 
+            - !R.mysql
+                host:     "${DB_HOST}"
+                name:     "${DB_NAME}"
+                user:     "${DB_USER}"
+                password: "${DB_PWD}"
+                sql:      "${INIT_SQL}"
+
+            - !R.file_tpl
+                tpl      : "${TPL_ROOT}/init_php.ini"
+                dst      : "${USE_ROOT}/init_php.ini"
+            - !R.pylon_autoload
+                include  : "${INCLUDE_PATH}"
+            - !R.php
+                script: "${INIT_PHP}"
+
+
+    - !R.modul
+        _name : "xcc_api"
+        _args : 
+            TPL_ROOT     : "/data/x/tools/env_setting/tpl/v1/"
+            USE_ROOT     : "${PRJ_ROOT}/conf/used/"
+            TAG          : "api"
+            API_ENTRY    : "${PRJ_ROOT}/sys_api/"
+            INCLUDE_PATH : None
+        _res  :
+            - !R.vars
+                SOCK_FILE    : "${RUN_PATH}/api_fpm.sock"
+            - !R.pylon_autoload
+                include  : "${INCLUDE_PATH}"
+            - !R.pylon_router
+                include  : "${API_ENTRY}"
+            - !R.nginx_conf
+                sudo     : true
+                src      : "${USE_ROOT}/${TAG}_ngx.conf"
+                tpl      : "${TPL_ROOT}/api_ngx.conf"
+            - !R.fpm
+                sudo     : True
+                ini_tpl  : "${TPL_ROOT}/api_php.ini"
+                conf_tpl : "${TPL_ROOT}/api_fpm.conf"
+
+    - !R.modul
+        _name : "xcc_web"
+        _args : 
+            TPL_ROOT     : "/data/x/tools/env_setting/tpl/v1/"
+            USE_ROOT     : "${PRJ_ROOT}/conf/used/"
+            TAG          : "web"
+            WEB_ENTRY    : "${PRJ_ROOT}/sys_admin/"
+            INCLUDE_PATH : None
+        _res  :
+            - !R.vars
+                SOCK_FILE    : "${RUN_PATH}/web_fpm.sock"
+            - !R.pylon_autoload
+                include  : "${INCLUDE_PATH}"
+            - !R.pylon_router
+                include  : "${WEB_ENTRY}"
+            - !R.nginx_conf
+                sudo     : true
+                src      : "${USE_ROOT}/${TAG}_ngx.conf"
+                tpl      : "${TPL_ROOT}/web_ngx.conf"
+            - !R.fpm
+                sudo     : True
+                ini_tpl  : "${TPL_ROOT}/web_php.ini"
+                conf_tpl : "${TPL_ROOT}/web_fpm.conf"
+
+
+    - !R.modul
+        _name : "xcc_php"
+        _args : 
+            TAG          : None
+            INCLUDE_PATH : None
+            TPL_ROOT     : "/data/x/tools/env_setting/tpl/v1/"
+            USE_ROOT     : "${PRJ_ROOT}/conf/used/"
+        _res  :
+            # - !R.vars
+
+            - !R.file_tpl
+                tpl      : "${TPL_ROOT}/console_php.ini"
+                dst      : "${USE_ROOT}/${TAG}_php.ini"
+            - !R.pylon_autoload
+                include  : "${INCLUDE_PATH}"
+
+    - !R.modul
+        _name : "xcc_unit"
+        _args : 
+             INCLUDE_PATH : None
+             API_ENTRY    : "${PRJ_ROOT}/src/sys_api"
+             TEST_PATH    : "test"
+             CONF_PATH    : "conf"
+             TPL_ROOT     : "/data/x/tools/env_setting/tpl/v1/"
+             USE_ROOT     : "${PRJ_ROOT}/conf/used/"
+             
+        _res  :
+            - !R.pylon_autoload
+                include : "${INCLUDE_PATH}"
+            - !R.pylon_router
+                include : "${API_ENTRY}"
+            - !R.file_tpl
+                 tpl    : "${TPL_ROOT}/test_php.ini"
+                 dst    : "${USE_ROOT}/test_php.ini"
+            - !R.php
+                bin     : "${PHP_BIN}"
+                ini     : "${USE_ROOT}/test_php.ini"
+                script  : "/usr/local/php/bin/phpunit"
+                args    : "--configuration ${PRJ_ROOT}/${TEST_PATH}/phpunit.xml --coverage-clover ${TEST_PATH}/reports/phpunit.coverage.xml --log-junit ${TEST_PATH}/reports/phpunit.report.xml"

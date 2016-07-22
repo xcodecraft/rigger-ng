@@ -125,15 +125,13 @@ class system (interface.control_box,interface.base):
     """
     _sys:
         - !R.system
-            _name: "test"
+            _name: "init"
             _limit : 
                 envs   : "demo,online"
-                passwd : "xyz"
+                passwd : "rgisgood"
             _res:
-                - !R.vars
-                        TEST_CASE: "${HOME}/devspace/rigger-ng/test/main.py"
                 - !R.echo
-                    value : "${TEST_CASE}"
+                    value : "${PRJ_ROOT}"
     """
     _name   = ""
     _limit  = None
@@ -198,10 +196,10 @@ class prj_main(interface.control_box, interface.base) :
 class include(interface.resource):
     """
     !R.include  
-        - "a.yaml"
-        - "b.yaml"
+        _path:
+            - "a.yaml"
+            - "b.yaml"
     """
-    _name = ""
     _path = None
     def _allow(self,context):
         return True
@@ -315,10 +313,11 @@ class env(interface.control_box,interface.base):
 
     _env:
         - !R.env
-            _name    : "_dev"
-            _res :
+            _name : "dev"
+            _mix  : "base, _dev"
+            _res  :
                 - !R.vars
-                        TEST_CASE : "${PRJ_ROOT}/test/main.py"
+                        DB_NAME : "rigger_db"
     """
     _mix      = None
     def _resname(self):

@@ -49,7 +49,7 @@ class prj_cmd_base(rg_cmd) :
             main.append(obj)
 
         if len(self.sys) > 1 and extra is not None :
-                raise interface.rigger_exception("extra obj will execute in muti sys" %(len(self.sys)))
+                raise interface.rigger_exception("forbit! execute in muti sys(%s)" %(self.sys))
 
         for need_sys in self.sys :
             obj = res.node.sys_find(need_sys)
@@ -188,6 +188,22 @@ class php_cmd(prj_cmd_base,cmdtag_prj):
         interface.resource.allow_res = 'no'
         self.runcmd(rargs,execmd,phpres)
 
+class phpunit_cmd(php_cmd):
+    """rg phpunit -t <tc>   -s <system>  
+       eg:
+       rg phpunit -t test/cases2.0/price_test.php  -s test
+    """
+    def _config(self,argv,rargs):
+        tc_file   = ""
+        bootstrap = "./test/bootstrap.php"
+        for o, a in argv.items():
+            if o == "-t":
+                tc_file = a
+        argv['-f'] = "/usr/local/php/bin/phpunit"
+        argv['-a'] = " --bootstrap  %s %s" %(bootstrap , tc_file)
+        php_cmd._config(self,argv,rargs)
+                
+
 
 class shell_cmd(prj_cmd_base,cmdtag_prj):
     """
@@ -213,19 +229,4 @@ class shell_cmd(prj_cmd_base,cmdtag_prj):
         shres._allow = allow_res
         interface.resource.allow_res = 'no'
         self.runcmd(rargs,execmd,shres)
-#
-# class phpunit_cmd(run_base,resconf_able, cmdtag_run):
-#     """execut php eg: rg phpunit -f '<your.xml> | <test path>'  """
-#     def _config(self,argv,rargs):
-#         run_base._config(self,argv,rargs)
-#         resconf_able._config(self,argv,rargs)
-#         rargs.script = ""
-#         for o, a in argv.items():
-#             if o == "-f":
-#                 rargs.script = a
-#     def _execute(self,cmd,rargs):
-#         run_base._execute(self,cmd,rargs)
-#         punit = resouce.phpunit(rargs.script.lstrip())
-#         execmd = lambda x,c :  call_shell(x,c)
-#         self.runner.run_cmd(rargs,execmd,punit)
-#
+

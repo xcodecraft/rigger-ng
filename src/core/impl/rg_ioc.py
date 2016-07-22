@@ -18,7 +18,7 @@ def setup() :
     interface.regist_cmd("check,clean,info",                            "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("conf,reconf,start,stop,restart,reload",  "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("help,init,tpl",                               "impl.rg_cmd.rg_cmd")
-    interface.regist_cmd("php,shell",                                   "impl.rg_cmd.rg_cmd_prj")
+    interface.regist_cmd("php,shell,phpunit",                                   "impl.rg_cmd.rg_cmd_prj")
     interface.regist_cmd("ci,rc,sonar",                                 "impl.rg_cmd.rg_cmd_dev")
     interface.regist_conf("git,project,version,sonar",                  "conf.dev_conf")
 
