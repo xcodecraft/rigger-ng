@@ -102,6 +102,8 @@ class php(interface.resource,res_utls):
 
 
     def doit(self,context,pos) :
+        if len(self.script) == 0 :
+            return 
         self.must_exists(self.ini)
         self.must_exists(self.bin)
         self.must_exists(self.script)

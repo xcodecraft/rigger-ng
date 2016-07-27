@@ -23,7 +23,7 @@ class res_utls:
 
     def must_exists(self,dst) :
         if not os.path.exists(dst) :
-            raise interface.res_use_error(self.__class__.__name__ ,"%s not exists" %dst)
+            raise interface.res_use_error(self.__class__.__name__ ,"file %s not exists" %dst)
 
 class res_context:
     def __init__(self,res):
