@@ -32,11 +32,12 @@ class nginx_conf(nginx_conf_base):
         tpl : "${PRJ_ROOT}/conf/options/nginx.conf"
     """
 
-    name = "${PRJ_NAME}_${SYS_NAME}_${USER}.conf"
-    src  = "${PRJ_ROOT}/conf/used/nginx.conf"
-    tpl  = "${PRJ_ROOT}/conf/options/nginx.conf"
-    dst  = "${NGINX_CONF}"
-    bin  = "${NGINX_BIN}"
+    name    = "${PRJ_NAME}_${SYS_NAME}_${USER}.conf"
+    src     = "${PRJ_ROOT}/conf/used/nginx.conf"
+    tpl     = "${PRJ_ROOT}/conf/options/nginx.conf"
+    dst     = "${NGINX_CONF}"
+    bin     = "${NGINX_BIN}"
+    testbin = "${NGINX_TESTBIN}"
 
 from websys.mysql import *
 class mysql(mysql_base):
