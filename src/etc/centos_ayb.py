@@ -10,4 +10,5 @@ def rgenv_enable() :
     rgenv['ZDAEMON']    = "/usr/local/python/bin/zdaemon"
     rgenv['BEANSTALKD'] = "/usr/local/beanstalkd/bin/beanstalkd"
     rgenv['NGINX_CONF'] = "/usr/local/nginx/conf/include/"
+    rgenv['NGINX_BIN'] = "/usr/local/nginx/sbin/nginx"
 

@@ -10,4 +10,5 @@ def rgenv_enable() :
     rgenv['ZDAEMON']    = ""
     rgenv['BEANSTALKD'] = ""
     rgenv['NGINX_CONF'] = ""
+    rgenv['NGINX_BIN']  = ""
 

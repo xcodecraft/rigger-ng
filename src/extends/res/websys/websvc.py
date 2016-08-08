@@ -43,6 +43,11 @@ class nginx_conf_base(interface.resource):
     def _config(self,context) :
         self.tpl_res._config(context)
         self.link_res._config(context)
+        cmdtpl = "$BIN -t"
+        cmd = Template(cmdtpl).substitute(
+                BIN = self.bin
+                )
+        shexec.execmd(cmd)
         pass
 
     def _start(self,context) :

@@ -36,7 +36,7 @@ class nginx_conf(nginx_conf_base):
     src  = "${PRJ_ROOT}/conf/used/nginx.conf"
     tpl  = "${PRJ_ROOT}/conf/options/nginx.conf"
     dst  = "${NGINX_CONF}"
-    bin  = "/sbin/service nginx"
+    bin  = "${NGINX_BIN}"
 
 from websys.mysql import *
 class mysql(mysql_base):
