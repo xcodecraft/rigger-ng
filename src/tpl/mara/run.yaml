@@ -17,34 +17,34 @@ _env:
 
     - !R.env
         _name    : "dev"
-        _mix     : "define,_local_deploy,_dev,base,speed_min,debug"
+        _mix     : "define,_local_deploy,_dev,base"
         _res :
             - !R.vars
                 BASE_DOMAIN : "${USER}.dev.%{MAIN_DOMAIN}"
 
     - !R.env
         _name    : "lab"
-        _mix     : "define,_project_deploy,_lab,base,speed_min,debug"
+        _mix     : "define,_project_deploy,_lab,base"
         _res :
             - !R.vars
                 BASE_DOMAIN : "lab.%{MAIN_DOMAIN}"
 
     - !R.env
         _name    : "demo"
-        _mix     : "define,_project_deploy,_demo,base,speed_min,debug"
+        _mix     : "define,_project_deploy,_demo,base"
         _res :
             - !R.vars
                 BASE_DOMAIN : "demo.%{MAIN_DOMAIN}"
 
     - !R.env
         _name    : "test"
-        _mix     : "define,_project_deploy,_test,base,speed_max,release"
+        _mix     : "define,_project_deploy,_test,base"
 
 _sys:
     -  !R.system
         _name  : "init"
         _limit :
-            envs   : "lab,demo,online"
+            envs   : "demo,online"
             passwd : "mind"
         _res  :
             - !R.using
