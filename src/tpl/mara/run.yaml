@@ -12,7 +12,7 @@ _env:
         _mix  : "_base"
         _res :
             - !R.vars
-                BASE_INCLUDE : "${PRJ_ROOT}/src/bizlogic:${PRJ_ROOT}/src/foundatioin"
+                BASE_INCLUDE : "${PRJ_ROOT}/src/bizlogic:${PRJ_ROOT}/src/foundation"
                 PORT         : "80"
 
     - !R.env
@@ -52,7 +52,7 @@ _sys:
                 args  : !R.vars
                     INIT_SQL     : "${PRJ_ROOT}/src/sys_init/create_db.sql"
                     # INIT_PHP     : "${PRJ_ROOT}/src/sys_init/sys_init.php"
-                    # INCLUDE_PATH : "${PRJ_ROOT}/src/sys_init:${BASE_INCLUDE}"
+                    INCLUDE_PATH : "${PRJ_ROOT}/src/sys_init:${BASE_INCLUDE}"
 
     -  !R.system
         _name : "api"
