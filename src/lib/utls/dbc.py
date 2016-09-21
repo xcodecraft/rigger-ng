@@ -12,6 +12,10 @@ def must_true(val,errmsg) :
     return val
 def must_exists( path) :
     if path is None or not os.path.exists(path) :
+        raise interface.bug_exception("path not exists : %s" %path )
+
+def must_file( path) :
+    if path is None or not os.path.isfile(path) :
         raise interface.bug_exception("file not exists : %s" %path )
 
 def must_obj(val,cls):
