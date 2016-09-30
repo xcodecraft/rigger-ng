@@ -19,10 +19,8 @@ class dev_cmd_base :
             output("%s has no more info" % self.__class__)
 
     def loadconf(self,rargs) :
-        # import  pdb
-        # pdb.set_trace()
         import utls.rg_yaml,copy
-        utls.dbc.must_exists(rargs.dev.conf)
+        utls.dbc.must_file(rargs.dev.conf)
         rg_logger.info("load prj conf: %s" %(rargs.dev.conf))
         loader   = utls.rg_yaml.conf_loader(rargs.dev.conf)
         data     = loader.load_data("!C","conf")
@@ -70,9 +68,9 @@ class rc_cmd(dev_cmd_base) :
 class sonar_cmd(dev_cmd_base) :
     """
     命令:
-    rg sonar 
+    rg sonar
 
-    配置(dev.yaml): 
+    配置(dev.yaml):
     - !C.sonar
         runner   : "/data/x/tools/sonar/bin/sonar-runner"
         qube     : "http://xxxx"

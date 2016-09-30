@@ -70,7 +70,7 @@ class vars(interface.resource):
         utls.rg_var.import_dict(items)
 
     def add(self,key,value):
-        self.__dict__[key] = value 
+        self.__dict__[key] = value
 
     def _after(self,context):
         pass
@@ -78,7 +78,7 @@ class vars(interface.resource):
 
     def _info(self,context,level):
         if  level  <= 0  :
-            return 
+            return
         items = self.__dict__
         rgio.struct_out("vars:")
         for name , val in   items.items():
@@ -126,7 +126,7 @@ class system (interface.control_box,interface.base):
     _sys:
         - !R.system
             _name: "init"
-            _limit : 
+            _limit :
                 envs   : "demo,online"
                 passwd : "rgisgood"
             _res:
@@ -141,7 +141,7 @@ class system (interface.control_box,interface.base):
             for env in self._limit['envs'].split(","):
                 if context.have_env(env)  and context.passwd != self._limit['passwd']:
                     rgio.struct_out("[ignore system] %s" %(self._name))
-                    return False 
+                    return False
         return True
     def _before(self,context):
         rg_logger.info("system:%s _before " %(self._name))
@@ -195,7 +195,7 @@ class prj_main(interface.control_box, interface.base) :
 
 class include(interface.resource):
     """
-    !R.include  
+    !R.include
         _path:
             - "a.yaml"
             - "b.yaml"
@@ -204,10 +204,13 @@ class include(interface.resource):
     def _allow(self,context):
         return True
     def _before(self,context):
-        import conf.run_conf 
+        import conf.run_conf
         for path in self._path  :
-            path = res_utls.value(path)
-            conf.run_conf.load(path)
+            if os.path.isfile(path) :
+                path = res_utls.value(path)
+                conf.run_conf.load(path)
+            else:
+                raise interface.rigger_exception("%s path not found! in !R.include" %path)
 
 
 class modul(interface.control_box,interface.base) :
@@ -226,7 +229,7 @@ class modul(interface.control_box,interface.base) :
         return tag
     def _info(self,context,level):
         if  level  <= 0  :
-            return 
+            return
         rgio.struct_out("modul : %s" %(self._name))
         interface.control_box._info(self,context,level)
 
@@ -303,7 +306,7 @@ class using(interface.resource):
 
     def _info(self,context,level):
         if  level  <= 0  :
-            return 
+            return
         self.modul_obj._info(context,level)
 
 
@@ -329,7 +332,7 @@ class env(interface.control_box,interface.base):
     def _before(self,context):
         context.use_env(self._name)
         rg_logger.info("env:%s _before" %(self._name))
-        mix_obj = []  
+        mix_obj = []
         if self._mix is not None :
             for key in  self._mix.split(",") :
                 obj =  interface.res_proxy(res.node.env_find,key,"env")

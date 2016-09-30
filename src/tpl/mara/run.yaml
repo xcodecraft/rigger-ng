@@ -1,0 +1,92 @@
+_env:
+    - !R.env
+        _name    : "define"
+        _res :
+            - !R.vars
+                PRJ_NAME    : "%{PRJ_NAME}"
+            - !R.include
+                _path :
+                    - "/data/x/tools/env_setting/env/mara_v1.yaml"
+    - !R.env
+        _name : "base"
+        _mix  : "_base"
+        _res :
+            - !R.vars
+                BASE_INCLUDE : "${PRJ_ROOT}/src/bizlogic:${PRJ_ROOT}/src/foundation"
+                PORT         : "80"
+
+    - !R.env
+        _name    : "dev"
+        _mix     : "define,_local_deploy,_dev,base"
+        _res :
+            - !R.vars
+                BASE_DOMAIN : "${USER}.dev.%{MAIN_DOMAIN}"
+
+    - !R.env
+        _name    : "lab"
+        _mix     : "define,_project_deploy,_lab,base"
+        _res :
+            - !R.vars
+                BASE_DOMAIN : "lab.%{MAIN_DOMAIN}"
+
+    - !R.env
+        _name    : "demo"
+        _mix     : "define,_project_deploy,_demo,base"
+        _res :
+            - !R.vars
+                BASE_DOMAIN : "demo.%{MAIN_DOMAIN}"
+
+    - !R.env
+        _name    : "test"
+        _mix     : "define,_project_deploy,_test,base"
+
+_sys:
+    -  !R.system
+        _name  : "init"
+        _limit :
+            envs   : "demo,online"
+            passwd : "mind"
+        _res  :
+            - !R.using
+                modul : "mara_init"
+                args  : !R.vars
+                    INIT_SQL     : "${PRJ_ROOT}/src/sys_init/create_db.sql"
+                    # INIT_PHP     : "${PRJ_ROOT}/src/sys_init/sys_init.php"
+                    INCLUDE_PATH : "${PRJ_ROOT}/src/sys_init:${BASE_INCLUDE}"
+
+    -  !R.system
+        _name : "api"
+        _res  :
+            - !R.vars
+                DOMAIN      : "api.${BASE_DOMAIN}"
+            - !R.using
+                modul : "mara_api"
+                args  : !R.vars
+                    API_ENTRY    : "${PRJ_ROOT}/src/sys_${SYS_NAME}"
+                    INCLUDE_PATH : "${PRJ_ROOT}/src/sys_${SYS_NAME}:${BASE_INCLUDE}"
+
+    -  !R.system
+        _name : "test"
+        _res:
+            - !R.vars
+                PHP_INI : "${PRJ_ROOT}/conf/used/test_php.ini"
+            - !R.using
+                modul : "mara_unit"
+                args  : !R.vars
+                    INCLUDE_PATH: "${PRJ_ROOT}/src:${PRJ_ROOT}/test/"
+
+    # -  !R.system
+    #     _name : "console"
+    #     _res  :
+    #         - !R.vars
+    #             PHP_INI : "${PRJ_ROOT}/conf/used/console_php.ini"
+    #         - !R.using
+    #             modul : "mara_console"
+    #             args  : !R.vars
+    #                 INCLUDE_PATH : "${PRJ_ROOT}/src/sys_console:${BASE_INCLUDE}"
+    #         - !R.file_tpl
+    #             tpl:  "${PRJ_ROOT}/conf/options/api.cron"
+    #             dst:  "${PRJ_ROOT}/conf/used/api.cron"
+    #         - !R.crontab
+    #             key : "%{PRJ_NAME}"
+    #             cron: "${PRJ_ROOT}/conf/used/api.cron"

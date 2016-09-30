@@ -1,0 +1,16 @@
+_dev:
+    - !C.project
+        name : "%{PRJ_NAME}"
+        root : "./"
+    - !C.version
+        file : "src/version.txt"
+    - !C.git
+        remote : "git@git.mararun.cn:mara/%{PRJ_NAME}.git"
+    - !C.sonar
+        runner   : "/data/x/tools/sonar/bin/sonar-runner"
+        qube     : "http://sonar.mararun.cn"
+        src      : "src"
+        language : "php"
+        config:
+            - "sonar.php.coverage.reportPath=test/reports/phpunit.coverage.xml"
+            - "sonar.php.tests.reportPath=test/reports/phpunit.report.xml"

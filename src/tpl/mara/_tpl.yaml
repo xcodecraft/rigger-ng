@@ -1,0 +1,9 @@
+PRJ_NAME: !T.input
+    prompt : "please input project name"
+
+PRJ_GIT: !T.input
+    prompt : "在git.mararun.com 上项目地址, 例如: git.mararun/rigger-ng"
+
+API_SYS: !T.bool
+    prompt : "是否需要 API SYS"
+    default: "y"

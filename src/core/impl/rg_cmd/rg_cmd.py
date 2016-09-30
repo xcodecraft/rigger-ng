@@ -69,7 +69,7 @@ rg tpl -t <template> -o <dst> [-i <ignore>]
 
 class help_cmd(rg_cmd,cmdtag_rg):
     """
-    rg help 
+    rg help
     rg help <cmd>
     rg help res
     rg help res <res>
