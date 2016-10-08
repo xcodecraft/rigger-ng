@@ -1,6 +1,6 @@
 #coding=utf8
 import re,logging
-import interface,utls.rg_var
+import interface,utls.rg_var,utls.rg_json
 import node
 import utls.dbc , utls.check
 import res.node
@@ -46,28 +46,40 @@ class vars(interface.resource):
     """
     定义变量
     !R.vars:
+        _json : "/path/data.json:/xpath/a/b/c"
         A: 1
         B: "hello"
     """
 
+    _json = None
     name = "vars"
     def depend_check(self,context) :
         pass
 
     def _allow(self,context):
         return True
+    def vars_data(self):
+        items    = self.__dict__
+        json_key = '_json'
+
+        if self._json is not None :
+            jargs = self._json.split(":")
+            data  = utls.rg_json.load_file(jargs[0],jargs[1])
+            items.update(data)
+        if json_key in items :
+            del items[json_key]
+
+        return  items
+
     def _before(self,context):
         # import pdb
         # pdb.set_trace()
-        items = self.__dict__
-
-        for name , val in   items.items():
-            if re.match(r'__.+__',name):
-                continue
+        vars_data = self.vars_data()
+        for name , val in   vars_data.items():
             name= name.upper()
             rg_logger.debug("%s =%s" %(name,val))
             setattr(context,name,val)
-        utls.rg_var.import_dict(items)
+        utls.rg_var.import_dict(vars_data)
 
     def add(self,key,value):
         self.__dict__[key] = value

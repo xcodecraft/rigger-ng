@@ -2,7 +2,6 @@
 import re , os , yaml, logging
 import interface
 import utls.dbc
-# import rg_res
 from utls.rg_io import rg_logger
 
 
