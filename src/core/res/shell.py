@@ -48,6 +48,7 @@ class shell(interface.resource,res_utls):
     def _before(self,context) :
         self.env_keep = copy.copy(os.environ)
         self.script = res_utls.value(self.script)
+        self.args   = res_utls.value(self.args)
 
     def _after(self,context) :
         if self.env_keep is not None :
@@ -62,6 +63,9 @@ class shell(interface.resource,res_utls):
             utls.rg_var.export_env()
             self.execmd(cmd)
 
+    def _config(self,context) :
+        self.doit(context,"conf")
+        pass
 
     def _start(self,context) :
         self.doit(context,"start")
@@ -103,7 +107,7 @@ class php(interface.resource,res_utls):
 
     def doit(self,context,pos) :
         if len(self.script) == 0 :
-            return 
+            return
         self.must_exists(self.ini)
         self.must_exists(self.bin)
         self.must_exists(self.script)
