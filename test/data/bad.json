@@ -1,0 +1,17 @@
+{
+
+    "env" :
+    {
+        "dev" :
+        {
+            "DB_NAME" : "127.0.0.1" ,
+            "DB_USER" : "rigger"
+        }
+        "demo" :
+        {
+            "DB_NAME" : "127.0.0.1" ,
+            "DB_USER" : "rigger"
+        }
+    }
+
+}

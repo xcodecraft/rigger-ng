@@ -9,6 +9,16 @@ _logger = logging.getLogger()
 
 
 class vars_tc(rigger_tc):
+    def test_vars(self):
+        jfile = os.path.dirname(os.path.dirname(__file__)) + "/data/data.json"
+        v1       = res.vars()
+        v1.X     = "a"
+        v1.Y     = "b"
+        v1._json = "%s:%s" %(jfile,"/env/dev/")
+        context = interface.run_context()
+        v1._before(context)
+
+
     def test_vars_echo(self):
         """
         test this
@@ -33,6 +43,4 @@ class vars_tc(rigger_tc):
 
         context = interface.run_context()
         interface.control_call( testbox,interface.controlable._config,context,'_config')
-        # run     = res_runner(testbox)
-        # run.config(context)
 
