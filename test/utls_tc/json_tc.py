@@ -22,5 +22,5 @@ class json_tc(rigger_tc) :
         try :
             jfile = os.path.dirname(os.path.dirname(__file__)) + "/data/bad1.json"
             data =  utls.rg_json.load_file(jfile,"/env/dev")
-        except interface.bug_exception:
+        except interface.rigger_exception:
             pass

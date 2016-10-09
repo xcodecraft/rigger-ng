@@ -57,5 +57,7 @@ class rigger_tc(unittest.TestCase):
             second_arr = second_file.readlines()
         first_arr  = self.macro_data(first_arr)
         second_arr = self.macro_data(second_arr)
-        self.assertItemsEqual(first_arr,second_arr)
+        self.assertEqual(len(first_arr),len(second_arr))
+        for i in range(len(first_arr)) :
+            self.assertEqual(first_arr[i],second_arr[i])
 
