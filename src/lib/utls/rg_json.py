@@ -8,7 +8,7 @@ from utls.rg_io import rg_logger
 def load_file(jsonfile,xpath= None) :
     if len(xpath) == 0 :
         xpath = "/"
-    utls.dbc.must_exists(jsonfile)
+    utls.check.must_exists(jsonfile)
     doc = open(jsonfile,"r").read()
     try :
         data = json.loads(doc)
