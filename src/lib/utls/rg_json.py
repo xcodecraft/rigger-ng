@@ -19,8 +19,10 @@ def load_file(jsonfile,xpath= None) :
             data = data[key]
             utls.check.not_none(data, "data[%s] not exists" %key)
         return data
-    except :
-        raise interface.rigger_exception("bad json file %s" %jsonfile )
+    except KeyError as e:
+        raise interface.rigger_exception("not xpath %s in %s" %(e,jsonfile) )
+    except Exception as e:
+        raise interface.rigger_exception("bad json file %s %s:%s" %(jsonfile,e.__class__.__name__,e) )
 
 
 

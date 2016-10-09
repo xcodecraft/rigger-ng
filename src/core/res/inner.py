@@ -63,7 +63,6 @@ class vars(interface.resource):
         json_key = '_json'
 
         if self._json is not None :
-
             jfile = res_utls.value(self._json)
             jargs = jfile.split(":")
             data  = utls.rg_json.load_file(jargs[0],jargs[1])
