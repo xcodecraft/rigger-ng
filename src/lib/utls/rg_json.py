@@ -1,6 +1,6 @@
 #coding=utf8
 import re , os , logging
-import utls.dbc
+import utls.dbc,utls.check
 import json
 import interface
 from utls.rg_io import rg_logger
@@ -17,7 +17,7 @@ def load_file(jsonfile,xpath= None) :
             if len(key) == 0 :
                 continue
             data = data[key]
-            utls.dbc.not_none(data, "data[%s] not exists" %key)
+            utls.check.not_none(data, "data[%s] not exists" %key)
         return data
     except :
         raise interface.rigger_exception("bad json file %s" %jsonfile )
