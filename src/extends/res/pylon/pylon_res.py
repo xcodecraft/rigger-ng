@@ -74,10 +74,9 @@ class pylon_autoload(interface.resource,res_utls):
                 line = line.strip()
                 if not os.path.exists(line) :
                     continue
-                if not os.path.isdir(line) :
-                    continue
-                parser = php_class_parser()
-                parser.parse_file(line,replace,clspath_index,clsname_index)
+                if os.path.isfile(line) :
+                    parser = php_class_parser()
+                    parser.parse_file(line,replace,clspath_index,clsname_index)
 
 
 class pylon_router(interface.resource,res_utls):
