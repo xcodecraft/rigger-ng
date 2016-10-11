@@ -10,11 +10,11 @@ from string import *
 from res.base   import *
 import sys
 
-from  pylon.parser import  php_class_parser,php_rest_parser 
+from  pylon.parser import  php_class_parser,php_rest_parser
 
 _logger = logging.getLogger()
 
-        
+
 
 class pylon_autoload(interface.resource,res_utls):
     """build autoload data for pylon:
@@ -73,12 +73,10 @@ class pylon_autoload(interface.resource,res_utls):
             for line in find_cls.readlines():
                 line = line.strip()
                 if not os.path.exists(line) :
-                    continue 
-                # if len(replace) > 0 :
-                #    line = line.replace(replace,'')
-
-                parser = php_class_parser()
-                parser.parse_file(line,replace,clspath_index,clsname_index)
+                    continue
+                if not os.path.isfile(line) :
+                    parser = php_class_parser()
+                    parser.parse_file(line,replace,clspath_index,clsname_index)
 
 
 class pylon_router(interface.resource,res_utls):
@@ -110,7 +108,7 @@ class pylon_router(interface.resource,res_utls):
             for line in phps_fobj.readlines():
                 line = line.strip()
                 if not os.path.exists(line) :
-                    continue 
+                    continue
                 parser = php_rest_parser()
                 parser.parse_file(line,dst_fobj)
 
