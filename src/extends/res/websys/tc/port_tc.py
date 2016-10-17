@@ -4,7 +4,7 @@ import  utls.tpl ,interface ,base.tc_tools
 import  impl.rg_run
 import  impl.rg_utls
 import  time
-import  setting 
+import  setting
 
 _logger = logging.getLogger()
 
@@ -16,6 +16,12 @@ class port_tc(base.tc_tools.rigger_tc):
         setting.debug       = True
         impl.rg_run.run_cmd("conf,start -s crontab -e dev,base -d 1",self.conf)
         impl.rg_run.run_cmd("conf,stop  -s crontab -e dev,base -d 1",self.conf)
+
+    def test_hosts(self) :
+        setting.debug       = True
+        impl.rg_run.run_cmd("conf,start -s hosts -e dev,base -d 1",self.conf)
+        impl.rg_run.run_cmd("conf,stop  -s hosts -e dev,base -d 1",self.conf)
+
 
     def test_varnish(self) :
         mock = base.tc_tools.res_mock()

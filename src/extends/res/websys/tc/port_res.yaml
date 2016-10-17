@@ -23,6 +23,15 @@ _sys:
                 cron: "${PRJ_ROOT}/src/extends/res/websys/tc/example.cron"
 
     -  !R.system
+        _name: "hosts"
+        _res:
+            - !R.echo
+                value : "hello"
+            - !R.hosts
+                hosts : "${PRJ_ROOT}/src/extends/res/websys/tc/example.hosts"
+                sudo : True
+
+    -  !R.system
         _name: "varnishd"
         _res:
             - !R.varnishd

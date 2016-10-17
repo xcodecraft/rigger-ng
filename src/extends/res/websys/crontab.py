@@ -7,7 +7,7 @@ import random
 from utls.rg_io  import rgio,rg_logger
 from utls.rg_var import value_of
 from utls.rg_sh  import shexec,check_proc
-from utls.sysconf import  sysconf  
+from utls.sysconf import  sysconf
 from impl.rg_utls import *
 from string     import *
 from res.base   import *
@@ -33,7 +33,7 @@ class crontab_base(interface.resource,res_utls):
             raise interface.rigger_exception("cron file not exists : %s" %self.cron)
         # import pdb
         # pdb.set_trace() ;
-        
+
         self.execmd("/usr/bin/crontab -l > %s " %(self.tmp_cron) ,okcode=[0,256])
         conf    = sysconf(self.tmp_cron,"#")
         newcron = conf.replace_by_file(self.tag,self.cron)
@@ -44,3 +44,5 @@ class crontab_base(interface.resource,res_utls):
         conf    = sysconf(self.tmp_cron,"#")
         newcron = conf.clean(self.tag)
         self.execmd("/usr/bin/crontab  %s " %(newcron))
+
+

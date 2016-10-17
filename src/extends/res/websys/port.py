@@ -8,6 +8,7 @@ from websys.daemon import *
 from websys.basesvc import *
 from websys.crontab import *
 from websys.varnishd import *
+from websys.hosts   import *
 
 # class fpm_pool(fpm_pool_base):
 #     bin  = "/sbin/service php5-fpm"
@@ -123,3 +124,10 @@ class crontab (crontab_base) :
     """
     key   = "NO1"
     cron  = None
+
+class hosts (hosts_base) :
+    """
+    !R.hosts
+        hosts : "${PRJ_ROOT}/conf/used/example.hosts"
+    """
+    hosts  = None
