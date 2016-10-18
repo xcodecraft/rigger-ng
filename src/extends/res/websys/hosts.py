@@ -38,9 +38,11 @@ class hosts_base(interface.resource,res_utls):
         self.execmd("cat %s > /etc/hosts" %(newhosts))
 
     def clean_conf(self,context):
-        self.execmd("cat /etc/hosts > %s " %(self.tmp_hosts) ,okcode=[0,256])
-        conf    = sysconf(self.tmp_hosts,"#")
+        tmp_hosts =  "/tmp/" + self.tmp_hosts.replace('/','_') ;
+        print(tmp_hosts)
+        self.execmd("cat /etc/hosts > %s " %(tmp_hosts) ,okcode=[0,256])
+        conf    = sysconf(tmp_hosts,"#")
         newhosts = conf.clean(self.tag)
-        self.execmd("cat %s > /etc/hosts " %(newhosts))
+        self.execmd("cat %s > /etc/hosts  ; rm %s" %(newhosts, tmp_hosts))
 
 

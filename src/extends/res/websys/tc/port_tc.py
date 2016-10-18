@@ -19,8 +19,8 @@ class port_tc(base.tc_tools.rigger_tc):
 
     def test_hosts(self) :
         setting.debug       = True
-        impl.rg_run.run_cmd("conf,start -s hosts -e dev,base -d 1",self.conf)
-        impl.rg_run.run_cmd("conf,stop  -s hosts -e dev,base -d 1",self.conf)
+        impl.rg_run.run_cmd("conf -s hosts -e dev,base -d 1",self.conf)
+        impl.rg_run.run_cmd("clean -s hosts -e dev,base -d 1",self.conf)
 
 
     def test_varnish(self) :
