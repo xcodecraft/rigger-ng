@@ -22,9 +22,9 @@ class hosts_base(interface.resource,res_utls):
             user           = res_utls.value("${USER}")
             self.tmp_hosts = context.run_path + "/tmp.hosts"
             self.tag       = res_utls.value("${PRJ_NAME}-${SYS_NAME}")
-    def _start(self,context):
+    def _config(self,context):
         self.append_conf(context)
-    def _stop(self,context):
+    def _clean(self,context):
         self.clean_conf(context)
     def append_conf(self,context):
         if not os.path.exists(self.hosts):
