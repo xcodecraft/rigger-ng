@@ -46,7 +46,7 @@ class pylon_autoload(interface.resource,res_utls):
         with   open(clspath_tmp,'w') as clspath_index  :
             with open(clsname_tmp,'w') as clsname_index :
                 for src in  src_paths :
-                    if src == "/" :
+                    if len(src.strip()) == 0 :
                         continue
                     self.build_php_index(src,clspath_index,clsname_index,self.relpath);
 
