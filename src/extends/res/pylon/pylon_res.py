@@ -22,7 +22,6 @@ class pylon_autoload(interface.resource,res_utls):
         inlcude :  "/home/x/php:/usr/local/php/lib"
         dst     :  "${RUN_PATH}/autoload"
     """
-    sdk_base = "/home/"
     include  = ""
     relpath  = ""
     dst      = "${RUN_PATH}/autoload"
@@ -47,6 +46,8 @@ class pylon_autoload(interface.resource,res_utls):
         with   open(clspath_tmp,'w') as clspath_index  :
             with open(clsname_tmp,'w') as clsname_index :
                 for src in  src_paths :
+                    if src == "/" :
+                        continue
                     self.build_php_index(src,clspath_index,clsname_index,self.relpath);
 
         shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=clspath_tmp,DST=out_clspath))
