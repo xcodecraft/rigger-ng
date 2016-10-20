@@ -89,6 +89,10 @@ class php_class_parser:
         if match :
             clsname = match.group(1)
 
+        match = re.match('^\s*trait\s+(\w+).*$',line, re.IGNORECASE)
+        if match :
+            clsname = match.group(1)
+
         match = re.match('^\s*abstract\s*class\s+(\w+)\s*{?',line, re.IGNORECASE)
         if match :
             clsname = match.group(1)
