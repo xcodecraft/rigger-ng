@@ -22,7 +22,11 @@ class php_rest_parser:
 
     def out2file(self,dstfile):
         for k,v in self.rest_svcs.items():
-            dstfile.write( "%s : %s\n" %(k,v))
+            match = re.match('^.*\$.*$',k, re.IGNORECASE)
+            if match :
+                dstfile.write( "/__dyn__%s : %s\n" %(k,v))
+            else :
+                dstfile.write( "%s : %s\n" %(k,v))
 
     def parse_file(self,srcfile,dstfile) :
         with  open(srcfile,'r') as sf:
