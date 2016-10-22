@@ -24,7 +24,7 @@ class php_rest_parser:
         for k,v in self.rest_svcs.items():
             match = re.match('^.*\$.*$',k, re.IGNORECASE)
             if match :
-                dstfile.write( "/__dyn__%s : %s\n" %(k,v))
+                dstfile.write( "/zzzzzz%s : %s\n" %(k,v))
             else :
                 dstfile.write( "%s : %s\n" %(k,v))
 
