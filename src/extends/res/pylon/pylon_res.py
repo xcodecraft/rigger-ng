@@ -84,8 +84,10 @@ class pylon_router(interface.resource,res_utls):
     """
     !R.pylon_router
         include: "$${PRJ_ROOT}/src/apps/api:$${PRJ_ROOT}/src/apps/1"
+        version: 1
     """
     include = ""
+    version = 1 
     dst     = "${RUN_PATH}/router/"
     def _before(self,context):
         self.include = res_utls.value(self.include)
@@ -111,7 +113,7 @@ class pylon_router(interface.resource,res_utls):
                 if not os.path.exists(line) :
                     continue
                 parser = php_rest_parser()
-                parser.parse_file(line,dst_fobj)
+                parser.parse_file(line,dst_fobj,self.version)
 
 
 

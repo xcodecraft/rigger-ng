@@ -20,19 +20,22 @@ class php_rest_parser:
         self.rest_svcs = {}
 
 
-    def out2file(self,dstfile):
+    def out2file(self,dstfile,version):
         for k,v in self.rest_svcs.items():
             match = re.match('^.*\$.*$',k, re.IGNORECASE)
             if match :
-                dstfile.write( "/zzzzzz%s : %s\n" %(k,v))
+                if version == 1 :
+                    dstfile.write( "/zzzzzz%s : %s\n" %(k,v))
+                if version == 2 :
+                    dstfile.write( "%s : %s\n" %(k,v))
             else :
                 dstfile.write( "%s : %s\n" %(k,v))
 
-    def parse_file(self,srcfile,dstfile) :
+    def parse_file(self,srcfile,dstfile,version=1) :
         with  open(srcfile,'r') as sf:
             for line in sf.readlines():
                 self.parse(line)
-            self.out2file(dstfile)
+            self.out2file(dstfile,version)
 
     def parse(self, line) :
 
