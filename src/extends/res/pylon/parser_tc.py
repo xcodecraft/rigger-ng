@@ -32,6 +32,6 @@ class parser_tc(base.tc_tools.rigger_tc):
 
         parser = php_rest_parser()
         with   open(dst,'w') as dstobj :
-            parser.parse_file(src,dstobj)
+            parser.parse_file(src,dstobj,2)
 
         self.assertMacroFile(dst,expect)
