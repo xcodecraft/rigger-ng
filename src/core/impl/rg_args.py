@@ -1,6 +1,7 @@
 #coding=utf8
 import types , re , os , string ,  getopt , pickle ,yaml
 import setting
+import utls.rg_sh 
 from utls.rg_io import rgio ,rg_logger
 import logging
 
@@ -97,6 +98,7 @@ class run_args :
             return
         dirname = os.path.dirname(data_file)
         if os.path.exists(dirname) :
+            utls.rg_sh.shexec.execmd("touch %s" %(data_file))
             with open(data_file,'w')  as f:
                 pickle.dump(self, f)
         else :
@@ -107,8 +109,8 @@ class run_args :
         self.prj.cmds = parser.cmds
         if argv.has_key('-c') :
             self.prj.conf  = argv['-c']
-        if argv.has_key('-z'):
-            self.rg.user  = argv['-z']
+        if argv.has_key('-u'):
+            setting.run_user  = argv['-u']
         if argv.has_key('-e'):
             self.prj.env  = argv['-e']
         if argv.has_key('-o'):

@@ -53,34 +53,35 @@ class shexec:
         return shexec.execmd_impl(cmd,check,okcode,loglevel)
 
     @staticmethod
+    def raw_exe(cmd,sudo = False ):
+        do_owner = ""
+        uid      = os.getuid()
+        if uid == 0 :
+            if setting.run_user is not None :
+                do_owner = "sudo -u %s "  %(setting.run_user) 
+        elif sudo :
+                do_owner = "sudo "
+
+        cmd = "%s %s" %(do_owner,cmd)
+        return os.system(cmd)
+
+    @staticmethod
     def execmd_impl(cmd,check=True, okcode= [0],loglevel= 2 ):
         # cmd_txt =  setting.tmp_file("sh")
         pid     = os.getpid()
         cmd_txt = "/tmp/rigger-ng_%s.cmd" %(pid)
-        cmd     = re.sub(r'/bin/php ' ,'/bin/php  -d error_reporting="E_ALL&~E_NOTICE" ',cmd)
-        if setting.debug and setting.debug_level >= loglevel:
-            rgio.simple_out(cmd)
 
         if shexec.DO  :
+            shexec.raw_exe("touch %s" %cmd_txt)
             shexec.out2txt(cmd,cmd_txt)
-            with end_keeper(lambda : os.system( " rm %s " %cmd_txt ) )   as keeper :
-                os.system("chmod +x " +  cmd_txt)
-                uid = os.getuid()
-                if shexec.SUDO  and uid != 0 :
-                    sudo_cmd    = "sudo " + cmd_txt
-                    rcode       = os.system(sudo_cmd)
-                    if setting.debug and setting.debug_level >= loglevel:
-                        rgio.simple_out("sudo system code: %s" % rcode )
-                    if check and rcode not in  okcode :
-                        raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s " %(rcode ,cmd))
-                    return 0
-                else:
-                    rcode = os.system( cmd_txt)
-                    if setting.debug and setting.debug_level >= loglevel:
-                        rgio.simple_out("system code: %s" % rcode )
-                    if check and rcode not in  okcode :
-                        raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s" %(rcode,cmd) )
-                    return  0
+            with end_keeper(lambda : shexec.raw_exe( "rm %s " %(cmd_txt ) ))   as keeper :
+                shexec.raw_exe("chmod +x %s" %cmd_txt)
+                rcode = shexec.raw_exe(cmd_txt, shexec.SUDO)
+                if setting.debug and setting.debug_level >= loglevel:
+                    rgio.simple_out("system code: %s" % rcode )
+                if check and rcode not in  okcode :
+                    raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s" %(rcode,cmd) )
+                return  0
         else :
             return 0
         return 1

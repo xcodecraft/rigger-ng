@@ -1,7 +1,7 @@
 #coding=utf-8
 import string , logging, sys,os
 import interface, rg_args, rg_ioc
-import utls.rg_var
+import utls.rg_var,utls.rg_sh
 import setting
 import yaml,getopt
 import run_env 
@@ -40,8 +40,10 @@ def setting_debug() :
     log_level = logging.ERROR
     log_open  = True
     if len(sys.argv) >2 :
-        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:o:m:p:")
+        opts,args = getopt.getopt(sys.argv[2:],"qd:s:e:c:f:x:a:t:o:m:p:u:")
         for opt,val in opts:
+            if opt == '-u' :
+                setting.run_user = val
             if opt == '-d' :
                 setting.debug       = True
                 setting.debug_level = int(val)
@@ -53,12 +55,11 @@ def setting_debug() :
                     log_level = logging.ERROR
                     log_open  = False
     if log_open :
+        utls.rg_sh.shexec.execmd("touch ./run.log")
         logging.basicConfig(level=log_level,filename='run.log')
     if setting.debug :
         console   = logging.StreamHandler()
         console.setLevel(log_level)
-        # formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-        # console.setFormatter(formatter)
         logging.getLogger().addHandler(console)
 
 
@@ -72,7 +73,6 @@ def main():
     parser.parse(sys.argv[1:] )
 
     setting_debug()
-    # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
     if setting.debug :
         rargs  = impl.rg_args.run_args.load()
         rargs.parse_update(parser)

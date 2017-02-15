@@ -18,6 +18,7 @@ class files_tc(base.tc_tools.rigger_tc):
             if test ! -e ${PRJ_ROOT}/run/path; then   mkdir -p ${PRJ_ROOT}/run/path ; fi ;   chmod o+w  ${PRJ_ROOT}/run/path;
             if test ! -e ${PRJ_ROOT}/run/test_1; then   mkdir -p ${PRJ_ROOT}/run/test_1 ; fi ;   chmod o+w  ${PRJ_ROOT}/run/test_1;
             if test ! -e ${PRJ_ROOT}/run/test_2; then   mkdir -p ${PRJ_ROOT}/run/test_2 ; fi ;   chmod o+w  ${PRJ_ROOT}/run/test_2;
+            touch ${HOME}/devspace/rigger-ng/_rg/.rigger-ng-v2.data
             if test -e ${PRJ_ROOT}/run/path ; then rm -rf  ${PRJ_ROOT}/run/path ; fi ;
             if test -e ${PRJ_ROOT}/run/test_1 ; then rm -rf  ${PRJ_ROOT}/run/test_1 ; fi ;
             if test -e ${PRJ_ROOT}/run/test_2 ; then rm -rf  ${PRJ_ROOT}/run/test_2 ; fi ;
@@ -31,6 +32,7 @@ class files_tc(base.tc_tools.rigger_tc):
             impl.rg_run.run_cmd("conf,clean  -s tpl -e dev,base",self.conf)
         # print(mock.cmds)
         expect= """
+        touch ${HOME}/devspace/rigger-ng/_rg/.rigger-ng-v2.data
         if test ! -e ${PRJ_ROOT}/run/tpl; then   mkdir -p ${PRJ_ROOT}/run/tpl ; fi ;   chmod o+w  ${PRJ_ROOT}/run/tpl;
         chmod o+w ${PRJ_ROOT}/test/data/files/prj_use.yaml
         if test -e ${PRJ_ROOT}/run/tpl ; then rm -rf  ${PRJ_ROOT}/run/tpl ; fi ;

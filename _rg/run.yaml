@@ -8,8 +8,8 @@ _env:
 
             - !R.include
                 _path:
-                    - "${PRJ_ROOT}/_rg/modul.yaml"
-                    - "${PRJ_ROOT}/_rg/utls.yaml"
+                    - "./_rg/modul.yaml"
+                    - "./_rg/utls.yaml"
 
     - !R.env
         _name: "online"
