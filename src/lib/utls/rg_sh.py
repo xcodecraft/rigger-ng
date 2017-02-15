@@ -53,17 +53,19 @@ class shexec:
         return shexec.execmd_impl(cmd,check,okcode,loglevel)
 
     @staticmethod
-    def raw_exe(cmd,sudo = False ):
+    def raw_exe(cmd,sudo = False,loglevel = 2 ):
         do_owner = ""
         uid      = os.getuid()
         if uid == 0 :
             if setting.run_user is not None :
                 do_owner = "sudo -u %s "  %(setting.run_user) 
-        elif sudo :
-                do_owner = "sudo "
-
+        if sudo :
+            do_owner = "sudo "
         cmd = "%s %s" %(do_owner,cmd)
-        return os.system(cmd)
+        code = os.system(cmd)
+        if setting.debug and setting.debug_level >= loglevel:
+            rgio.simple_out("system code: %s, sudo:%d, cmd:%s" % (code,sudo,cmd ))
+        return code
 
     @staticmethod
     def execmd_impl(cmd,check=True, okcode= [0],loglevel= 2 ):
@@ -76,9 +78,7 @@ class shexec:
             shexec.out2txt(cmd,cmd_txt)
             with end_keeper(lambda : shexec.raw_exe( "rm %s " %(cmd_txt ) ))   as keeper :
                 shexec.raw_exe("chmod +x %s" %cmd_txt)
-                rcode = shexec.raw_exe(cmd_txt, shexec.SUDO)
-                if setting.debug and setting.debug_level >= loglevel:
-                    rgio.simple_out("system code: %s" % rcode )
+                rcode = shexec.raw_exe(cmd_txt, shexec.SUDO,loglevel)
                 if check and rcode not in  okcode :
                     raise interface.rigger_exception("shell execute have error! code: %d  cmd:\n%s" %(rcode,cmd) )
                 return  0
