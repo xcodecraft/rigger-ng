@@ -1,3 +1,4 @@
 # rigger-ng 
 
-请看[wiki](https://github.com/xcodecraft/rigger-ng/wiki)
+* Chat: [Gitter](https://gitter.im/rigger-ng/Lobby)
+* [wiki](https://github.com/xcodecraft/rigger-ng/wiki)
