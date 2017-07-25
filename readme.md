@@ -1,6 +1,6 @@
 # rigger-ng 
 
-* Chat: [Gitter](https://gitter.im/rigger-ng/Lobby)
+* Chat: [Gitter](https://gitter.im/xcodecraft-home/rigger-ng)
 * [wiki](https://github.com/xcodecraft/rigger-ng/wiki)
 
 ## 已经使用rigger-ng 的团队
