@@ -35,6 +35,7 @@ class project(interface.resource,res_utls) :
         prjdata = {}
         prjdata['PRJ_ROOT'] = self.root
         prjdata['PRJ_NAME'] = self.name
+        prjdata['BASE_RUN_PATH'] = self.root + "/run"
         utls.rg_var.import_dict(prjdata)
         safe_env_porp.ins().update(self.env.split(','))
     def _allow(self,context):
@@ -161,10 +162,12 @@ class system (interface.control_box,interface.base):
         utls.rg_var.keep()
         context.keep()
 
+        base_run = res_utls.value("${BASE_RUN_PATH}") 
+
         #support run_path var
         auto_vars = vars()
         auto_vars.SYS_NAME = self._name
-        auto_vars.RUN_PATH = "%s/run/%s" %(context.prj.root,self._name)
+        auto_vars.RUN_PATH = "%s/%s" %(base_run,self._name)
         context.run_path   = auto_vars.RUN_PATH
 
         run_path     = res.files.path()
