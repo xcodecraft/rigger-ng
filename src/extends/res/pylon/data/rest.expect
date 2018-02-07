@@ -1,6 +1,6 @@
 /books1/ : BooksSvc1
 /books1   : BooksSvc1
-/__dyn__/books1/$uid : BooksSvc1
+/books1/$uid : BooksSvc1
 /books4 : BooksSvc4
 /books5 : BooksSvc5
 /books2 : BooksSvc2

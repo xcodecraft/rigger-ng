@@ -12,4 +12,3 @@ def rgenv_enable() :
     rgenv['NGINX_CONF'] = "/usr/local/nginx/conf/include/"
     rgenv['NGINX_BIN']  = "service nginx"
     rgenv['NGINX_TESTBIN']  = "/usr/local/nginx/sbin/nginx"
-
