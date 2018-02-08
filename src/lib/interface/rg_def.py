@@ -89,7 +89,7 @@ class res_proxy(controlable) :
         self.dest_obj._clean(context)  
         pass
     def _info(self,context,level=1):
-        self.dest_obj._info(context)  
+        self.dest_obj._info(context,level)  
     def _nodoing(self,context):
         self.dest_obj._nodoing(context)  
 
@@ -163,9 +163,9 @@ class control_box(controlable):
 
     def _info(self,context,level):
         level = level - 1 
-        if  level  > 0  :
-            fun = lambda x,y :  x._info(y,level)
-            self.items_call(fun,context,'_info')
+        #if  level  > 0  :
+        fun = lambda x,y :  x._info(y,level)
+        self.items_call(fun,context,'_info')
 
     def _allow(self,context):
         return True
