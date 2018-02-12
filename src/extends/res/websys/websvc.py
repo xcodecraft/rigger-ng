@@ -50,6 +50,8 @@ class nginx_conf_base(interface.resource):
                 )
         shexec.execmd(cmd)
         pass
+    def _check(self,context):
+        self._check_print(os.path.exists(self.link_res.dst),self.link_res.dst)
 
     def _start(self,context) :
         self._reload(context)

@@ -2,12 +2,17 @@
 
 # from import module
 # from core.impl.rg_run import *
+import os
 
 if __name__ == '__main__':
-    import  core.run_env 
+    import  core.run_env
     core.run_env.set_modul_path()
+    import setting
     import interface
     import pylon, core.impl
+
+    root  = os.path.dirname(os.path.realpath(__file__))
+    setting.rg_root = root
     core.impl.setup()
     pylon.setup()
     import websys
