@@ -16,7 +16,7 @@ class check_tc(base.tc_tools.rigger_tc):
 
     def test_check(self) :
         setting.debug       = True
-        impl.rg_run.run_cmd("conf -s check -e dev -d 1",self.conf)
+        impl.rg_run.run_cmd("conf,start,check -s check -e dev -d 1",self.conf)
         impl.rg_run.run_cmd("clean",self.conf)
 
 

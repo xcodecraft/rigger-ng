@@ -7,4 +7,4 @@ from utls.rg_io import rg_logger
 
 
 def setup() :
-    interface.regist_res("assert_file_md5"      , "check.check_impl")
+    interface.regist_res("assert_file_sha,assert_url_sha"      , "check.check_impl")
