@@ -33,3 +33,5 @@ class beanstalkd_shared (daemon_base):
 
     def depend(self,m,context):
         m.check_exists(self.beanstalkd)
+
+
