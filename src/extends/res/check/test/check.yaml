@@ -1,0 +1,19 @@
+_env:
+    - !R.env
+        _name: "dev"
+        _res :
+            - !R.project
+                name: "rigger-tc"
+                root: "${HOME}/devspace/rigger-ng"
+
+
+_sys:
+    -  !R.system
+        _name: "check"
+        _res:
+            - !R.echo
+                value: "${PRJ_ROOT}"
+
+            - !R.assert_file_md5
+                file: "${PRJ_ROOT}/src/extends/res/check/test/md5.txt"
+                md5 : "a1459d12279dec5be49eee2560dd7d09"
