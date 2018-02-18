@@ -12,6 +12,7 @@ from string     import *
 from res.base   import *
 from websys.shared_utls import *
 import utls.check
+import setting
 
 
 class fpm_pool_base(interface.control_box,interface.base):
@@ -82,6 +83,14 @@ class fpm_ctrl(interface.resource,res_utls):
                 v = res_utls.value(v)
                 efile.write( "env[%s] = %s \n" %(k,v))
 
+    def _check(self,context):
+        isok = False
+        messge =  "no php fpm process"
+        if os.path.exists(self.pid) :
+            pid    = open(self.pid).readline()
+            messge = "php fpm pid:%s" %(pid)
+            isok   = True
+        self._check_print(isok,messge)
     def _start(self,context) :
         if os.path.exists(self.pid) :
             return
@@ -96,10 +105,13 @@ class fpm_ctrl(interface.resource,res_utls):
                 )
         self.execmd(cmd)
     def _stop(self,context) :
-        cmd = " if test -e %s ; then  kill -QUIT `cat %s` ; fi  " %(self.pid,self.pid )
+        shellcmd = setting.rg_root + "/bin/proc_op.sh"
+        #cmd = " if test -e %s ; then  kill -QUIT `cat %s` ; fi  " %(self.pid,self.pid )
+        cmd = " %s %s QUIT " %(shellcmd,self.pid)
         self.execmd(cmd)
     def _reload(self,context) :
-        cmd = " if test -e %s ; then  kill -USR2  `cat %s` ; fi  " %(self.pid,self.pid )
+        #cmd = " if test -e %s ; then  kill -USR2  `cat %s` ; fi  " %(self.pid,self.pid )
+        cmd = " %s %s USR2 " %(shellcmd,self.pid)
         self.execmd(cmd)
 
 

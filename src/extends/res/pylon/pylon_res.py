@@ -87,7 +87,7 @@ class pylon_router(interface.resource,res_utls):
         version: 1
     """
     include = ""
-    version = 1 
+    version = 1
     dst     = "${RUN_PATH}/router/"
     def _before(self,context):
         self.include = res_utls.value(self.include)
@@ -126,7 +126,7 @@ class pylon_router(interface.resource,res_utls):
         shexec.execmd(Template("sort $SRC > $DST; rm $SRC ").substitute(SRC=router_tmp,DST=self.out_idx))
 
     def _check(self,context):
-        self.check_print(os.path.exists(self.out_idx),self.out_idx)
+        self._check_print(os.path.exists(self.out_idx),self.out_idx)
 
     def clean_file(self,filename):
         cmdtpl = "if test -e $DST ; then rm -f  $DST ; fi ; "
