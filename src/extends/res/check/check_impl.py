@@ -4,7 +4,6 @@ import interface,utls.rg_var,utls.rg_json
 import utls.dbc , utls.check
 import copy
 from utls.rg_io import  rgio , run_struct,rg_logger
-from base import *
 from utls.tpl.tpl_var import safe_env_porp
 from impl.rg_utls import *
 import hashlib
