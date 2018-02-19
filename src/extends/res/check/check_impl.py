@@ -39,39 +39,39 @@ def have_cmd(expect,dst) :
             return True
     return False
 
-def assert_value(value,expect,is_raise=True):
+def require_value(value,expect,is_raise=True):
     if value.strip() != expect.strip() :
         if is_raise :
             raise interface.rigger_exception("value: %s , expect: %s " %(value,expect))
         return False ;
     return True
 
-class assert_base(interface.resource,res_utls) :
+class require_base(interface.resource,res_utls) :
     def _allow(self,context):
         return True
     def _config(self,context):
-        if have_cmd('conf',self.run) :
-            self.assert_do(context)
+        if have_cmd('conf',self.check) :
+            self.require_do(context)
     def _start(self,context) :
-        if have_cmd('start',self.run) :
-            self.assert_do(context)
+        if have_cmd('start',self.check) :
+            self.require_do(context)
 
     def _check(self,context):
-        if have_cmd('check',self.run) :
-            result = self.assert_do(context,False)
+        if have_cmd('check',self.check) :
+            result = self.require_do(context,False)
             self._check_print(result,self.file)
 
-class assert_file_sha(assert_base) :
+class require_file(require_base) :
     """
     sha use sha256, centos: sha256sum
-    !R.assert_file_sha
+    !R.require_file
     file  : ""
     sha   : ""
-    run   : "check"  "check,conf,start"
+    check   : "check"  "check,conf,start"
     """
-    name = "assert_file_sha"
-    run  = "check"
-    def assert_do(self,context,is_raise = True):
+    name = "require_file"
+    check  = "check"
+    def require_do(self,context,is_raise = True):
         dst        = res_utls.value(self.file)
         sha        = res_utls.value(self.sha)
         dst_sha    = cacu_file_sha(dst)
@@ -81,23 +81,23 @@ class assert_file_sha(assert_base) :
             return False
         return True
 
-class assert_url_code(assert_base):
+class require_url_code(require_base):
     """
-    !R.assert_url_code
+    !R.require_url_code
     url  : ""
     head : ""
     code : "200"
-    run  : "check"  "check,conf,start"
+    check  : "check"  "check,conf,start"
     """
-    name = "assert_url_sha"
-    code = "200"
-    run  = "check"
+    name  = "require_url_code"
+    code  = "200"
+    check = "check"
 
 
-    def assert_do(self,context,is_raise=True):
+    def require_do(self,context,is_raise=True):
         value  = self.do_curl(context)
         expect = res_utls.value(self.code)
-        return assert_value(value,expect,is_raise)
+        return require_value(value,expect,is_raise)
     def do_curl(self,context) :
         self.url  = res_utls.value(self.url)
         self.file = context.run_path +"/" +  cacu_md5(self.url) + ".http_code"
@@ -110,23 +110,23 @@ class assert_url_code(assert_base):
 
 
 
-class assert_url_sha(assert_base) :
+class require_url_content(require_base) :
     """
     sha use sha256, centos: sha256sum
-    !R.assert_file_sha
+    !R.require_file_sha
     url  : ""
     head  : ""
     sha   : ""
-    run   : "check"  "check,conf,start"
+    check   : "check"  "check,conf,start"
     """
-    name = "assert_url_sha"
-    head = ""
-    run  = "check"
+    name  = "require_url_content"
+    head  = ""
+    check = "check"
 
-    def assert_do(self,context,is_raise=True):
+    def require_do(self,context,is_raise=True):
         value  = self.do_curl(context)
         expect = res_utls.value(self.sha)
-        return assert_value(value,expect,is_raise)
+        return require_value(value,expect,is_raise)
 
     def do_curl(self,context) :
         self.url  = res_utls.value(self.url)
