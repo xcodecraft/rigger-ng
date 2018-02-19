@@ -20,3 +20,7 @@ _sys:
             - !R.assert_url_sha
                 url : "http://route.cnn.test.xcodecraft.com/access/get?app=xcoin&retry=0&uid=12345"
                 sha : "61f0b9d27adcf4e27bdd117cb19ecb508bf54cd23f920563f42f199ae16ad22e"
+
+            - !R.assert_url_code
+                url : "http://so.com/123"
+                code: "301"
