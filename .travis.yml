@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+# command to install dependencies
+install:
+  #  - pip install -r requirements.txt
+addons:
+  sonarcloud:
+    organization: "xcodecraft"
+    token:
+      secure: "vS1jPLlj23lWarUAVy2ST/v28ivHs6nCEmgwbA4Tr2/hb94tfs3Ceo2y/NvHzJ0xt3xeesXG3NllVVr56jPAmDTn3Vot/3le0wTOLPMZSOlZ11uajsN3z15A6W3SGmG3DaIMfGf6ff/JpozTMsngoVtisGNVun9nj6i2O59IxqZgODI2lcH3FvtTsXyRecWwT/DMaWD/BZHzUV0X5uJA14HozfTjrIOh4wVUCGOXu5H946oVl9/adl3SovYoMc4ZEXC+jZfvu88IVy3ZaPdj2+0QOzshwLD2Q7kVndWL2Xekbvc/w/MTdSqwOaCqLnKUH4nP8UZYUL8ugvSYwle2VNbeiSODGOnWsSaVw9q06ar/7PS7HNWWRYmz2QFmXwxd869B1/7dPDPSqZOOXJ4PM+Rvhq8vzDXarMdxWddmwTORsEqqayRQDnM1iZMHLUKMR/2UV/Gh+xtnot5IEwJDzrGqQ3UGTtsbtPjD+4NVG8IGbmolKoCG+j58NK9vZxLncXLTSqWzjmNG6CO9bttRIZtH/Vrr90g4cD27OioKkuyx15aGcfgOs0CTHdKUC4AdxO3ph6DXj0Tazqebjs9zmdziLPJW0O7/sXutI1fXrMl3hVNxSgyX5mchfNL0m3BD/Z/Sd5fbDINMFih/drqlqf3oGkJpVt2/01HaqmgADrk="
+script:
+- sonar-scanner

@@ -2,16 +2,11 @@
 import string , logging , re
 import rg_err
 
-
 class base:
-
     def obj_has(self,key):
         return self.__dict__.has_key(key)
-
-
     def cls_has(self,key):
         return self.__class__.__dict__.has_key(key)
-
     def echo(self,output):
         name = str(self.__class__)
         output("\n!R.%s" %name)

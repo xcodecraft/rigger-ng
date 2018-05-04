@@ -9,8 +9,6 @@ class run_struct:
     @staticmethod
     def push(resname):
         run_struct.trace.append(resname)
-
-
     @staticmethod
     def pop():
         run_struct.trace.pop()
