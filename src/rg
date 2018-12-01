@@ -18,6 +18,8 @@ if __name__ == '__main__':
     import websys
     websys.setup()
     import core.impl.rg_run
-    code = core.impl.rg_run.main()
-    exit(code)
+    if core.impl.rg_run.main() :
+        exit(0)
+    else :
+        exit(-1)
 

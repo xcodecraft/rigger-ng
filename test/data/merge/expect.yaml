@@ -1,5 +1,5 @@
 
-# file: /home/zuowenjian/devspace/rigger-ng/test/data/merge/include_a.yaml
+# file: ${PRJ_ROOT}/test/data/merge/include_a.yaml
 # ------------------------------
 
     -  !R.system
@@ -10,7 +10,7 @@
             - !R.tpl
                 dst: "${PRJ_ROOT}/run/test_1,${PRJ_ROOT}/run/test_2"
 
-# file: /home/zuowenjian/devspace/rigger-ng/test/data/merge/include_b.yaml
+# file: ${PRJ_ROOT}/test/data/merge/include_b.yaml
 # ------------------------------
 
     -  !R.system

@@ -35,3 +35,31 @@ if __name__ == '__main__':
     # from ubuntu.fpm_tc  import *
     # from ubuntu.websvc_tc   import *
     unittest.main()
+    #  try :
+    #  except yaml.constructor.ConstructorError as e :
+        #  rgio.error(e)
+    #  except interface.user_break as e:
+        #  rgio.error(e)
+    #  except interface.badargs_exception  as e :
+        #  print("\nerror:")
+        #  rgio.error(e)
+        #  runargs.help()
+    #  except getopt.GetoptError as e:
+        #  print("\nerror:")
+        #  print(e)
+        #  runargs.help()
+    #  except interface.depend_exception as e :
+        #  e.monitor.out()
+    #  except interface.cmd_use_error as e :
+        #  rgio.error(e)
+        #  rgio.simple_out("useage:")
+        #  cmdobj = impl.rg_ioc.ins_cmd(e.cmd)
+        #  cmdobj.useage(rgio.simple_out)
+    #  except interface.res_use_error as e :
+        #  rgio.error(e)
+        #  rgio.simple_out("useage:")
+        #  res = impl.rg_ioc.ins_res(e.res)
+        #  res.useage(rgio.simple_out)
+#
+    #  except interface.rigger_exception as e:
+         #  rgio.error(e)

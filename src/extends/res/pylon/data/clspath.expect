@@ -9,4 +9,4 @@ X\A1,${PRJ_ROOT}/src/extends/res/pylon/data/example.php
 X\DemoA1,${PRJ_ROOT}/src/extends/res/pylon/data/example.php
 X\Y\A2,${PRJ_ROOT}/src/extends/res/pylon/data/example.php
 X\Y\DemoA2,${PRJ_ROOT}/src/extends/res/pylon/data/example.php
-X\Y\TraitTest,/home/zuowenjian/devspace/rigger-ng/src/extends/res/pylon/data/example.php
+X\Y\TraitTest,${PRJ_ROOT}/src/extends/res/pylon/data/example.php

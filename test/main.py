@@ -7,8 +7,7 @@ def setup_env() :
     sys.path.append(os.path.join(root,"src") )
     import core.run_env
     core.run_env.set_modul_path()
-
-    os.environ['PRJ_ROOT'] = os.environ['HOME'] + "/devspace/rigger-ng"
+    os.environ['PRJ_ROOT'] = root 
     logging.basicConfig(level=logging.DEBUG,filename='test.log')
 
 

@@ -12,9 +12,13 @@ class port_tc(base.tc_tools.rigger_tc):
     def setUp(self):
         self.conf = utls.rg_var.value_of("${PRJ_ROOT}/src/extends/res/websys/tc/port_res.yaml")
 
+    def assert_cmd(self,cmd):
+        self.assertTrue(impl.rg_run.run_cmd( cmd,self.conf))
+
     def test_crontab(self) :
         setting.debug       = True
-        impl.rg_run.run_cmd("conf,start -s crontab -e dev,base -d 1",self.conf)
+        self.assert_cmd("conf,start -s crontab -e dev,base -d 1") 
+        #self.assertTrue(impl.rg_run.run_cmd( "conf,start -s crontab -e dev,base -d 1",self.conf) )
         impl.rg_run.run_cmd("conf,stop  -s crontab -e dev,base -d 1",self.conf)
 
     def test_hosts(self) :
