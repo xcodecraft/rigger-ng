@@ -5,6 +5,7 @@ def setup_env() :
     root  = os.path.dirname(os.path.realpath(__file__))
     root  = os.path.dirname(root)
     sys.path.append(os.path.join(root,"src") )
+    sys.path.append("/etc/rigger-ng")
     import core.run_env
     core.run_env.set_modul_path()
     os.environ['PRJ_ROOT'] = root 

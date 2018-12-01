@@ -10,6 +10,7 @@ def load_rgenv():
 def set_modul_path() :
     root  = os.path.dirname(os.path.realpath(__file__))
     root  = os.path.dirname(root)
+    sys.path.append("/etc/rigger-ng")
     sys.path.append(root)
     sys.path.append(os.path.join(root,"extends/res") )
     sys.path.append(os.path.join(root,"lib") )
