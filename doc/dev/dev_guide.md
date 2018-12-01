@@ -76,3 +76,4 @@ class path(interface.resource,shell_able):
 ```
 
 [mysql 资源示例](https://github.com/xcodecraft/rigger-ng/blob/master/src/res/mysql.py)
+

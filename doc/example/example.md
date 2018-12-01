@@ -1,5 +1,4 @@
 
-
 ## 初始化系统
 ``` yaml
       - !R.system
@@ -47,3 +46,4 @@
                       script : "/usr/local/php/bin/phpunit"
                       args   : "--configuration ${PRJ_ROOT}/test/phpunit.xml"
 ```
+
