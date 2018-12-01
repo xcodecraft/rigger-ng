@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# from import module
-# from core.impl.rg_run import *
 import os
 
 if __name__ == '__main__':

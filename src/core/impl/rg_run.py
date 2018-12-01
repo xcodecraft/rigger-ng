@@ -5,12 +5,11 @@ import utls.rg_var
 import setting
 import yaml,getopt
 import run_env 
-from utls.rg_io import rg_logger
+import impl.rg_run , impl.rg_args,impl.rg_ioc
+from utls.rg_io import rg_logger,rgio
 
 
 def run_cmd(cmdstr,yaml_conf=None) :
-    # import pdb
-    # pdb.set_trace()
     rargs  = rg_args.run_args()
     parser = rg_args.rarg_parser()
     parser.parse(cmdstr.split(' '))
@@ -18,7 +17,8 @@ def run_cmd(cmdstr,yaml_conf=None) :
     if yaml_conf is not None:
         rargs.prj.conf = yaml_conf
 
-    run_rigger(rargs,parser.argv)
+    func = lambda : run_rigger(rargs,parser.argv)
+    return beautify_error(func)
 
 def run_rigger(rargs, argv) :
     #TODO: muti cmd support
@@ -62,29 +62,22 @@ def setting_debug() :
         logging.getLogger().addHandler(console)
 
 
-def main():
-    import impl.rg_run , impl.rg_args
-    from   utls.rg_io import rgio
-    import impl.rg_ioc
-
-
+def main_impl():
     parser = impl.rg_args.rarg_parser()
     parser.parse(sys.argv[1:] )
-
     setting_debug()
-    # rars_file = os.getcwd() + "/_rg/.rigger-ng-v1.data"
-    if setting.debug :
-        rargs  = impl.rg_args.run_args.load()
-        rargs.parse_update(parser)
-        impl.rg_run.run_rigger(rargs,parser.argv)
-    else:
+    rargs  = impl.rg_args.run_args.load()
+    rargs.parse_update(parser)
+    impl.rg_run.run_rigger(rargs,parser.argv)
+
+
+def main() :
+    beautify_error(main_impl)
+
+def beautify_error(func): 
         try :
-            #import pdb
-            #pdb.set_trace() ;
-            rargs  = impl.rg_args.run_args.load()
-            rargs.parse_update(parser)
-            impl.rg_run.run_rigger(rargs,parser.argv)
-            return 0 
+            func()
+            return  True
 
         except yaml.constructor.ConstructorError as e :
             rgio.error(e)
@@ -110,10 +103,11 @@ def main():
             rgio.simple_out("useage:")
             res = impl.rg_ioc.ins_res(e.res)
             res.useage(rgio.simple_out)
-
         except interface.rigger_exception as e:
              rgio.error(e)
-        return -1 
+        return False
+
+
 
 
 

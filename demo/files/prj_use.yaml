@@ -8,7 +8,7 @@ _prj: !R.project
         - !R.vars
                 PRJ_NAME: "RG_UT"
                 PRJ_KEY : "RG_UT"
-                PRJ_ROOT: "${HOME}/devspace/rigger-ng"
+                PRJ_ROOT: "/Users/zuowenjian/devspace/rigger-ng"
 
 
 _sys:
@@ -16,6 +16,6 @@ _sys:
         _name: "path"
         _res:
             - !R.path
-                dst: "${HOME}/devspace/rigger-ng/demo/run/test_1,/home/zuowenjian/devspace/rigger-ng/demo/run/test_2"
+                dst: "/Users/zuowenjian/devspace/rigger-ng/demo/run/test_1,/Users/zuowenjian/devspace/rigger-ng/demo/run/test_2"
             - !R.tpl
-                dst: "${HOME}/devspace/rigger-ng/demo/run/test_1,/home/zuowenjian/devspace/rigger-ng/demo/run/test_2"
+                dst: "/Users/zuowenjian/devspace/rigger-ng/demo/run/test_1,/Users/zuowenjian/devspace/rigger-ng/demo/run/test_2"

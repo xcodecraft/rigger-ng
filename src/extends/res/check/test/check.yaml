@@ -17,9 +17,10 @@ _sys:
             - !R.require_file
                 file: "${PRJ_ROOT}/src/extends/res/check/test/sha.txt"
                 sha : "b3796ac336daa698af9066427bc7fbe829daa804e35b369c0c55ae52f7e0d98d"
-            - !R.require_url_content
-                url : "http://route.cnn.test.xcodecraft.com/access/get?app=xcoin&retry=0&uid=12345"
-                sha : "61f0b9d27adcf4e27bdd117cb19ecb508bf54cd23f920563f42f199ae16ad22e"
+                
+            #- !R.require_url_content
+            #url : "http://route.cnn.test.xcodecraft.com/access/get?app=xcoin&retry=0&uid=12345"
+            #sha : "61f0b9d27adcf4e27bdd117cb19ecb508bf54cd23f920563f42f199ae16ad22e"
 
             - !R.require_url_code
                 url : "http://so.com/123"

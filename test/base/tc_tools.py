@@ -1,5 +1,6 @@
 import  re , os , string ,  getopt ,sys , unittest,logging
 
+import  impl.rg_run
 from utls.rg_sh import  shexec
 from utls.rg_var import  value_of
 
@@ -34,6 +35,11 @@ class res_mock(shexec_mock) :
         return True
 
 class rigger_tc(unittest.TestCase):
+    conf = None
+
+    def assert_cmd(self,cmd):
+        self.assertTrue(impl.rg_run.run_cmd( cmd,self.conf))
+
     def macro_data(self,arr):
         out = []
         for line in arr :
