@@ -25,5 +25,6 @@ rg clean
 
 
 
-* [指令](command.md)
+* [指令](use/command.md)
 * [项目配置示例](example/example.md) 
+
