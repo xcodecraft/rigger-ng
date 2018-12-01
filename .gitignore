@@ -2,6 +2,7 @@
 *.swp
 *.pyc
 _rg/*.data
+demo/_rg/*.data
 cscope.*
 *.log
 tags
