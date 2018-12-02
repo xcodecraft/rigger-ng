@@ -29,11 +29,11 @@ else
 fi
 
 
-cd /usr/local/bin
 if test -L /usr/local/bin/rg ; then 
   sudo rm /usr/local/bin/rg
 fi
-sudo ln -s ${DST}/rg rg
+cd /usr/local/bin
+sudo ln -s ${SHELL_DIR}/rg rg
 
 echo ""
 echo "---------------------------------------"
