@@ -11,7 +11,7 @@ cd <you-project>
 rg init
 ```
 
-## 编辑 [_rg/run.yaml](prj_run.md)
+## 编辑 [_rg/run.yaml](config/prj_run.md)
 
 ## 运行控制
 示例:
