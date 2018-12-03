@@ -33,9 +33,7 @@ _sys:
         _name : "test"
         _res  :
             - !R.vars
-                    TEST_CASE : "${PRJ_ROOT}/test/main.py"
+                    RG_CONF : "${PRJ_ROOT}/_rg/run.yaml"
             - !R.echo
-                value         : "${PRJ_ROOT}"
-            - !R.shell
-                script : "${PRJ_ROOT}/src/demo.sh"
+                value         : "${RG_CONF}"
 
