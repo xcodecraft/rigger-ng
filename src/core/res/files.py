@@ -271,11 +271,11 @@ class intertpl(interface.resource,res_utls):
 
 class tpl_builder:
     @staticmethod
-    def build(tplfile,dstfile):
+    def build(tplfile,dstfile,vfix):
         with open(tplfile, 'r') as tpl :
             with open(dstfile, 'w') as dst :
                 for line in tpl:
-                    data= utls.rg_var.value_of(line)
+                    data= utls.rg_var.value_of(line,vfix)
                     dst.write(data)
 
 class file_tpl(interface.resource,res_utls):
@@ -286,6 +286,7 @@ class file_tpl(interface.resource,res_utls):
     """
     dst    = ""
     tpl    = ""
+    vfix    = "$"
     mod    = "o+w"
 
     def _before(self,context):
@@ -296,7 +297,7 @@ class file_tpl(interface.resource,res_utls):
 
     def _config(self,context):
         self.must_exists(self.tpl)
-        tpl_builder.build(self.tpl,self.dst)
+        tpl_builder.build(self.tpl,self.dst,self.vfix)
         self.execmd("chmod %s %s " %(self.mod, self.dst))
 
     def _path(self,context):

@@ -85,10 +85,10 @@ class env_exp:
         return str(res)
 
     @staticmethod
-    def var_proc(string,tplvars):
-        # tpl     = string.strip()
+    def var_proc(string,tplvars,vfix):
         tpl     = string
-        var_exp = re.compile(r'\$\{(\w+)\}')
+        exp = Template('\$v\{(\w+)\}').substitute(v=vfix)
+        var_exp = re.compile(exp)
         ass     = assigner(tpl,tplvars)
         try :
             while var_exp.search(tpl):

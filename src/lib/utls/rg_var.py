@@ -34,9 +34,9 @@ def export_env():
 def export2dict(target):
     rg_vars.export2dict(target)
 
-def value_of(exp):
+def value_of(exp,vfix='$'):
     attr_vars = tpl.tpl_var.attr_proxy(rg_vars.current())
-    tmp_exp   = rg_var_impl.env_exp.var_proc(str(exp),attr_vars)
+    tmp_exp   = rg_var_impl.env_exp.var_proc(str(exp),attr_vars,vfix)
     return rg_var_impl.env_exp.fun_proc(tmp_exp)
 
 
