@@ -21,7 +21,7 @@
  mkdir ~/devspace ; cd ~/devspace/
  git clone git@github.com:xcodecraft/rigger-ng.git
 ```
-###　个人环境
+### 个人环境
 
 ```SHELL
 #mac环境
